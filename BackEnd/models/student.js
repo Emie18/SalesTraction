@@ -24,12 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     disponibility: DataTypes.STRING,
     description: DataTypes.TEXT,
-    pass: DataTypes.STRING,
-    region: DataTypes.STRING,
-    image: {
-      type: DataTypes.STRING,
-      allowNull: true
-    }
+    pass: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Student',

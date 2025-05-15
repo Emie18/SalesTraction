@@ -9,9 +9,11 @@ app.use(express.json());
 const { sequelize } = require('./models');
 const StudentRoutes = require('./routes/StudentRoutes');
 const StartUpRoutes = require('./routes/StartUpRoutes');
+const AccountRoutes = require('./routes/AccountRoutes');
 
 app.use('/students', StudentRoutes);
 app.use('/startup', StartUpRoutes);
+app.use('/account', AccountRoutes);
 
 
 app.get('/', (req, res) => {
