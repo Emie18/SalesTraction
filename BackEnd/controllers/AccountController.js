@@ -4,18 +4,17 @@ exports.login = async (req, res) => {
     try {
         const { pass, email } = req.body;
         if(!pass || !email){
-            res.status(401).json({ error: 'Invalid credentials' });
+            return res.status(401).json({ error: 'Invalid credentials' });
         }
         
         // Login with startup
         const startup = await StartUp.findOne({where: { email: email }});
         if(startup){
             if(startup.pass === pass){
-                res.status(201).json({
+                return res.status(201).json({
                     type : "startup",
                     data : startup
                 });
-                return
             }
             //res.status(401).json({ error: 'Invalid credentials' });
             //return
@@ -23,13 +22,11 @@ exports.login = async (req, res) => {
         
         // Login with student
         const student = await Student.findOne({where: { email: email }});
-        console.log(student)
         if(student && student.dataValues.pass === pass){
-            res.status(201).json({
+            return res.status(201).json({
                 type : "student",
                 data : student
             });
-            return
         }
 
         res.status(401).json({ error: 'Invalid credentials' });
