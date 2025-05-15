@@ -5,11 +5,11 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     queryInterface.changeColumn('Students', 'linkdin', {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     })
     queryInterface.changeColumn('Students', 'image', {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     });
     return queryInterface
   },
