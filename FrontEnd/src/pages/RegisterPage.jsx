@@ -1,36 +1,90 @@
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import "../styles/registerpage.css"
+import "../styles/registerpage.css";
+
 function RegisterPage() {
   const location = useLocation();
   const isStudent = location.pathname.includes('/student');
 
-  // Common states (could be split per form if needed)
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
     email: '',
     region: '',
     linkedin: '',
-    image: '',
+    image: null,
     description: '',
     disponibility: '',
     password: '',
     confirmPassword: '',
     siret: '',
+    school: '',
+    language: '',
+    sector: '',
   });
 
   const handleChange = (e) => {
+    const { name, value, type, files } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: type === 'file' ? files[0] : value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: handle form submission (e.g., send to API)
-    console.log('Form data:', formData);
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    if (isStudent) {
+      const studentPayload = {
+        name: formData.name,
+        surname: formData.surname,
+        email: formData.email,
+        disponibility: formData.disponibility,
+        description: formData.description,
+        linkedin: formData.linkedin,
+        pass: formData.password,
+      };
+
+      try {
+        console.log(JSON.stringify(studentPayload))
+        const res = await fetch('http://localhost:3000/students/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(studentPayload),
+        });
+
+        const data = await res.json();
+        console.log("Student registered:", data);
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    } else {
+      const startupPayload = {
+        name: formData.name,
+        email: formData.email,
+        siret: formData.siret,
+        linkedin: formData.linkedin,
+        description: formData.description,
+        pass: formData.password,
+      };
+
+      try {
+        const res = await fetch('/api/startup/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(startupPayload),
+        });
+        const data = await res.json();
+        console.log("Startup registered:", data);
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    }
   };
 
   return (
@@ -48,36 +102,39 @@ function RegisterPage() {
 
             <label>Email:</label>
             <input name="email" type="email" value={formData.email} onChange={handleChange} required />
+
             <label>School:</label>
-            <input name="school" type="text" value={formData.school} onChange={handleChange} required />
+            <input name="school" value={formData.school} onChange={handleChange} />
 
             <label>Region / Department:</label>
-            <input name="region" value={formData.region} onChange={handleChange} required />
-            <div className="language">
-            <label>Language:</label>
-            <select name="language" value={formData.language} onChange={handleChange}>
-              <option value={1}>French</option>
-              <option value={2}>Spanish</option>
-              <option value={3}>English</option>
-              <option  selected disabled hidden value={0}>...</option>
-              </select>
-              <button>+</button>
-              </div>
+            <input name="region" value={formData.region} onChange={handleChange}  />
 
-              <div className="sector">
-            <label>Sector:</label>
-            <select name="language" value={formData.sector} onChange={handleChange}>
-              <option value={1}>Digital</option>
-              <option value={2}>Agroalimentaire</option>
-              <option  selected disabled hidden value={0}>...</option>
+            <div className="language">
+              <label>Language:</label>
+              <select name="language" value={formData.language} onChange={handleChange}>
+                <option value="">...</option>
+                <option value="1">French</option>
+                <option value="2">Spanish</option>
+                <option value="3">English</option>
               </select>
-              <button>+</button>
-              </div>
+              <button type="button">+</button>
+            </div>
+
+            <div className="sector">
+              <label>Sector:</label>
+              <select name="sector" value={formData.sector} onChange={handleChange}>
+                <option value="">...</option>
+                <option value="1">Digital</option>
+                <option value="2">Agroalimentaire</option>
+              </select>
+              <button type="button">+</button>
+            </div>
+
             <label>LinkedIn Link:</label>
             <input name="linkedin" value={formData.linkedin} onChange={handleChange} />
 
             <label>Image (optional):</label>
-            <input name="image" type="file" value={formData.image} onChange={handleChange} />
+            <input name="image" type="file" onChange={handleChange} />
 
             <label>Description (optional):</label>
             <textarea name="description" value={formData.description} onChange={handleChange} />
@@ -103,7 +160,7 @@ function RegisterPage() {
             <textarea name="description" value={formData.description} onChange={handleChange} />
 
             <label>Image (optional):</label>
-            <input name="image" type="file" value={formData.image} onChange={handleChange} />
+            <input name="image" type="file" onChange={handleChange} />
           </>
         )}
 
@@ -112,11 +169,12 @@ function RegisterPage() {
 
         <label>Confirm Password:</label>
         <input name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} required />
+
         <div className="condition">
-        <input name="generaleCondition" type="checkbox"></input>
-                <p>I accept the general conditions of use</p>
+          <input name="generaleCondition" type="checkbox" required />
+          <p>I accept the general conditions of use</p>
         </div>
-  
+
         <button type="submit">Register</button>
       </form>
     </div>
