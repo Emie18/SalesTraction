@@ -26,3 +26,4 @@ FrontEnd/dist-ssr
 #Backend
 BackEnd/node_modules
 BackEnd/.env
+BackEnd/migrations

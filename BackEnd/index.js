@@ -1,16 +1,21 @@
 require('dotenv').config();
-const { createServer } = require('node:http');
+const express = require('express');
+const app = express();
+const StudentRoutes = require('./routes/StudentRoutes');
+const { sequelize } = require('./models');
 
+app.use(express.json());
+app.use('/students', StudentRoutes);
 
-const hostname = '127.0.0.1';
-const port = 3000;
-
-const server = createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World' + process.env.MYSQL_USER + ' ' + process.env.MYSQL_PASS);
+app.get('/', (req, res) => {
+    res.send('API is working 🚀');
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+// Connect DB and start server
+const PORT = process.env.PORT || 3000;
+sequelize.authenticate().then(() => {
+    console.log('DB connected');
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
 });
