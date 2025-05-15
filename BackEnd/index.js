@@ -1,13 +1,18 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const StudentRoutes = require('./routes/StudentRoutes');
-const { sequelize } = require('./models');
-const cors = require('cors');
 
+const cors = require('cors');
 app.use(cors());
 app.use(express.json());
+
+const { sequelize } = require('./models');
+const StudentRoutes = require('./routes/StudentRoutes');
+const StartUpRoutes = require('./routes/StartUpRoutes');
+
 app.use('/students', StudentRoutes);
+app.use('/startup', StartUpRoutes);
+
 
 app.get('/', (req, res) => {
     res.send('API is working 🚀');

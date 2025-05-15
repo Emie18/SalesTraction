@@ -1,9 +1,9 @@
-const { Student } = require('../models');
+const { StartUp } = require('../models');
 
 exports.create = async (req, res) => {
     try {
-        const student = await Student.create(req.body);
-        res.status(201).json(student);
+        const startup = await StartUp.create(req.body);
+        res.status(201).json(startup);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to create student' });
@@ -12,8 +12,8 @@ exports.create = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try{
-        const student = await Student.findAll();
-        res.status(200).json(student);
+        const startup = await StartUp.findAll();
+        res.status(200).json(startup);
     }catch(error){
         res.status(500).json({error : error.message});
     }
@@ -21,7 +21,7 @@ exports.getAll = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try{
-        await Student.destroy({
+        await StartUp.destroy({
             where: { id: req.query.id }
         });
         res.status(200).json({deleted : req.query.id});
