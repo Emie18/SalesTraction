@@ -1,0 +1,19 @@
+.register{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.register h1{
+    margin: 1em;
+}
+.register form {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.register .condition{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

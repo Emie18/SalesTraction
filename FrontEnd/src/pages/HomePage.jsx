@@ -12,10 +12,10 @@ function HomePage() {
         </div>
         <div className="iam">
           <div className="student">
-            <a href="/student/home">I'm a student</a>
+            <a href="/student/register">I'm a student</a>
           </div>
           <div className="startup">
-            <a href="/startup/home">I'm a start-up</a>
+            <a href="/startup/register">I'm a start-up</a>
           </div>
         </div>
         <div className="description">
