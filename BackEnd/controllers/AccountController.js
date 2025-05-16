@@ -9,14 +9,19 @@ exports.login = async (req, res) => {
         }
 
         const account = await Account.findOne({where: { email: email, password: pass }});
+        console.log(account)
         if (!account) return res.status(401).json({ error: 'Invalid credentials' });
-
-        if(account.startup){
-            return res.status(201).json({ type : "startup", account : account, startup : account.startup });
+        
+        const startup = await StartUp.findOne({where: { id_account: account.id }})
+        console.log(startup)
+        if(startup){
+            return res.status(201).json({ type : "startup", account : account, startup : startup });
         }
-
-        if(account.student){
-            return res.status(201).json({type : "student", account : account, startup : account.student});
+        
+        const student = await Student.findOne({where: { id_account: account.id }})
+        console.log(student)
+        if(student){
+            return res.status(201).json({type : "student", account : account, startup : student });
         }
 
         res.status(401).json({ error: 'Invalid credentials' });

@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
             email: req.body.email,
             password: req.body.pass,
             description : req.body.description ?? "",
-            name_region : req.body.region,
+            name_region : req.body.region ?? "Bretagne",
             linkdin : req.body.linkdin
         });
         const startup = await StartUp.create({
@@ -26,7 +26,12 @@ exports.create = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try{
-        const startup = await StartUp.findAll();
+        const startup = await StartUp.findAll({
+            include: [{
+                as: "id_account_account",
+                model: Account
+            }]
+        });
         res.status(200).json(startup);
     }catch(error){
         res.status(500).json({error : error.message});
