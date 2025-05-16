@@ -175,7 +175,7 @@ function RegisterPage() {
               </div>
               <div>
                 <p>Description:</p>
-                <textarea className="long" name="description" value={formData.description} onChange={handleChange} />
+                <textarea className="long description" name="description" value={formData.description} onChange={handleChange} />
               </div>
               <div>
                 <p>Image (optional):</p>
@@ -201,6 +201,7 @@ function RegisterPage() {
           <button  className="send" type="submit">Register</button>
         </form>
       </div>
+
     </div>
   );
 }
