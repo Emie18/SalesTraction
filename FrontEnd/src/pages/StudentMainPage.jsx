@@ -1,10 +1,11 @@
-
+import Navigation from "../components/Navigation"
 function StudentUpMainPage() {
 
     return (
       <>
         <div>
-          <h1>StudentUpMainPage</h1>
+          <h1>StudentMainPage</h1>
+          <Navigation />
          </div>
       </>
     )
