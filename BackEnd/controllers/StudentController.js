@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
             email: req.body.email,
             password: req.body.pass,
             description : "",
-            name_region : req.body.region
+            name_region : req.body.region ?? "Bretagne"
         });
         const student = await Student.create({
             id_account: account.id,
@@ -25,7 +25,12 @@ exports.create = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try{
-        const student = await Student.findAll();
+        const student = await Student.findAll({
+            include: [{
+                as: "id_account_account",
+                model: Account
+            }]
+        });
         res.status(200).json(student);
     }catch(error){
         res.status(500).json({error : error.message});
