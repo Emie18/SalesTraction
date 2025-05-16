@@ -88,31 +88,35 @@ function RegisterPage() {
   };
 
   return (
-    <div>
-<div className="title_home">
-  <a href='/'>Home</a>
-  <h1>SalesTraction</h1>
-</div>
+    <div className='page center'>
+      <div className="title_home">
+        <a href='/'>Home</a>
+        <h1>SalesTraction</h1>
+      </div>
       <div className='register'>
         <h2>{isStudent ? 'Student Registration' : 'Startup Registration'}</h2>
 
         <form onSubmit={handleSubmit}>
           {isStudent ? (
             <>
-              <label>Name:</label>
-              <input name="name" value={formData.name} onChange={handleChange} required />
-
-              <label>Surname:</label>
-              <input name="surname" value={formData.surname} onChange={handleChange} required />
-
-              <label>Email:</label>
-              <input name="email" type="email" value={formData.email} onChange={handleChange} required />
-
-              <label>School:</label>
-              <input name="school" value={formData.school} onChange={handleChange} />
-
-              <label>Region / Department:</label>
-              <input name="region" value={formData.region} onChange={handleChange} />
+              <div>
+                <p>Name:</p>
+                <input className="long" name="name" value={formData.name} onChange={handleChange} required />
+              </div>
+              <div>
+                <p>Surname:</p>
+                <input className="long" name="surname" value={formData.surname} onChange={handleChange} required />
+              </div>
+              <div><p>Email:</p>
+                <input className="long" name="email" type="email" value={formData.email} onChange={handleChange} required />
+              </div>
+              <div>       <p>School:</p>
+                <input className="long" name="school" value={formData.school} onChange={handleChange} />
+              </div>
+              <div>
+                <p>Region / Department:</p>
+                <input className="long" name="region" value={formData.region} onChange={handleChange} />
+              </div>
 
               <div className="language">
                 <label>Language:</label>
@@ -134,53 +138,67 @@ function RegisterPage() {
                 </select>
                 <button type="button">+</button>
               </div>
+              <div>
+                <p>LinkedIn Link:</p>
+                <input className="long" name="linkedin" value={formData.linkedin} onChange={handleChange} />
 
-              <label>LinkedIn Link:</label>
-              <input name="linkedin" value={formData.linkedin} onChange={handleChange} />
-
-              <label>Image (optional):</label>
-              <input name="image" type="file" onChange={handleChange} />
-
-              <label>Description (optional):</label>
-              <textarea name="description" value={formData.description} onChange={handleChange} />
-
-              <label>Availability:</label>
-              <input name="disponibility" value={formData.disponibility} onChange={handleChange} required />
+              </div>
+              <div>
+                <p>Image (optional):</p>
+                <input className="long" name="image" type="file" onChange={handleChange} />
+              </div>
+              <div>
+                <p>Description (optional):</p>
+                <textarea className="long" name="description" value={formData.description} onChange={handleChange} />
+              </div>
+              <div><p>Availability:</p>
+                <input className="long" name="disponibility" value={formData.disponibility} onChange={handleChange} required />
+              </div>
             </>
           ) : (
             <>
-              <label>Startup Name:</label>
-              <input name="name" value={formData.name} onChange={handleChange} required />
+              <div>
+                <p>Startup Name:</p>
+                <input className="long" name="name" value={formData.name} onChange={handleChange} required />
+              </div>
+              <div>
+                <p>Email:</p>
+                <input className="long" name="email" type="email" value={formData.email} onChange={handleChange} required />
+              </div>
+              <div>
+                <p>SIRET:</p>
+                <input className="long" name="siret" value={formData.siret} onChange={handleChange} required />
+              </div>
+              <div>
+                <p>LinkedIn Link (optional):</p>
+                <input className="long" name="linkedin" value={formData.linkedin} onChange={handleChange} />
+              </div>
+              <div>
+                <p>Description:</p>
+                <textarea className="long" name="description" value={formData.description} onChange={handleChange} />
+              </div>
+              <div>
+                <p>Image (optional):</p>
+                <input className="long" name="image" type="file" onChange={handleChange} />
+              </div>
 
-              <label>Email:</label>
-              <input name="email" type="email" value={formData.email} onChange={handleChange} required />
-
-              <label>SIRET:</label>
-              <input name="siret" value={formData.siret} onChange={handleChange} required />
-
-              <label>LinkedIn Link (optional):</label>
-              <input name="linkedin" value={formData.linkedin} onChange={handleChange} />
-
-              <label>Description:</label>
-              <textarea name="description" value={formData.description} onChange={handleChange} />
-
-              <label>Image (optional):</label>
-              <input name="image" type="file" onChange={handleChange} />
             </>
           )}
-
-          <label>Password:</label>
-          <input name="password" type="password" value={formData.password} onChange={handleChange} required />
-
-          <label>Confirm Password:</label>
-          <input name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} required />
+          <div>
+            <p>Password:</p>
+            <input className="long" name="password" type="password" value={formData.password} onChange={handleChange} required />
+          </div>
+          <div>
+            <p>Confirm Password:</p>
+            <input className="long" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} required />
+          </div>
 
           <div className="condition">
-            <input name="generaleCondition" type="checkbox" required />
+            <input  name="generaleCondition" type="checkbox" required />
             <p>I accept the general conditions of use</p>
           </div>
 
-          <button type="submit">Register</button>
+          <button  className="send" type="submit">Register</button>
         </form>
       </div>
     </div>

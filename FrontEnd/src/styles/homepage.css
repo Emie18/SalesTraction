@@ -1,52 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poetsen+One&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.page {
+    min-height: 100%;
+    padding-bottom: 65px;
+    /* pour éviter que la nav fixe ne masque le contenu */
+    background: var(--main-gradient);
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+#root {
+    min-height: 100vh;
+    /* text en  blanc de base */
+    color: var(--text);
+     font-family: "Roboto", sans-serif;
+}
+
+
+:root {
+    --main-gradient: linear-gradient(0deg, #53576E 0%, #313650 100%);
+    --pink-gradient: linear-gradient(0deg, #F8648E 0%, #FE8689 100%);
+    --green-gradient: linear-gradient(0deg, #64F890 0%, #86FEF4 100%);
+    --dark_blue: #42465D;
+    --text: white;
+    --title_police: "Poetsen One", sans-serif;
 }
 
 .homepage {
+    font-family: "Roboto", sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: 100vw;
-    min-height: 100vh;
-    max-width: 100vw;
-    max-height: 100vh;
-    align-items: center; 
+    align-items: center;
     position: relative;
+    height: fit-content;
+    min-height: 100%;
+    background: var(--main-gradient);
+    text-align: center;
+
 }
 
-.homepage .title_login{
+.homepage .title_login {
     margin-top: 1em;
+
 }
-.homepage .title_login a{
-position: absolute;
-right: 1em;
-top:1em
+
+.homepage h1 ,.title_home h1 {
+    font-family: "Poetsen One", sans-serif;
+    /* font-family: "Bebas Neue", sans-serif; */
+    font-size: 8vw;
 }
+
+.homepage .catchphrase {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.5em;
+}
+
+.homepage .title_login a {
+    position: absolute;
+    right: 1em;
+    top: 1em;
+    color: var(--text);
+}
+
 .homepage .avis div {
     display: flex;
 }
 
-.homepage .iam , .homepage .chiffre {
+.homepage .iam .student {
+    padding: 1em;
+    background: var(--green-gradient);
+    height: 30vh;
     display: flex;
-    gap: 1em;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    transition: ease-in-out 0.2s;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 100;
 }
 
-.homepage .description{
+.homepage .iam .startup {
+    padding: 1em;
+    background: var(--pink-gradient);
+    height: 30vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+    transition: ease-in-out 0.2s;
+    font-family: "Poetsen One", sans-serif;
+}
+
+.homepage .iam .startup:hover,
+.homepage .iam .student:hover {
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.8);
+    transform: scale(1.01);
+}
+
+.homepage .iam {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    font-size: 6vh;
+    margin: 0.5em 0;
+
+}
+
+.homepage .iam,
+.homepage .chiffre {
+    display: flex;
+
+    gap: 0.5em;
+}
+
+.homepage .chiffre {
+    margin-top: 0.5em;
+    height: 10ch;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+}
+
+.homepage .description {
     width: 70vw;
+}
+
+.homepage .avis {
+    margin: 0.5em 0;
+    display: flex;
 }
 
 .homepage .avis div .star_sentence {
     display: flex;
     flex-direction: column;
     height: 100%;
+    text-align: left;
+    margin-left: 1em;
 }
 
-.homepage .avis .image_client {
-    width: 10em;
+.image_client {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
-.homepage .avis .image_client img {
-    max-width: 100%;
+.image_client img {
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Add these styles to your homepage.css file */
+/* Add these styles to your homepage.css file */
+
+/* Testimonials carousel container */
+.testimonials-container {
+    width: 50%;
+    overflow: hidden;
+    position: relative;
+    margin: 1.5em 0;
+    height: fit-content;
+}
+
+.testimonials-carousel {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 100%;
+}
+
+.testimonial-item {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 1em;
+
+    border-radius: 10px;
+
+}
+
+/* Indicator dots */
+.testimonial-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5em;
+    margin-bottom: 1.5em;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+    background-color: white;
+}
+
+/* Star rating display */
+.star {
+    display: flex;
+    margin-bottom: 0.5em;
+}
+
+/* Adjust the existing avis class */
+.homepage .avis {
+    margin: 0.5em 0;
+    width: 100%;
+}
+
+.homepage .star_sentence {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-align: left;
+    margin-left: 1em;
+    justify-content: center;
+}
+
+.homepage .image_client {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.homepage .image_client img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.homepage .avis .sentence {
+    font-style: italic;
 }

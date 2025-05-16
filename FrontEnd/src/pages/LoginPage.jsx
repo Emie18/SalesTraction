@@ -49,17 +49,17 @@ function LoginPage() {
   };
 
   return (
-    <div>
+    <div className='page center'>
       <div className="title_home">
         <a href='/'>Home</a>
         <h1>SalesTraction</h1>
       </div>
       <div className="login">
-        <h1>Login</h1>
+        <h2>Login</h2>
 
         <form onSubmit={handleSubmit}>
           <div>
-            <label>Email:</label>
+            <p>Email :</p>
             <input
               type="email"
               name="email"
@@ -70,7 +70,7 @@ function LoginPage() {
           </div>
 
           <div>
-            <label>Password:</label>
+            <p>Password :</p>
             <input
               type="password"
               name="password"

@@ -1,32 +1,87 @@
-.register,.login{
+.register,
+.login {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.register h2,.login h2{
+
+.register h2,
+.login h2 {
     margin: 1em;
 }
-.title_home{
+
+.title_home {
     display: flex;
     padding: 1em;
     align-items: center;
     justify-content: center;
-    width: 100vw;
     position: relative;
+    width: 100%;
 }
-.title_home a{
+
+.title_home a {
     position: absolute;
+    color: var(--text);
     left: 1em;
 }
+
 .register form {
-    height: 80vh;
     display: flex;
     flex-direction: column;
 }
 
-.register .condition{
+.register .condition {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.register {
+    width: 50vw;
+    box-shadow: 1px 1px 20px black;
+    background-color: var(--main-gradient);
+    margin-top: 3em;
+    padding: 1.5em;
+    padding-bottom: 3em;
+    border-radius: 20px;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+}
+
+.login {
+    width: 50vh;
+    margin-top: 3em;
+    padding: 1.5em;
+    padding-bottom: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-radius: 20px;
+    background: var(--main-gradient);
+    box-shadow: 1px 1px 20px black;
+}
+
+.login h2 {
+    font-size: 2.5em;
+}
+
+.register form div {
+    margin-bottom: 0.5em;
+    width: 100%;
+}
+.register form div .long{
+    width: 100%;
+}
+.login form div {
+    margin-bottom: 1.5em;
+}
+
+.login form button ,.register form .send{
+    width: 100%;
+    height: 30px;
+    border-radius: 20px;
+}
