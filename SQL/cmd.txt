@@ -1,0 +1,1 @@
+npx sequelize-auto -o "./models" -d sales_traction_db -h localhost -u MyUser -p 3306 -x 1234 -e mysql

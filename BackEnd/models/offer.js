@@ -1,40 +1,55 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('student', {
+  return sequelize.define('offer', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    surname: {
+    nom: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    disponibility: {
+    produit: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    name: {
+    pitch: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false
+    },
+    gamme: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    commision: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    client: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    nom_work_mode: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
       references: {
-        model: 'school',
-        key: 'name'
+        model: 'work_mode',
+        key: 'nom'
       }
     },
-    id_account: {
+    id_startup: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'account',
+        model: 'startup',
         key: 'id'
-      },
-      unique: "student_account0_FK"
+      }
     }
   }, {
     sequelize,
-    tableName: 'student',
+    tableName: 'offer',
     timestamps: false,
     indexes: [
       {
@@ -46,18 +61,17 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "student_account_AK",
-        unique: true,
+        name: "offer_work_mode_FK",
         using: "BTREE",
         fields: [
-          { name: "id_account" },
+          { name: "nom_work_mode" },
         ]
       },
       {
-        name: "student_school_FK",
+        name: "offer_startup0_FK",
         using: "BTREE",
         fields: [
-          { name: "name" },
+          { name: "id_startup" },
         ]
       },
     ]

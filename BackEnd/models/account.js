@@ -1,40 +1,51 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('student', {
+  return sequelize.define('account', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    surname: {
-      type: DataTypes.STRING(255),
-      allowNull: false
-    },
-    disponibility: {
+    type: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
     name: {
       type: DataTypes.STRING(255),
-      allowNull: true,
-      references: {
-        model: 'school',
-        key: 'name'
-      }
+      allowNull: false
     },
-    id_account: {
-      type: DataTypes.INTEGER,
+    email: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    image: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    password: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    linkdin: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    name_region: {
+      type: DataTypes.STRING(255),
       allowNull: false,
       references: {
-        model: 'account',
-        key: 'id'
-      },
-      unique: "student_account0_FK"
+        model: 'region',
+        key: 'name'
+      }
     }
   }, {
     sequelize,
-    tableName: 'student',
+    tableName: 'account',
     timestamps: false,
     indexes: [
       {
@@ -46,18 +57,10 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "student_account_AK",
-        unique: true,
+        name: "account_region_FK",
         using: "BTREE",
         fields: [
-          { name: "id_account" },
-        ]
-      },
-      {
-        name: "student_school_FK",
-        using: "BTREE",
-        fields: [
-          { name: "name" },
+          { name: "name_region" },
         ]
       },
     ]

@@ -1,32 +1,31 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('startup', {
+  return sequelize.define('account_match', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    siret: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    is_valid: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
-    },
-    id_account: {
+    id_startup: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'account',
+        model: 'startup',
         key: 'id'
-      },
-      unique: "startup_account_FK"
+      }
+    },
+    id_student: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'student',
+        key: 'id'
+      }
     }
   }, {
     sequelize,
-    tableName: 'startup',
+    tableName: 'account_match',
     timestamps: false,
     indexes: [
       {
@@ -38,11 +37,17 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "startup_account_AK",
-        unique: true,
+        name: "match_startup_FK",
         using: "BTREE",
         fields: [
-          { name: "id_account" },
+          { name: "id_startup" },
+        ]
+      },
+      {
+        name: "match_student0_FK",
+        using: "BTREE",
+        fields: [
+          { name: "id_student" },
         ]
       },
     ]

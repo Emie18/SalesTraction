@@ -1,19 +1,27 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('startup', {
+  return sequelize.define('message', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    siret: {
-      type: DataTypes.INTEGER,
+    date: {
+      type: DataTypes.DATE,
       allowNull: false
     },
-    is_valid: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
+    message: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    id_chat: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'chat',
+        key: 'id'
+      }
     },
     id_account: {
       type: DataTypes.INTEGER,
@@ -21,12 +29,11 @@ module.exports = function(sequelize, DataTypes) {
       references: {
         model: 'account',
         key: 'id'
-      },
-      unique: "startup_account_FK"
+      }
     }
   }, {
     sequelize,
-    tableName: 'startup',
+    tableName: 'message',
     timestamps: false,
     indexes: [
       {
@@ -38,8 +45,14 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "startup_account_AK",
-        unique: true,
+        name: "message_chat_FK",
+        using: "BTREE",
+        fields: [
+          { name: "id_chat" },
+        ]
+      },
+      {
+        name: "message_account0_FK",
         using: "BTREE",
         fields: [
           { name: "id_account" },

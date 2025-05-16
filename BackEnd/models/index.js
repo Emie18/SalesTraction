@@ -37,6 +37,10 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
+
+// 🔗 Associations go here
+const { User, Sector } = db;
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
