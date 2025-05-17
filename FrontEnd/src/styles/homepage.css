@@ -41,6 +41,12 @@ body,
     --dark_blue: #42465D;
     --text: white;
     --title_police: "Poetsen One", sans-serif;
+    --icon_white: brightness(0) invert(1);
+    --icon_pink:brightness(0) saturate(100%) invert(74%) sepia(45%) saturate(6159%) hue-rotate(306deg) brightness(98%) contrast(99%);
+    --gris: #AEAEAE;
+    --shadow:0 0 15px rgba(0, 0, 0, 0.5);
+    --double-gradient:  linear-gradient(220deg, #f5608f3a 1%, #00000000 100%),
+  linear-gradient(0deg, #53576E 0%, #313650 100%);
 }
 
 .homepage {

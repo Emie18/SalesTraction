@@ -1,0 +1,88 @@
+.header {
+    height: 60px;
+    width: 100%;
+    position: relative;
+}
+.header .img{
+    position: absolute;
+    right: 1em;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+  
+}
+.header img{
+    height: 100%;
+    object-fit: cover;
+}
+
+.filter {
+    margin-top: 1em;
+    width: 100%;
+
+}
+.filter .up{
+    display: flex;
+    height: fit-content;
+margin-left: 1em;
+    align-items: center;
+}
+.filter .up button{
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    margin-left: 0.5em;
+    cursor: pointer;
+}
+.filter .up button img{
+    transition: ease-in 0.5s;
+}
+.filter .up .search_logo{
+    transition: ease-in-out 0.2s;
+}
+.filter .up .search_logo:hover{
+    transform: scale(1.1);
+}
+
+.filter .up .searchbar{
+    width: 80vw;
+    border-radius: 15px;
+    font-size: 1.2em;
+    padding: 0.2em 0.8em;
+    color: var(--text);
+    background:var(--double-gradient);
+  border: none;
+  box-shadow: var(--shadow);
+
+}
+.searchbar::placeholder{
+    color: var(--gris);
+}
+.filter .down{
+    width: 50%;
+    margin-left: 1.5em;
+}
+.filter .down button{
+    cursor: pointer;
+}
+.filter .down select{
+    width: 100%;
+    border-radius: 10px;
+}
+.filter .clearfilter{
+    margin-top: 0.5em;
+    padding: 0.2em 0.5em;
+    border-radius: 10px;
+    font-size: 1.1em;
+    background: var(--pink-gradient);
+    color: var(--text);
+    border: none;
+    box-shadow: 1px 3px 10px #0000009c;
+    text-shadow: 1px 1px 10px #0000009c;
+}
+.filter .open{
+    filter:  var(--icon_pink);
+}

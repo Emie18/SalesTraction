@@ -1,26 +1,58 @@
-import Navigation from "../components/Navigation"
-
+import { useState , useEffect} from "react" 
+import Navigation from "../components/Navigation"  
+import Header from "../components/header"
+import "../styles/maketplace.css"
+import Filter from "../components/Filter"
+import { getRegions, getModes } from "../scripts/getData"
 function StudentUpMainPage() {
+  const [page, setPage] = useState(1)
+  const [regions, setRegions] = useState([]);
+  const [workMode, setWorkMode] = useState([])
 
-    return (
-      <>
-        <div className="page">
-         <main className="content">
-          <h1>StudentMainPage</h1>
-          <p>Contenu long ici pour tester le scroll...</p>
-          <p>Logoden biniou degemer mat an penn ar bed ha, da benveg mat wirionez butuniñ bern c’heloù naetaat roc’h, sellout all kurun formaj Kemperle da c’hoarvezout. Divalav An Alre kenañ park evidomp gwalc’hiñ argoat mousc’hoarzhin bemnoz, bodañ ganeoc’h ha sistr vamm hor huanadiñ war boutañ, redek kezeg Gwaien dir touellañ oferenn sellout. Harz c’hig davet  dreist kerf vrec’h ouzhit gwastell daou, hervez izel an kreñv mezheven prennañ seitek pesketa aet, arnev evidout e traonienn ur gwer mignon. Echu c’hoarzhin itron kilhog gwirionez banniel tan plijet dastum, mall sizailh Planvour Remengol asied evel  dija dirak  leziregezh, Pembo oabl an tennañ talvezout Nazer ar. Feiz diwezhañ brav gwazh gwec’h kerc’h hep  vugale an, deuet c’hroaz Plouezoc’h fourchetez yod enni paouez bodet pakad, goude gwaz bihañ c’hotoñs an galv divjod. Teñvalijenn gouez linenn kerc’hat ur keloù chokolad labous degouezhout, zoken baradoz tour bern miliner tresañ Naoned davañjer marv, yaouank sailh kalet froud Yec’hed gouest servijañ. Kaier leue doug gloan egisto Pask ali treut va burzhud ur degemer tasenn troad, ac’hanout dibab evel korf rodell boutañ baradoz pomper nann glin tamall. Evel gwad skrivañ lagad va ar stourm bank outi, den ennoc’h kriz gwirionez ya biken dimezell aes se, out gasoni benveg evit kouevr an pesketa. A falc’hat soudard tog traoñ darn fourchetez out piler, spont eno askell eizh mezher Penmarc’h buoc’h Roazhon dremm, endervezh c’horn prenañ sivi paot doñv gwad. Kaozeadenn genver ur Nazer Gerveur ki pont fri raok huñvre Sant-Tegoneg merenn gounit maneg, mab enni darev amanenn peroked galon c’hwi mignonez Pabu formaj rannañ.
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getRegions();
+      setRegions(data);
+      const mode = await getModes();
+      setWorkMode(mode);
+    };
+    fetchData();
 
-Teod bez ar logoden gwech bann ebet Pempont grib, Sant-Gwenole egile gwalenn ni Lanuon Melwenn siwazh askell war, kazeg prad oferenn c’hleñved meskañ dek vandenn. Gouel matezh mignonez douar enez da e Skrigneg c’hein, pegoulz naer pelec’h evit kasoni pemzek egisti amanenn keloù, Baen-Veur egile war aet penaos kalet boull. C’harr an kluchañ galleg Santez-Anna-Wened echu kreion a Arre, kanañ Tregastell ar vuoc’h forn mall butun paour sec’hañ, Mederieg amanenn mezheven marc’h ouzhpenn egisti maen. Fresk speredekañ Pont-Aven kalz biken disheol kerkoulz ker ur, an kreisteiz kloc’h brank da fest marv livet debriñ, dit Plegad-Gwerann kenañ ar harz Chrouer magañ. Mintin ha reas don all aour alies mañ egisto, Penmarc’h bruched wrierez warnoc’h buan gwenn kregiñ gouez stal, kenetre  troad elgez butun etrezek gwriat gwec’h. E kentel war per roc’h gentel fiziañs Roazhon stank, biz martolod nizez perak gwrierez nemet d’a tad gwaskañ, warnomp aet stal evidon ugnet kleñved koll. Kempenn galon frout leskiñ labourat sal neuze koant ivez, skuizh degemer klouar ampart war vugale kloued Kermouster c’hleñved, met ar ouzhimp maez houad drezañ betek. Pont’n-Abad Roazhon egistoc’h hennont gwener teñvalijenn neñv diaoul arvar, da c’hoazh spi menoz ha disadorn gwalc’hiñ bihañ nerzh, levr me honnont goulenn tavarn penn c’hwec’hvet. Dorn ha pesketaer peroked egistomp terriñ warnañ, amzer c’higer evit c’harr enep Santez-Anna-Wened Arre, ar froud bihañ gloan Rosko dre c’hezeg plouz paeañ hanter homañ. Bennak arabat patatez tremen mouezh harzhal lezenn gwerenn e, evidout lezel ouzhit chaseour gantañ meur sentiñ wouel difenn, Ar Vouster mañ harp koustañ bell pell ganti.
+  }, []);
 
-Brudet leal c’henderv ebeul nann vihan c’hoarzhin bro bennak, gwriat a mont met c’heuz glav bern bale c’hodell, holl merc’her atav kenavo sell dañvad dreuz. Pabu sizhun kerkent liv plouz Plelann-Veur kerf karrez Roazhon Park houad aotrou mignon An Alre naon, kuzhat gwirionez moan eme kousket voger atav hennezh all gomz evidon. Neud kreion Yec’hed ivez Landreger ar ti stumm yen, sankañ vuzell Pempont Egineg seblantout teñvalijenn niz vuiañ boultrenn, vag oferenn c’huzh eus kastell kann yar. Atlantel klask keniterv gwinizh skorn karantez c’hazh sigaretenn loer, ken dihuniñ yaouankiz banniel ur lemm debriñ askell egistout, fri troc’hañ Bro oabl ennout c’hwezhañ tavarnour. Harp gwer a dezhañ kibell meur abaoe an arnev, c’hodell lezenn voutailh an c’heuz doug eur torgenn gouiziek, doñv Kerbabu kuz’h kazeg diwar eured tri. Ur bloaz tra oas Gwaien e da gegin plijadur, porpant kemmañ seitek panevet  speredekañ yen ziskouez mesk santout, ha leal teurel klask beajour yaouank ket. Maouez ar stêr brumenn deskiñ hepken drezi kriz torchañ, korf kemener gwechall kar mar forzh loen hervez  Lanuon, war ger ali mintin klouar glebiañ kilpenn. Kribañ ac’hanomp alc’houez kentañ heñvel genou huanadiñ kriz drezomp plijet Plouzane eost Briad honnezh, c’hodell c’houevr koumanant stad koulskoude fazi skol zo Plegad-Gwerann bihan betek. Pesk kotoñs formaj huanadiñ Pleiber-Krist trugarez saout grib Plouezoc’h, betek bemdez lezenn kaeraat c’hwi pont tenn hadañ gegin, gaou gentel eviti Egineg Europa pluenn dec’h. Outi bann mat Pask skol drezomp arc’hant penaos Kemper, ostaleri follenn seul ar ul ur an voulouz gwalc’hiñ, chaseal goleiñ amanenn arvor forzh troad brudet.
-
-</p>
-          {/* du contenu en plus */}
-        </main>
-          <Navigation />
-         </div>
-      </>
-    )
+  // Fonction pour afficher le contenu en fonction de la page active
+  const renderContent = () => {
+    switch(page) {
+      case 1:
+        return <div>
+          <Header />
+        </div>
+      case 2:
+        return <div>Page 2: Messages</div>
+      case 3:
+        return <div>Page 3: Match</div>
+      case 4:
+        return <div>
+          <Header />
+          <Filter workMode={workMode} regions={regions}/>
+        </div>
+      case 5:
+        return <div>Page 5: Profil</div>
+      default:
+        return <div>Page 1: Home</div>
+    }
   }
+    
+  return (
+    <>
+      <div className="page">
+        <main className="content">
+          {renderContent()}
+        </main>
+        <Navigation page={setPage}/>
+      </div>
+    </>
+  )
+}
 
- export default StudentUpMainPage
+export default StudentUpMainPage
