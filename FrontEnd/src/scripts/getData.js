@@ -21,7 +21,7 @@ export const getModes = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error in getRegions :', error);
+    console.error('Error in getMode :', error);
     return [];
   }
 };
@@ -34,7 +34,7 @@ export const getSchools = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error in getRegions :', error);
+    console.error('Error in getSchools :', error);
     return [];
   }
 };
@@ -47,7 +47,7 @@ export const getLanguages = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error in getRegions :', error);
+    console.error('Error in getLanguages :', error);
     return [];
   }
 };
@@ -60,7 +60,7 @@ export const getStates = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error in getRegions :', error);
+    console.error('Error in getStates :', error);
     return [];
   }
 };

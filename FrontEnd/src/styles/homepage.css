@@ -86,6 +86,12 @@ body,
     top: 1em;
     color: var(--text);
 }
+.homepage .title_login img{
+    width: 50px;
+    position: absolute;
+    left: 1em;
+    top: 1em;
+}
 
 .homepage .avis div {
     display: flex;

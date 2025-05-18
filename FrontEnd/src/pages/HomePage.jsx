@@ -84,6 +84,7 @@ export default function HomePage() {
       <div className="title_login">
         <h1>SalesTraction</h1>
         <a href='/login'>Login</a>
+        <img src='/logoSsans_bg.png'/>
       </div>
       <div className="catchphrase">
         <p>Built for founders who move fast and students who sell faster.</p>
