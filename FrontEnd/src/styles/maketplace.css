@@ -12,7 +12,6 @@
     overflow: hidden;
     display: flex;
     justify-content: center;
-  
 }
 .header img{
     height: 100%;
@@ -22,6 +21,7 @@
 .filter {
     margin-top: 1em;
     width: 100%;
+    margin-bottom: 1em;
 
 }
 .filter .up{
@@ -64,6 +64,7 @@ margin-left: 1em;
 .filter .down{
     width: 50%;
     margin-left: 1.5em;
+    margin-top: 0.5em;
 }
 .filter .down button{
     cursor: pointer;
@@ -85,4 +86,19 @@ margin-left: 1em;
 }
 .filter .open{
     filter:  var(--icon_pink);
+}
+.container_offer{
+    width: 100%;
+    height: fit-content;
+      display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+}
+.container_offer .offer{
+    width: 300px;
+    height: 200px;
+    border-radius: 10px;
+    background: var(--double-gradient);
+    box-shadow: var(--shadow);
 }

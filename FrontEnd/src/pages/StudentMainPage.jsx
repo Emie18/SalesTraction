@@ -1,9 +1,11 @@
-import { useState , useEffect} from "react" 
-import Navigation from "../components/Navigation"  
+import { useState, useEffect } from "react"
+import Navigation from "../components/Navigation"
 import Header from "../components/header"
 import "../styles/maketplace.css"
 import Filter from "../components/Filter"
+import { useNavigate } from "react-router-dom"
 import { getRegions, getModes } from "../scripts/getData"
+import ContainerOffer from "../components/ContainerOffer"
 function StudentUpMainPage() {
   const [page, setPage] = useState(1)
   const [regions, setRegions] = useState([]);
@@ -19,10 +21,11 @@ function StudentUpMainPage() {
     fetchData();
 
   }, []);
+  const navigate = useNavigate();
 
   // Fonction pour afficher le contenu en fonction de la page active
   const renderContent = () => {
-    switch(page) {
+    switch (page) {
       case 1:
         return <div>
           <Header />
@@ -34,22 +37,26 @@ function StudentUpMainPage() {
       case 4:
         return <div>
           <Header />
-          <Filter workMode={workMode} regions={regions}/>
+          <Filter workMode={workMode} regions={regions} />
+          <ContainerOffer />
         </div>
       case 5:
-        return <div>Page 5: Profil</div>
+        return <div>Page 5: Profil
+          <button onClick={() => navigate('/')}>logout</button>
+
+        </div>
       default:
         return <div>Page 1: Home</div>
     }
   }
-    
+
   return (
     <>
       <div className="page">
         <main className="content">
           {renderContent()}
         </main>
-        <Navigation page={setPage}/>
+        <Navigation page={setPage} currentPage={page} />
       </div>
     </>
   )

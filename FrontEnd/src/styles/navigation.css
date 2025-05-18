@@ -18,6 +18,12 @@
     min-height: 45px ;
     filter: var(--icon_white);
 }
+.nav .open{
+    color:var(--pink);
+}
+.nav .icon img.open{
+    filter:var(--icon_pink);
+}
 
 .nav .icon {
     color: var(--text);

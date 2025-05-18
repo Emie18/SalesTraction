@@ -1,6 +1,6 @@
 import "../styles/navigation.css"
 
-function Navigation({ page }) {
+function Navigation({ page, currentPage }) {
   // Fonction pour changer la page lorsqu'un élément est cliqué
   const handlePageChange = (pageNumber) => {
     page(pageNumber);
@@ -10,23 +10,23 @@ function Navigation({ page }) {
     <>
       <div className="nav">
         <div className="icon home" onClick={() => handlePageChange(1)}>
-          <img src="/home.svg" alt="home_logo"></img>
-          <p>Home</p>
+          <img className={currentPage === 1 ? "open" : ""} src="/home.svg" alt="home_logo"></img>
+          <p className={currentPage === 1 ? "open" : ""} >Home</p>
         </div>
         <div className="icon messages" onClick={() => handlePageChange(2)}>
-          <img src="/message.svg" alt="message_logo"/>
-          <p>Messages</p>
+          <img  className={currentPage === 2 ? "open" : ""} src="/message.svg" alt="message_logo"/>
+          <p className={currentPage === 2 ? "open" : ""}>Messages</p>
         </div>
         <div className="match" onClick={() => handlePageChange(3)}>
           <img src="/match_button_bar.svg" alt="match logo bar"/>
         </div>
         <div className="icon market" onClick={() => handlePageChange(4)}>
-          <img src="/maketplace.svg" alt="marketplace logo"/>
-          <p>Marketplace</p>
+          <img className={currentPage === 4 ? "open" : ""} src="/maketplace.svg" alt="marketplace logo"/>
+          <p className={currentPage === 4 ? "open" : ""} >Marketplace</p>
         </div>
         <div className="icon profil" onClick={() => handlePageChange(5)}>
-          <img src="/person.svg" alt="profil logo"/>
-          <p>Profil</p>
+          <img className={currentPage === 5 ? "open" : ""} src="/person.svg" alt="profil logo"/>
+          <p className={currentPage === 5 ? "open" : ""} >Profil</p>
         </div>
       </div>
     </>
