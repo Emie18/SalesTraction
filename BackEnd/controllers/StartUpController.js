@@ -1,5 +1,5 @@
 const { Model } = require('../models/Model.js');
-const { Account, StartUp } = Model
+const { Account, StartUp, AccountSector } = Model
 
 exports.create = async (req, res) => {
     try {
@@ -26,14 +26,36 @@ exports.create = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try{
-        const startup = await StartUp.findAll({
+        var startup_list = []
+        const startups = await StartUp.findAll({
             include: [{
                 as: "id_account_account",
                 model: Account
             }]
         });
-        res.status(200).json(startup);
+
+        for(const startup in startups){
+            startup_list.push(await get_startup_json(startup))
+        }
+        res.status(200).json(startup_list);
     }catch(error){
         res.status(500).json({error : error.message});
     }
 };
+
+async function get_startup_json(startup){
+    const account = startup.id_account_account
+    const sector = await AccountSector.findAll({ where : { id : startup.id_account }})
+
+    return {
+        account_id: startup.id_account,
+        name: account.name,
+        email: account.email,
+        siret: startup.siret,
+        description: account.description,
+        linkedin: account.linkdin,
+        region: account.name_region,
+        sector: sector.map(sector => sector.name),
+        valid: startup.is_valid
+    }
+}
