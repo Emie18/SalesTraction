@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    id_account: {
+    id_account_1: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    id_account_participant1: {
+    id_account_2: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -40,14 +40,14 @@ module.exports = function(sequelize, DataTypes) {
         name: "chat_account_FK",
         using: "BTREE",
         fields: [
-          { name: "id_account" },
+          { name: "id_account_1" },
         ]
       },
       {
         name: "chat_account0_FK",
         using: "BTREE",
         fields: [
-          { name: "id_account_participant1" },
+          { name: "id_account_2" },
         ]
       },
     ]

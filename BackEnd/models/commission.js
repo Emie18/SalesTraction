@@ -1,14 +1,14 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('work_mode', {
-    work_mode: {
+  return sequelize.define('commission', {
+    commission: {
       type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: true
     }
   }, {
     sequelize,
-    tableName: 'work_mode',
+    tableName: 'commission',
     timestamps: false,
     indexes: [
       {
@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "work_mode" },
+          { name: "commission" },
         ]
       },
     ]

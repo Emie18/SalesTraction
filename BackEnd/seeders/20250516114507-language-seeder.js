@@ -44,13 +44,13 @@ module.exports = {
     ];
 
     await queryInterface.bulkInsert(
-      'Language',
-      languages.map(name => ({ name })),
+      'language',
+      languages.map(lang => ({ lang })),
       {}
     );
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Language', null, {});
+    await queryInterface.bulkDelete('language', null, {});
   }
 };

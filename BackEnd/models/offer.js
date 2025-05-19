@@ -7,11 +7,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    nom: {
+    name: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    produit: {
+    product: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
@@ -19,11 +19,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    gamme: {
+    range_offer: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    commision: {
+    commission: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
@@ -31,12 +31,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    nom_work_mode: {
+    work_mode: {
       type: DataTypes.STRING(255),
       allowNull: false,
       references: {
         model: 'work_mode',
-        key: 'nom'
+        key: 'work_mode'
       }
     },
     id_startup: {
@@ -45,6 +45,14 @@ module.exports = function(sequelize, DataTypes) {
       references: {
         model: 'startup',
         key: 'id'
+      }
+    },
+    commission_offer_commission: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      references: {
+        model: 'commission',
+        key: 'commission'
       }
     }
   }, {
@@ -64,7 +72,7 @@ module.exports = function(sequelize, DataTypes) {
         name: "offer_work_mode_FK",
         using: "BTREE",
         fields: [
-          { name: "nom_work_mode" },
+          { name: "work_mode" },
         ]
       },
       {
@@ -72,6 +80,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id_startup" },
+        ]
+      },
+      {
+        name: "offer_commission1_FK",
+        using: "BTREE",
+        fields: [
+          { name: "commission_offer_commission" },
         ]
       },
     ]

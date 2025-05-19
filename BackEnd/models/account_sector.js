@@ -10,13 +10,13 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    name: {
+    sector: {
       type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: true,
       references: {
         model: 'sector',
-        key: 'name'
+        key: 'sector'
       }
     }
   }, {
@@ -30,14 +30,14 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
-          { name: "name" },
+          { name: "sector" },
         ]
       },
       {
         name: "account_sector_sector0_FK",
         using: "BTREE",
         fields: [
-          { name: "name" },
+          { name: "sector" },
         ]
       },
     ]

@@ -31,16 +31,16 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    linkdin: {
+    linkedin: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    name_region: {
+    region: {
       type: DataTypes.STRING(255),
       allowNull: false,
       references: {
         model: 'region',
-        key: 'name'
+        key: 'region'
       }
     }
   }, {
@@ -60,7 +60,7 @@ module.exports = function(sequelize, DataTypes) {
         name: "account_region_FK",
         using: "BTREE",
         fields: [
-          { name: "name_region" },
+          { name: "region" },
         ]
       },
     ]

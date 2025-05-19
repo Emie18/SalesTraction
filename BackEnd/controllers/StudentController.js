@@ -9,27 +9,27 @@ exports.create = async (req, res) => {
             email: req.body.email,
             password: req.body.pass,
             description : req.body.description ?? "",
-            linkdin: "linkedin",
-            name_region : req.body.region ?? "Bretagne"
+            linkedin: req.body.linkedin,
+            region : req.body.region ?? "Bretagne"
         });
         const student = await Student.create({
             id_account: account.id,
             surname: req.body.surname,
-            name: req.body.school ?? null,
+            school: req.body.school ?? null,
             disponibility: req.body.disponibility
         })
         
         for(const lang of req.body.languages){
             await LanguageStudent.create({
                 id: student.id,
-                name: lang,
+                lang: lang,
                 natif: false,
             })
         }
         for(const sector of req.body.sector){
             await AccountSector.create({
                 id: account.id,
-                name: sector,
+                sector: sector,
             })
         }
 
@@ -92,10 +92,10 @@ async function get_student_json(student){
         email: account.email,
         disponibility: student.disponibility,
         description: account.description,
-        linkedin: account.linkdin,
-        school: student.name,
-        region: account.name_region,
-        languages: languages.map(language => language.name),
-        sector: sector.map(sector => sector.name)
+        linkedin: account.linkedin,
+        school: student.school,
+        region: account.region,
+        languages: languages.map(language => language.lang),
+        sector: sector.map(sector => sector.sector)
     }
 }
