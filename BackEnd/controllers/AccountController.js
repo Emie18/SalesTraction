@@ -14,12 +14,12 @@ exports.login = async (req, res) => {
         
         const startup = await StartUp.findOne({where: { id_account: account.id }})
         if(startup){
-            return res.status(201).json({ type : "startup", account : account, startup : startup });
+            return res.status(201).json({ type : "startup", id : account.id });
         }
         
         const student = await Student.findOne({where: { id_account: account.id }})
         if(student){
-            return res.status(201).json({type : "student", account : account, startup : student });
+            return res.status(201).json({type : "student", id : account.id });
         }
 
         res.status(401).json({ error: 'Invalid credentials' });
