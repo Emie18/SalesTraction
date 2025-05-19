@@ -1,5 +1,3 @@
-const account_sector = require('../models/account_sector.js');
-const language_student = require('../models/language_student.js');
 const { Model } = require('../models/Model.js');
 const { Student, Account, LanguageStudent, AccountSector } = Model
 
@@ -44,13 +42,36 @@ exports.create = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try{
-        const student = await Student.findAll({
+        var student_list = [] 
+        const students = await Student.findAll({
             include: [{
                 as: "id_account_account",
                 model: Account
             }]
         });
-        res.status(200).json(student);
+
+        for(const student of students){
+            const account = student.id_account_account
+            const languages = await LanguageStudent.findAll({ where : { id : student.id }})
+            const sector = await AccountSector.findAll({ where : { id : account.id }})
+
+            student_list.push({
+                student_id: student.id,
+                account_id: student.id_account,
+                name: account.name,
+                surname: student.surname,
+                email: account.email,
+                disponibility: student.disponibility,
+                description: account.description,
+                linkedin: account.linkdin,
+                school: student.name,
+                region: account.name_region,
+                languages: languages.map(language => language.name),
+                sector: sector.map(sector => sector.name)
+            })
+        }
+
+        res.status(200).json(student_list);
     }catch(error){
         res.status(500).json({error : error.message});
     }
