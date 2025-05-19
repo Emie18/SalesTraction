@@ -13,6 +13,7 @@ GET /account/delete?id=0 => delete the account with id 0
 
 POST /startup/create => create a new start up account
 GET /startup/all => get all startup
+GET /startup/get?id=0 => get the startup with the given id, return an error if the account is not a startup
 GET /startup/offer?id=0,state="" => get all offer from the give, startup #TODO
 
 POST /students/create => create a new students up account

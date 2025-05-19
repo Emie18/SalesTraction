@@ -34,7 +34,7 @@ exports.getAll = async (req, res) => {
             }]
         });
 
-        for(const startup in startups){
+        for(const startup of startups){
             startup_list.push(await get_startup_json(startup))
         }
         res.status(200).json(startup_list);
@@ -43,7 +43,29 @@ exports.getAll = async (req, res) => {
     }
 };
 
+exports.get = async (req, res) => {
+    try{
+        const startup = await StartUp.findOne({
+            include: [{
+                as: "id_account_account",
+                model: Account
+            }],
+            where: { id_account: req.query.id }
+        });
+
+        if(!startup){
+            res.status(500).json({error: "Account is not a startup"});
+        }
+
+        res.status(200).json(await get_startup_json(startup));
+    }catch(error){
+        res.status(500).json({error : error.message});
+    }
+}
+
 async function get_startup_json(startup){
+    if(!startup.id_account) return {}
+    
     const account = startup.id_account_account
     const sector = await AccountSector.findAll({ where : { id : startup.id_account }})
 
