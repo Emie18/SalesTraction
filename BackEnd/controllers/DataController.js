@@ -1,5 +1,5 @@
 const { Model} = require('../models/Model.js');
-const { Region, Language, WorkMode, School, OfferState } = Model
+const { Region, Language, WorkMode, School, OfferState, Sector } = Model
 
 exports.region = async (req, res) => {
     try{
@@ -51,6 +51,17 @@ exports.offer_state = async (req, res) => {
 
         const simpleStatesList = states.map(state => state.name);
         res.status(200).json(simpleStatesList);
+    }catch(error){
+        res.status(500).json({error : error.message});
+    }
+};
+
+exports.sector = async (req, res) => {
+    try{
+        const sector = await Sector.findAll();
+
+        const simpleSectorList = sector.map(sector => sector.name);
+        res.status(200).json(simpleSectorList);
     }catch(error){
         res.status(500).json({error : error.message});
     }

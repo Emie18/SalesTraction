@@ -7,5 +7,6 @@ router.get('/languages', DataController.lauguage);
 router.get('/modes', DataController.work_mode);
 router.get('/schools', DataController.school);
 router.get('/states', DataController.offer_state);
+router.get('/sectors', DataController.sector);
 
 module.exports = router;
