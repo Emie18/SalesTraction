@@ -9,8 +9,8 @@ exports.create = async (req, res) => {
             email: req.body.email,
             password: req.body.pass,
             description : req.body.description ?? "",
-            name_region : req.body.region ?? "Bretagne",
-            linkdin : req.body.linkdin
+            region : req.body.region ?? "Bretagne",
+            linkedin : req.body.linkedin
         });
         const startup = await StartUp.create({
             is_valid: false,
@@ -75,9 +75,9 @@ async function get_startup_json(startup) {
         email: account.email,
         siret: startup.siret,
         description: account.description,
-        linkedin: account.linkdin,
-        region: account.name_region,
-        sector: sector.map(sector => sector.name),
+        linkedin: account.linkedin,
+        region: account.region,
+        sector: sector.map(sector => sector.sector),
         valid: startup.is_valid
     }
 }

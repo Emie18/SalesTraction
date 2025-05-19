@@ -26,7 +26,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'region',
-      regions.map(name => ({ name })),
+      regions.map(region => ({ region })),
       {}
     );
   },

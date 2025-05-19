@@ -9,7 +9,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'offer_state',
-      states.map(name => ({ name })),
+      states.map(state => ({ state })),
       {}
     );
   },

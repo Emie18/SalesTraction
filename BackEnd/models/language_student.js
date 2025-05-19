@@ -10,13 +10,13 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    name: {
+    lang: {
       type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'Language',
-        key: 'name'
+        model: 'language',
+        key: 'lang'
       }
     },
     natif: {
@@ -34,14 +34,14 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
-          { name: "name" },
+          { name: "lang" },
         ]
       },
       {
-        name: "language_student_Language0_FK",
+        name: "language_student_language0_FK",
         using: "BTREE",
         fields: [
-          { name: "name" },
+          { name: "lang" },
         ]
       },
     ]

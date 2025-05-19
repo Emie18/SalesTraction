@@ -34,7 +34,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'sector',
-      sectors.map(name => ({ name })),
+      sectors.map(sector => ({ sector })),
       {}
     );
   },

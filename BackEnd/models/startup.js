@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     siret: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     is_valid: {

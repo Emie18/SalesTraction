@@ -1,14 +1,14 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Language', {
-    name: {
+  return sequelize.define('language', {
+    lang: {
       type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: true
     }
   }, {
     sequelize,
-    tableName: 'Language',
+    tableName: 'language',
     timestamps: false,
     indexes: [
       {
@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "name" },
+          { name: "lang" },
         ]
       },
     ]

@@ -19,13 +19,13 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    name: {
+    state: {
       type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: true,
       references: {
         model: 'offer_state',
-        key: 'name'
+        key: 'state'
       }
     },
     motivation: {
@@ -44,7 +44,7 @@ module.exports = function(sequelize, DataTypes) {
         fields: [
           { name: "id" },
           { name: "id_offer" },
-          { name: "name" },
+          { name: "state" },
         ]
       },
       {
@@ -58,7 +58,7 @@ module.exports = function(sequelize, DataTypes) {
         name: "offer_student_offer_state1_FK",
         using: "BTREE",
         fields: [
-          { name: "name" },
+          { name: "state" },
         ]
       },
     ]

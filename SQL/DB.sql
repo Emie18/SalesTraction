@@ -8,18 +8,18 @@
 #------------------------------------------------------------
 
 CREATE TABLE sector(
-        name Varchar (255) NOT NULL
-	,CONSTRAINT sector_PK PRIMARY KEY (name)
+        sector Varchar (255) NOT NULL
+	,CONSTRAINT sector_PK PRIMARY KEY (sector)
 )ENGINE=InnoDB;
 
 
 #------------------------------------------------------------
-# Table: Language
+# Table: language
 #------------------------------------------------------------
 
-CREATE TABLE Language(
-        name Varchar (255) NOT NULL
-	,CONSTRAINT Language_PK PRIMARY KEY (name)
+CREATE TABLE language(
+        lang Varchar (255) NOT NULL
+	,CONSTRAINT language_PK PRIMARY KEY (lang)
 )ENGINE=InnoDB;
 
 
@@ -28,9 +28,9 @@ CREATE TABLE Language(
 #------------------------------------------------------------
 
 CREATE TABLE school(
-        name    Varchar (255) NOT NULL ,
+        school  Varchar (255) NOT NULL ,
         adresse Varchar (255) NOT NULL
-	,CONSTRAINT school_PK PRIMARY KEY (name)
+	,CONSTRAINT school_PK PRIMARY KEY (school)
 )ENGINE=InnoDB;
 
 
@@ -39,8 +39,8 @@ CREATE TABLE school(
 #------------------------------------------------------------
 
 CREATE TABLE work_mode(
-        nom Varchar (255) NOT NULL
-	,CONSTRAINT work_mode_PK PRIMARY KEY (nom)
+        work_mode Varchar (255) NOT NULL
+	,CONSTRAINT work_mode_PK PRIMARY KEY (work_mode)
 )ENGINE=InnoDB;
 
 
@@ -49,8 +49,8 @@ CREATE TABLE work_mode(
 #------------------------------------------------------------
 
 CREATE TABLE region(
-        name Varchar (255) NOT NULL
-	,CONSTRAINT region_PK PRIMARY KEY (name)
+        region Varchar (255) NOT NULL
+	,CONSTRAINT region_PK PRIMARY KEY (region)
 )ENGINE=InnoDB;
 
 
@@ -59,8 +59,8 @@ CREATE TABLE region(
 #------------------------------------------------------------
 
 CREATE TABLE offer_state(
-        name Varchar (255) NOT NULL
-	,CONSTRAINT offer_state_PK PRIMARY KEY (name)
+        state Varchar (255) NOT NULL
+	,CONSTRAINT offer_state_PK PRIMARY KEY (state)
 )ENGINE=InnoDB;
 
 
@@ -88,11 +88,11 @@ CREATE TABLE account(
         image       Varchar (255) ,
         password    Varchar (255) NOT NULL ,
         description Text NOT NULL ,
-        linkdin     Varchar (255) ,
-        name_region Varchar (255) NOT NULL
+        linkedin    Varchar (255) ,
+        region      Varchar (255) NOT NULL
 	,CONSTRAINT account_PK PRIMARY KEY (id)
 
-	,CONSTRAINT account_region_FK FOREIGN KEY (name_region) REFERENCES region(name)
+	,CONSTRAINT account_region_FK FOREIGN KEY (region) REFERENCES region(region)
 )ENGINE=InnoDB;
 
 
@@ -102,7 +102,7 @@ CREATE TABLE account(
 
 CREATE TABLE startup(
         id         Int  Auto_increment  NOT NULL ,
-        siret      Int NOT NULL ,
+        siret      Varchar (255) NOT NULL ,
         is_valid   Bool ,
         id_account Int NOT NULL
 	,CONSTRAINT startup_PK PRIMARY KEY (id)
@@ -120,49 +120,13 @@ CREATE TABLE student(
         id            Int  Auto_increment  NOT NULL ,
         surname       Varchar (255) NOT NULL ,
         disponibility Varchar (255) NOT NULL ,
-        name          Varchar (255) ,
+        school        Varchar (255) ,
         id_account    Int NOT NULL
 	,CONSTRAINT student_PK PRIMARY KEY (id)
 
-	,CONSTRAINT student_school_FK FOREIGN KEY (name) REFERENCES school(name)
+	,CONSTRAINT student_school_FK FOREIGN KEY (school) REFERENCES school(school)
 	,CONSTRAINT student_account0_FK FOREIGN KEY (id_account) REFERENCES account(id)
 	,CONSTRAINT student_account_AK UNIQUE (id_account)
-)ENGINE=InnoDB;
-
-
-#------------------------------------------------------------
-# Table: offer
-#------------------------------------------------------------
-
-CREATE TABLE offer(
-        id            Int  Auto_increment  NOT NULL ,
-        nom           Varchar (255) NOT NULL ,
-        produit       Varchar (255) NOT NULL ,
-        pitch         Varchar (255) NOT NULL ,
-        gamme         Varchar (255) NOT NULL ,
-        commision     Varchar (255) NOT NULL ,
-        client        Varchar (255) NOT NULL ,
-        nom_work_mode Varchar (255) NOT NULL ,
-        id_startup    Int NOT NULL
-	,CONSTRAINT offer_PK PRIMARY KEY (id)
-
-	,CONSTRAINT offer_work_mode_FK FOREIGN KEY (nom_work_mode) REFERENCES work_mode(nom)
-	,CONSTRAINT offer_startup0_FK FOREIGN KEY (id_startup) REFERENCES startup(id)
-)ENGINE=InnoDB;
-
-
-#------------------------------------------------------------
-# Table: offer_doc
-#------------------------------------------------------------
-
-CREATE TABLE offer_doc(
-        id       Int  Auto_increment  NOT NULL ,
-        path     Varchar (255) NOT NULL ,
-        name     Varchar (255) NOT NULL ,
-        id_offer Int NOT NULL
-	,CONSTRAINT offer_doc_PK PRIMARY KEY (id)
-
-	,CONSTRAINT offer_doc_offer_FK FOREIGN KEY (id_offer) REFERENCES offer(id)
 )ENGINE=InnoDB;
 
 
@@ -172,12 +136,12 @@ CREATE TABLE offer_doc(
 
 CREATE TABLE chat(
         id                      Int  Auto_increment  NOT NULL ,
-        id_account              Int NOT NULL ,
-        id_account_participant1 Int NOT NULL
+        id_account_1              Int NOT NULL ,
+        id_account_2 Int NOT NULL
 	,CONSTRAINT chat_PK PRIMARY KEY (id)
 
-	,CONSTRAINT chat_account_FK FOREIGN KEY (id_account) REFERENCES account(id)
-	,CONSTRAINT chat_account0_FK FOREIGN KEY (id_account_participant1) REFERENCES account(id)
+	,CONSTRAINT chat_account_FK FOREIGN KEY (id_account_1) REFERENCES account(id)
+	,CONSTRAINT chat_account0_FK FOREIGN KEY (id_account_2) REFERENCES account(id)
 )ENGINE=InnoDB;
 
 
@@ -206,10 +170,58 @@ CREATE TABLE account_match(
         id         Int  Auto_increment  NOT NULL ,
         id_startup Int NOT NULL ,
         id_student Int NOT NULL
-	,CONSTRAINT match_PK PRIMARY KEY (id)
+	,CONSTRAINT account_match_PK PRIMARY KEY (id)
 
-	,CONSTRAINT match_startup_FK FOREIGN KEY (id_startup) REFERENCES startup(id)
-	,CONSTRAINT match_student0_FK FOREIGN KEY (id_student) REFERENCES student(id)
+	,CONSTRAINT account_match_startup_FK FOREIGN KEY (id_startup) REFERENCES startup(id)
+	,CONSTRAINT account_match_student0_FK FOREIGN KEY (id_student) REFERENCES student(id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: commission
+#------------------------------------------------------------
+
+CREATE TABLE commission(
+        commission Varchar (255) NOT NULL
+	,CONSTRAINT commission_PK PRIMARY KEY (commission)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: offer
+#------------------------------------------------------------
+
+CREATE TABLE offer(
+        id                          Int  Auto_increment  NOT NULL ,
+        name                        Varchar (255) NOT NULL ,
+        product                     Varchar (255) NOT NULL ,
+        pitch                       Varchar (255) NOT NULL ,
+        range_offer                 Varchar (255) NOT NULL ,
+        commission                  Varchar (255) NOT NULL ,
+        client                      Varchar (255) NOT NULL ,
+        work_mode                   Varchar (255) NOT NULL ,
+        id_startup                  Int NOT NULL ,
+        commission_offer_commission Varchar (255) NOT NULL
+	,CONSTRAINT offer_PK PRIMARY KEY (id)
+
+	,CONSTRAINT offer_work_mode_FK FOREIGN KEY (work_mode) REFERENCES work_mode(work_mode)
+	,CONSTRAINT offer_startup0_FK FOREIGN KEY (id_startup) REFERENCES startup(id)
+	,CONSTRAINT offer_commission1_FK FOREIGN KEY (commission_offer_commission) REFERENCES commission(commission)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: offer_doc
+#------------------------------------------------------------
+
+CREATE TABLE offer_doc(
+        id       Int  Auto_increment  NOT NULL ,
+        path     Varchar (255) NOT NULL ,
+        name     Varchar (255) NOT NULL ,
+        id_offer Int NOT NULL
+	,CONSTRAINT offer_doc_PK PRIMARY KEY (id)
+
+	,CONSTRAINT offer_doc_offer_FK FOREIGN KEY (id_offer) REFERENCES offer(id)
 )ENGINE=InnoDB;
 
 
@@ -219,12 +231,12 @@ CREATE TABLE account_match(
 
 CREATE TABLE language_student(
         id    Int NOT NULL ,
-        name  Varchar (255) NOT NULL ,
+        lang  Varchar (255) NOT NULL ,
         natif Bool NOT NULL
-	,CONSTRAINT language_student_PK PRIMARY KEY (id,name)
+	,CONSTRAINT language_student_PK PRIMARY KEY (id,lang)
 
 	,CONSTRAINT language_student_student_FK FOREIGN KEY (id) REFERENCES student(id)
-	,CONSTRAINT language_student_Language0_FK FOREIGN KEY (name) REFERENCES Language(name)
+	,CONSTRAINT language_student_language0_FK FOREIGN KEY (lang) REFERENCES language(lang)
 )ENGINE=InnoDB;
 
 
@@ -235,13 +247,13 @@ CREATE TABLE language_student(
 CREATE TABLE offer_student(
         id         Int NOT NULL ,
         id_offer   Int NOT NULL ,
-        name       Varchar (255) NOT NULL ,
+        state      Varchar (255) NOT NULL ,
         motivation Varchar (255) NOT NULL
-	,CONSTRAINT offer_student_PK PRIMARY KEY (id,id_offer,name)
+	,CONSTRAINT offer_student_PK PRIMARY KEY (id,id_offer,state)
 
 	,CONSTRAINT offer_student_student_FK FOREIGN KEY (id) REFERENCES student(id)
 	,CONSTRAINT offer_student_offer0_FK FOREIGN KEY (id_offer) REFERENCES offer(id)
-	,CONSTRAINT offer_student_offer_state1_FK FOREIGN KEY (name) REFERENCES offer_state(name)
+	,CONSTRAINT offer_student_offer_state1_FK FOREIGN KEY (state) REFERENCES offer_state(state)
 )ENGINE=InnoDB;
 
 
@@ -250,11 +262,11 @@ CREATE TABLE offer_student(
 #------------------------------------------------------------
 
 CREATE TABLE account_sector(
-        id   Int NOT NULL ,
-        name Varchar (255) NOT NULL
-	,CONSTRAINT account_sector_PK PRIMARY KEY (id,name)
+        id     Int NOT NULL ,
+        sector Varchar (255) NOT NULL
+	,CONSTRAINT account_sector_PK PRIMARY KEY (id,sector)
 
 	,CONSTRAINT account_sector_account_FK FOREIGN KEY (id) REFERENCES account(id)
-	,CONSTRAINT account_sector_sector0_FK FOREIGN KEY (name) REFERENCES sector(name)
+	,CONSTRAINT account_sector_sector0_FK FOREIGN KEY (sector) REFERENCES sector(sector)
 )ENGINE=InnoDB;
 

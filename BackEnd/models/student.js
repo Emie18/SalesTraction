@@ -15,12 +15,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    name: {
+    school: {
       type: DataTypes.STRING(255),
       allowNull: true,
       references: {
         model: 'school',
-        key: 'name'
+        key: 'school'
       }
     },
     id_account: {
@@ -57,7 +57,7 @@ module.exports = function(sequelize, DataTypes) {
         name: "student_school_FK",
         using: "BTREE",
         fields: [
-          { name: "name" },
+          { name: "school" },
         ]
       },
     ]

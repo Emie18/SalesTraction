@@ -9,7 +9,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'work_mode',
-      modes.map(nom => ({ nom })),
+      modes.map(work_mode => ({ work_mode })),
       {}
     );
   },
