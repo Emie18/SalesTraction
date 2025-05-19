@@ -11,11 +11,13 @@ const StudentRoutes = require('./routes/StudentRoutes');
 const StartUpRoutes = require('./routes/StartUpRoutes');
 const AccountRoutes = require('./routes/AccountRoutes');
 const DataRoutes = require('./routes/DataRoutes');
+const OfferRoutes = require('./routes/OfferRoutes');
 
 app.use('/students', StudentRoutes);
 app.use('/startup', StartUpRoutes);
 app.use('/account', AccountRoutes);
 app.use('/data', DataRoutes);
+app.use('/offer', OfferRoutes);
 
 app.get('/', (req, res) => {
     res.send('API is working 🚀');
