@@ -1,5 +1,7 @@
 const { Model} = require('../models/Model.js');
+const { get_startup_data } = require('./StartUpController');
 const { Offer, OfferDoc, OfferState } = Model
+
 
 exports.update = async (req, res) => {
     try {
@@ -54,3 +56,31 @@ exports.delete = async (req, res) => {
         res.status(500).json({ error: 'Failed to delete the offer' });
     }
 };
+
+exports.getAll = async (req, res) => {
+    try{
+        var offer_list = []
+        const offers = await Offer.findAll({});
+
+        for(const offer of offers){
+            offer_list.push(await get_offer_json(offer))
+        }
+        res.status(200).json(offer_list);
+    }catch(error){
+        res.status(500).json({error : error.message});
+    }
+};
+
+async function get_offer_json(offer){
+    return {
+        id : offer.id,
+        name: offer.nom,
+        product: offer.produit,
+        pitch: offer.pitch,
+        range: offer.gamme,
+        commission: offer.commision,
+        client:	offer.client,
+        work_mode: offer.nom_work_mode,
+        startup: await get_startup_data(offer.id_startup)
+    }
+}

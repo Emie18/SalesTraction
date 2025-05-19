@@ -5,5 +5,6 @@ const OfferController = require('../controllers/OfferController');
 router.post('/create', OfferController.create);
 router.post('/update', OfferController.update);
 router.get('/delete', OfferController.delete);
+router.get('/all', OfferController.getAll);
 
 module.exports = router;

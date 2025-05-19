@@ -63,7 +63,7 @@ exports.get = async (req, res) => {
     }
 }
 
-async function get_startup_json(startup){
+async function get_startup_json(startup) {
     if(!startup.id_account) return {}
     
     const account = startup.id_account_account
@@ -80,4 +80,17 @@ async function get_startup_json(startup){
         sector: sector.map(sector => sector.name),
         valid: startup.is_valid
     }
+}
+
+exports.get_startup_data = async (id) => {
+    const startup = await StartUp.findOne({
+        include: [{
+            as: "id_account_account",
+            model: Account
+        }],
+        where: { id: id }
+    });
+
+    if(!startup) return null
+    return get_startup_json(startup)
 }
