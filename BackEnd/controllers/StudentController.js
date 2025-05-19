@@ -90,6 +90,7 @@ async function get_student_json(student){
         name: account.name,
         surname: student.surname,
         email: account.email,
+        image: account.image,
         disponibility: student.disponibility,
         description: account.description,
         linkedin: account.linkedin,

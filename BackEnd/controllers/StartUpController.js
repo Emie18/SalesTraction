@@ -74,6 +74,7 @@ async function get_startup_json(startup) {
         name: account.name,
         email: account.email,
         siret: startup.siret,
+        image: account.image,
         description: account.description,
         linkedin: account.linkedin,
         region: account.region,
