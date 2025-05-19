@@ -17,6 +17,7 @@ GET /startup/offer?id=0,state="" => get all offer from the give, startup #TODO
 
 POST /students/create => create a new students up account
 GET /students/all => get all students
+GET /students/get?id=0 => get the student with the given id, return an error if the account is not a student
 GET /students/offer?id=0,state="" => get all register offer from the give, student #TODO
 
 GET /offer/all?name="",sector="",region="",taux="",mode="" => get all offer with a filter #TODO

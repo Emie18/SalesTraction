@@ -8,7 +8,7 @@ exports.create = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             password: req.body.pass,
-            description : "",
+            description : req.body.description ?? "",
             linkdin: "linkedin",
             name_region : req.body.region ?? "Bretagne"
         });
@@ -51,24 +51,7 @@ exports.getAll = async (req, res) => {
         });
 
         for(const student of students){
-            const account = student.id_account_account
-            const languages = await LanguageStudent.findAll({ where : { id : student.id }})
-            const sector = await AccountSector.findAll({ where : { id : account.id }})
-
-            student_list.push({
-                student_id: student.id,
-                account_id: student.id_account,
-                name: account.name,
-                surname: student.surname,
-                email: account.email,
-                disponibility: student.disponibility,
-                description: account.description,
-                linkedin: account.linkdin,
-                school: student.name,
-                region: account.name_region,
-                languages: languages.map(language => language.name),
-                sector: sector.map(sector => sector.name)
-            })
+            student_list.push(await get_student_json(student))
         }
 
         res.status(200).json(student_list);
@@ -76,3 +59,43 @@ exports.getAll = async (req, res) => {
         res.status(500).json({error : error.message});
     }
 };
+
+exports.get = async (req, res) => {
+    try{
+        const student = await Student.findOne({
+            include: [{
+                as: "id_account_account",
+                model: Account
+            }],
+            where: { id_account: req.query.id }
+        });
+
+        if(!student){
+            res.status(500).json({error: "Account is not a student"});
+        }
+
+        res.status(200).json(await get_student_json(student));
+    }catch(error){
+        res.status(500).json({error : error.message});
+    }
+}
+
+async function get_student_json(student){
+    const account = student.id_account_account
+    const languages = await LanguageStudent.findAll({ where : { id : student.id }})
+    const sector = await AccountSector.findAll({ where : { id : account.id }})
+
+    return {
+        account_id: student.id_account,
+        name: account.name,
+        surname: student.surname,
+        email: account.email,
+        disponibility: student.disponibility,
+        description: account.description,
+        linkedin: account.linkdin,
+        school: student.name,
+        region: account.name_region,
+        languages: languages.map(language => language.name),
+        sector: sector.map(sector => sector.name)
+    }
+}
