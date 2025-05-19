@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../styles/registerpage.css";
 
@@ -8,6 +8,19 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const session = JSON.parse(localStorage.getItem('session'));
+    if (session) {
+      if (session.type === 'student') {
+        navigate('/student/home');
+      } else if (session.type === 'startup') {
+        navigate('/startup/home');
+      } else if (session.type === 'admin') {
+        navigate('/admin');
+      }
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,16 +32,15 @@ function LoginPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email:email, pass:password }),
+        body: JSON.stringify({ email: email, pass: password }),
       });
 
       if (!response.ok) {
         throw new Error('Invalid credentials');
       }
-
       const data = await response.json();
+      localStorage.setItem('session', JSON.stringify(data));
 
-      // Redirect based on user type
       switch (data.type) {
         case 'student':
           navigate('/student/home');
@@ -42,6 +54,7 @@ function LoginPage() {
         default:
           setError('Unknown user type');
       }
+
     } catch (err) {
       console.error(err);
       setError('Login failed. Please check your credentials.');

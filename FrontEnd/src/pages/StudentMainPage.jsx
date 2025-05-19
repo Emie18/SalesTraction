@@ -6,6 +6,7 @@ import Filter from "../components/Filter"
 import { useNavigate } from "react-router-dom"
 import { getRegions, getModes } from "../scripts/getData"
 import ContainerOffer from "../components/ContainerOffer"
+import Profil from "../components/Profil"
 function StudentUpMainPage() {
   const [page, setPage] = useState(1)
   const [regions, setRegions] = useState([]);
@@ -41,9 +42,8 @@ function StudentUpMainPage() {
           <ContainerOffer />
         </div>
       case 5:
-        return <div>Page 5: Profil
-          <button onClick={() => navigate('/')}>logout</button>
-
+        return <div>
+          <Profil />
         </div>
       default:
         return <div>Page 1: Home</div>
