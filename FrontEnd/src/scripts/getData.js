@@ -40,7 +40,7 @@ export const getSchools = async () => {
 };
 export const getLanguages = async () => {
   try {
-    const response = await fetch('http://localhost:3000/data/lauguages');
+    const response = await fetch('http://localhost:3000/data/languages');
     if (!response.ok) {
       throw new Error('Error when we get the response');
     }
@@ -62,5 +62,42 @@ export const getStates = async () => {
   } catch (error) {
     console.error('Error in getStates :', error);
     return [];
+  }
+};
+export const getSectors = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/data/sectors');
+    if (!response.ok) {
+      throw new Error('Error when we get the response');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error in getSectors :', error);
+    return [];
+  }
+};
+
+export const getStudentDetails = async () => {
+  try {
+    const session = JSON.parse(localStorage.getItem('session'));
+
+    // Vérifie que la session existe et que le type est bien 'student'
+    if (!session || session.type !== 'student') {
+      throw new Error('No valid student session found.');
+    }
+
+    const response = await fetch(`http://localhost:3000/students/get?id=${session.id}`);
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch student details');
+    }
+
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error('Error in getStudentDetails:', error);
+    return null; // ou {} selon ce que tu veux recevoir
   }
 };
