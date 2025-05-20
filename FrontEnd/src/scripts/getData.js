@@ -101,3 +101,27 @@ export const getStudentDetails = async () => {
     return null; // ou {} selon ce que tu veux recevoir
   }
 };
+
+export const getStartUpDetails = async () => {
+  try {
+    const session = JSON.parse(localStorage.getItem('session'));
+
+    // Vérifie que la session existe et que le type est bien 'student'
+    if (!session || session.type !== 'startup') {
+      throw new Error('No valid startup session found.');
+    }
+
+    const response = await fetch(`http://localhost:3000/startup/get?id=${session.id}`);
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch startup details');
+    }
+
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error('Error in getStartUpDetails:', error);
+    return null; // ou {} selon ce que tu veux recevoir
+  }
+};
