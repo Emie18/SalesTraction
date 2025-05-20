@@ -1,4 +1,4 @@
-"# SalesTraction" 
+# SalesTraction
 
 ## API
 
@@ -74,6 +74,20 @@ GET /match/suggestion/:id => get all suggestions for the account with the given 
     "region": "<region>", // Valid region in GET /data/regions
     "languages": ["<lang 1>", "<lang 2>"], // Array of languages
     "sector": ["<sector 1>", "<sector 2>"] //Array of sectors
+}
+```
+
+### Offer
+```json
+{
+    "startup": 0, // ID of the startup
+    "name": "<name>", // Any string
+    "product": "<product>", // Any string
+    "pitch": "<pitch>", // Any string
+    "range": "<range>", // Any string
+    "commission": "<commission>", // Valid commission in GET /data/commissions
+    "client": "<client>", // Any string
+    "work_mode": "<work_mode>", // Valid work_mode in GET /data/modes
 }
 ```
 
