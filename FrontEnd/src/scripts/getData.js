@@ -12,6 +12,20 @@ export const getRegions = async () => {
     return [];
   }
 };
+export const getCommissions = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/data/commissions');
+    if (!response.ok) {
+      throw new Error('Error when we get the response');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error in getCommission :', error);
+    return [];
+  }
+};
+
 export const getModes = async () => {
   try {
     const response = await fetch('http://localhost:3000/data/modes');
@@ -123,5 +137,34 @@ export const getStartUpDetails = async () => {
   } catch (error) {
     console.error('Error in getStartUpDetails:', error);
     return null; // ou {} selon ce que tu veux recevoir
+  }
+};
+export const getOffers = async ({ name, sector, region, commission, mode } = {}) => {
+  try {
+    const params = new URLSearchParams();
+
+    if (name) params.append("name", name);
+    if (sector) params.append("sector", sector);
+    if (region) params.append("region", region);
+    if (commission) params.append("commission", commission);
+    if (mode) params.append("mode", mode);
+
+    const url =
+      params.toString().length > 0
+        ? `http://localhost:3000/offer/all?${params.toString()}`
+        : "http://localhost:3000/offer/all";
+
+    const response = await fetch(url);
+    console.log(url);
+
+    if (!response.ok) {
+      throw new Error("Error when we get the response");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error in getOffers:", error);
+    return [];
   }
 };

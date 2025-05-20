@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-function Filter({ workMode, regions }) {
+function Filter({ workMode, regions, sectors, commissions, onSearch, setOffers }) {
+
     const [searchTerm, setSearchTerm] = useState('');
     const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
     const [filters, setFilters] = useState({
@@ -12,8 +13,8 @@ function Filter({ workMode, regions }) {
 
     const filterOptions = {
         region: regions,
-        sector: ['Technology', 'Healthcare', 'Finance', 'Education', 'Manufacturing', 'Retail'],
-        commissionRate: ['0-5%', '5-10%', '10-15%', '15-20%', '20%+'],
+        sector: sectors,
+        commissionRate:commissions,
         workMode: workMode
     };
 
@@ -24,29 +25,39 @@ function Filter({ workMode, regions }) {
         }));
     };
 
-    const handleSearch = () => {
-        const payload = {
-            searchTerm,
-            filters
-        };
-
-        console.log("Search payload:", JSON.stringify(payload, null, 2));
-
-        //Ajouter l'api ici
+    const handleSearch = async () => {
+    const filtersToSend = {
+        name: searchTerm,
+        sector: filters.sector,
+        region: filters.region,
+        commission: filters.commissionRate,
+        mode: filters.workMode
     };
+
+    const cleanedFilters = Object.fromEntries(
+        Object.entries(filtersToSend).filter(([_, v]) => v !== '')
+    );
+
+    const result = await onSearch(cleanedFilters);
+    setOffers(result);
+};
+
 
     const toggleAdvancedFilters = () => {
         setShowAdvancedFilters(!showAdvancedFilters);
     };
 
-    const clearFilters = () => {
-        setFilters({
-            region: '',
-            sector: '',
-            commissionRate: '',
-            workMode: ''
-        });
-    };
+    const clearFilters = async () => {
+    setFilters({
+        region: '',
+        sector: '',
+        commissionRate: '',
+        workMode: ''
+    });
+    setSearchTerm('');
+    const result = await onSearch({});
+    setOffers(result);
+};
 
     return (
         <div className="filter">

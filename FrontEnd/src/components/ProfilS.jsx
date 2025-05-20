@@ -34,6 +34,7 @@ function ProfilS() {
                         <h1>{startup.name}</h1>
 
                     </div>
+                     <div className="line"></div>
                     <div className="detail2">
                         <div className="ens">
                             <div>

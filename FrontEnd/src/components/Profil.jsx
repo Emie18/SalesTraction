@@ -34,6 +34,7 @@ function Profil() {
                         <h1>{student.name} {student.surname}</h1>
                         
                     </div>
+                     <div className="line"></div>
                     <div className="detail2">
                         <div className="ens">
                             <div>
