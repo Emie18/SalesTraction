@@ -119,10 +119,10 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('student', null, {});
-    await queryInterface.bulkDelete('account', null, {});
     await queryInterface.bulkDelete('language_student', null, {});
     await queryInterface.bulkDelete('account_sector', null, {});
+    await queryInterface.bulkDelete('student', null, {});
+    await queryInterface.bulkDelete('account', null, {});
   }
 };
 
