@@ -32,14 +32,14 @@ exports.update = async (req, res) => {
 exports.create = async (req, res) => {
     try {
         const offer = await Offer.create({
-            nom: req.body.name,
-            produit: req.body.product,
+            name: req.body.name,
+            product: req.body.product,
             pitch: req.body.pitch,
-            gamme: req.body.range,
-            commision : req.body.commission,
-            client : req.body.region,
+            range: req.body.range,
+            commission : req.body.commission,
+            client : req.body.client,
             id_startup : req.body.startup,
-            nom_work_mode : req.body.work_mode
+            work_mode : req.body.work_mode
         });
         res.status(201).json(offer);
     } catch (err) {
