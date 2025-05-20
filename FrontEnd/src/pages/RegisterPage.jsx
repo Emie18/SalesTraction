@@ -155,8 +155,9 @@ function RegisterPage() {
   return (
     <div className='page center'>
       <div className="title_home">
-        <a href='/'>Home</a>
+        <img src='/logoSsans_bg.png'></img>
         <h1>SalesTraction</h1>
+        <a href='/'>Home</a>
       </div>
       <div className='register'>
         <h2>{isStudent ? 'Student Registration' : 'Startup Registration'}</h2>
@@ -219,7 +220,7 @@ function RegisterPage() {
                         <option key={option} value={option}>{option}</option>
                       ))}
                     </select>
-                    <button type="button" onClick={addLanguage}>+</button>
+                    <button className='add' type="button" onClick={addLanguage}>+</button>
                   </div>
 
                   {selectedLanguages.length > 0 && (
@@ -229,7 +230,7 @@ function RegisterPage() {
                         {selectedLanguages.map(lang => (
                           <li key={lang}>
                             {lang}
-                            <button type="button" onClick={() => removeLanguage(lang)}>-</button>
+                            <button className='add' type="button" onClick={() => removeLanguage(lang)}>-</button>
                           </li>
                         ))}
                       </ul>
@@ -245,7 +246,7 @@ function RegisterPage() {
                         <option key={option} value={option}>{option}</option>
                       ))}
                     </select>
-                    <button type="button" onClick={addSector}>+</button>
+                    <button className='add' type="button" onClick={addSector}>+</button>
                   </div>
 
                   {selectedSectors.length > 0 && (
@@ -255,7 +256,7 @@ function RegisterPage() {
                         {selectedSectors.map(sector => (
                           <li key={sector}>
                             {sector}
-                            <button type="button" onClick={() => removeSector(sector)}>-</button>
+                            <button className='add' type="button" onClick={() => removeSector(sector)}>-</button>
                           </li>
                         ))}
                       </ul>
@@ -273,7 +274,7 @@ function RegisterPage() {
                 </div>
                 <div>
                   <p>Description:*</p>
-                  <textarea className="long" name="description" value={formData.description} onChange={handleChange} required />
+                  <textarea className="long description" name="description" value={formData.description} onChange={handleChange} required />
                 </div>
                 <div>
                   <p>Availability:*</p>
@@ -312,7 +313,7 @@ function RegisterPage() {
                         <option key={option} value={option}>{option}</option>
                       ))}
                     </select>
-                    <button type="button" onClick={addSector}>+</button>
+                    <button className='add' type="button" onClick={addSector}>+</button>
                   </div>
 
                   {selectedSectors.length > 0 && (

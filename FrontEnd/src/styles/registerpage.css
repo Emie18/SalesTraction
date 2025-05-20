@@ -15,21 +15,46 @@
     display: flex;
     padding: 1em;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     position: relative;
     width: 100%;
 }
+.title_home img{
+    width: 50px;
+}
 
 .title_home a {
-    position: absolute;
+    /* position: absolute; */
     color: var(--text);
-    left: 1em;
+    margin-right: 1em;
+    /* left: 1em; */
 }
 
 .register form {
     display: flex;
     flex-direction: column;
     width: 90%;
+}
+.register form input{
+    border-radius: 10px;
+    border: none;
+    box-shadow: var(--shadow);
+    padding: 0.1em 1em;
+}
+.register .sector-section{
+    width: 80%;
+}
+.sector-selector{
+    display: flex;
+}
+.register form select{
+    max-width: 100%;
+    border-radius: 10px;
+     padding: 0.1em 1em;
+}
+.register .description{
+    border-radius: 10px;
+    box-shadow: var(--shadow);
 }
 
 .register .condition {
@@ -43,11 +68,23 @@
 .register {
     width: 50vw;
     box-shadow: 1px 1px 20px black;
-    background-color: var(--main-gradient);
+    background: var(--double-gradient);
     margin-top: 3em;
     padding: 1.5em;
     padding-bottom: 3em;
     border-radius: 20px;
+}
+.register form .add{
+    padding: 0.1em 1em;
+    border-radius: 10px;
+    color: var(--text);
+    border: none;
+    box-shadow: var(--shadow);
+    background: var(--pink-gradient);
+    margin-left: 1em;
+    font-weight: 700;
+    text-shadow: 1px 1px 7px rgb(255, 255, 255);
+    text-align: center;
 }
 
 .register .description {
@@ -73,7 +110,7 @@
     justify-content: center;
     display: flex;
     border-radius: 20px;
-    background: var(--main-gradient);
+    background: var(--double-gradient);
     box-shadow: 1px 1px 20px black;
 }
 
@@ -130,7 +167,12 @@
     border-radius: 15px;
     width: 50%;
 }
-
+.login input{
+    padding: 0.1em 1em;
+    border: none;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
 @media (max-width: 950px) {
     .register {
         width: 80vw;
