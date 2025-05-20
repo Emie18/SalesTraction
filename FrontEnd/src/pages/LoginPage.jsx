@@ -64,8 +64,9 @@ function LoginPage() {
   return (
     <div className='page center'>
       <div className="title_home">
-        <a href='/'>Home</a>
+         <img src='/logoSsans_bg.png'></img>
         <h1>SalesTraction</h1>
+        <a href='/'>Home</a>
       </div>
       <div className="login">
         <h2>Login</h2>

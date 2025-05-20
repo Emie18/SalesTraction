@@ -29,7 +29,7 @@ function Profil() {
         <div className='profil_view'>
             {student &&
                 <div className='detail_profil'>
-                    <img className="photo" src={student.image}></img>
+                    <img className="photo" src={student.image? student.image : '/no_image2.png'}></img>
                     <div className="namesurname">
                         <h1>{student.name} {student.surname}</h1>
                         
