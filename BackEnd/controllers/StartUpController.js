@@ -1,5 +1,6 @@
 const { Model } = require('../models/Model.js');
-const { Account, StartUp, AccountSector } = Model
+const { Account, StartUp, AccountSector, Offer } = Model
+const { get_json_offer } = require('./OfferController.js');
 
 exports.create = async (req, res) => {
     try {
@@ -43,6 +44,39 @@ exports.getAll = async (req, res) => {
     }
 };
 
+exports.getOffers = async (req, res) => {
+    try{
+        const user_id = parseInt(req.params.id);
+
+        const offers = await Offer.findAll({ 
+            include: [{
+                as: "id_startup_startup",
+                model: StartUp,
+                required: true,
+                include: [{
+                    where: {id: user_id}, 
+                    as: "id_account_account",
+                    model: Account,
+                    required: true,
+                    include: [{ as: "account_sectors", model: AccountSector }]
+                }]
+            }]
+        })
+
+        var offer_list = []
+        for(const offer of offers){
+            console.log(get_json_offer(offer))
+            offer_list.push(get_json_offer(offer))
+        }
+
+        res.status(200).json(offer_list);
+
+    }catch(error){
+        res.status(500).json({error : error.message});
+    }
+}
+
+
 exports.get = async (req, res) => {
     try{
         const startup = await StartUp.findOne({
@@ -83,6 +117,30 @@ async function get_startup_json(startup) {
     }
 }
 
+exports.get_startup_list_json = (startups) => {
+    var list = []
+    for(const startup of startups){
+        if(!startup.id_account) continue
+    
+        const account = startup.id_account_account
+
+        list.push({
+            account_id: startup.id_account,
+            name: account.name,
+            email: account.email,
+            siret: startup.siret,
+            image: account.image,
+            description: account.description,
+            linkedin: account.linkedin,
+            region: account.region,
+            sector: account.account_sectors.map(sector => sector.sector),
+            valid: startup.is_valid
+        })
+    }
+
+    return list
+}
+
 exports.get_startup_data = async (id) => {
     const startup = await StartUp.findOne({
         include: [{
@@ -95,3 +153,4 @@ exports.get_startup_data = async (id) => {
     if(!startup) return null
     return get_startup_json(startup)
 }
+

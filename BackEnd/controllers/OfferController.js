@@ -1,7 +1,6 @@
 const { Model} = require('../models/Model.js');
 const startup = require('../models/startup.js');
 const { commission } = require('./DataController.js');
-const { get_startup_data } = require('./StartUpController');
 const { Offer, OfferDoc, OfferState, StartUp, Account, AccountSector } = Model
 const { Op } = require("sequelize");
 
@@ -65,7 +64,7 @@ exports.delete = async (req, res) => {
 exports.getAll = async (req, res) => {
     try{
         //filter : Region, Sector, Commission, WorkMode, Name
-        var offer_list = []
+        
         const offers = await Offer.findAll({
             include: [{
                 as: "id_startup_startup",
@@ -92,9 +91,10 @@ exports.getAll = async (req, res) => {
             
         });
         
+        var offer_list = []
         for(const offer of offers){
             if(offer.id_startup_startup)
-                offer_list.push(await get_offer_json(offer))
+                offer_list.push(form_json(offer))
         }
 
         res.status(200).json(offer_list);
@@ -103,7 +103,13 @@ exports.getAll = async (req, res) => {
     }
 };
 
-async function get_offer_json(offer){
+function form_json(offer) {
+    const startup = offer.id_startup_startup
+    const account = startup.id_account_account
+    const sector = account.account_sectors
+
+    if(!offer || !startup || !account || !sector) return null
+
     return {
         id : offer.id,
         name: offer.name,
@@ -113,6 +119,18 @@ async function get_offer_json(offer){
         commission: offer.commission_offer_commission,
         client:	offer.client,
         work_mode: offer.work_mode,
-        startup: await get_startup_data(offer.id_startup)
+        startup: {
+            account_id: startup.id_account,
+            name: account.name,
+            email: account.email,
+            siret: startup.siret,
+            image: account.image,
+            description: account.description,
+            linkedin: account.linkedin,
+            region: account.region,
+            sector: sector.map(sector => sector.sector),
+            valid: startup.is_valid
+        }
     }
 }
+exports.get_json_offer = (offer) => form_json(offer)
