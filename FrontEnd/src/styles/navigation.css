@@ -11,6 +11,7 @@
   top: calc(100vh - 65px);
   left: 0;
   z-index: 1000;
+  box-shadow: var(--shadow);
 }
 
 .nav .icon img {

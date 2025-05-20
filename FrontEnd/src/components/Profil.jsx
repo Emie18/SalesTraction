@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../styles/registerpage.css";
 import { getStudentDetails } from '../scripts/getData';
-
+import '../styles/profil.css'
 
 function Profil() {
     const navigate = useNavigate();
@@ -20,26 +20,91 @@ function Profil() {
             const data = await getStudentDetails();
             if (data) setStudent(data);
             console.log(data);
+
         };
         fetchStudent();
     }, []);
 
     return (
-        <div className='Profil'>
-            <p>profil</p>
+        <div className='profil_view'>
             {student &&
-            <div>
-            <h1>{student.name}</h1>
-            <h2>{student.surname}</h2>
-            <p>{student.description}</p>
-            <p>📍 {student.region}</p>
-            <p>spoken languages : {student.languages}</p>
-            <p>School : {student.school}</p>
-            <p>disponibility : {student.disponibility}</p>
-            <p>linkedin : {student.linkedin}</p>
-            <p>sector : {student.sector}</p>
-            <p>{student.email}</p>
-            </div>}
+                <div className='detail_profil'>
+                    <img className="photo" src={student.image}></img>
+                    <div className="namesurname">
+                        <h1>{student.name} {student.surname}</h1>
+                        
+                    </div>
+                    <div className="detail2">
+                        <div className="ens">
+                            <div>
+                                <img src='/location.svg'></img>
+                                <p> {student.region}</p>
+                            </div>
+                            <div>
+                                <img src='/school.svg'></img>
+                                <p>{student.school}</p>
+                            </div>
+                        </div>
+
+                        <div className="ens">
+                            <div>
+                                <img src='/sector.svg'></img>
+                                <p>
+                                    {
+                                        student.sector && student.sector.length > 0
+                                            ? student.sector.map((item, index) => (
+                                                <span key={index} className="sector-item">
+                                                    {item}{index < student.sector.length - 1 ? ', ' : ''}
+                                                </span>
+                                            ))
+                                            : 'No sector'
+                                    }
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="ens">
+                            <div>
+                                <img src='/spoken.svg'></img>
+                                <p>
+                                    {
+                                        student.languages && student.languages.length > 0
+                                            ? student.languages.map((lang, index) => (
+                                                <span key={index} className="language-item">
+                                                    {lang}{index < student.languages.length - 1 ? ', ' : ''}
+                                                </span>
+                                            ))
+                                            : 'No language'
+                                    }
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="ens">
+                            <div>
+                                <img src='/dispo.svg'></img>
+                                <p>{student.disponibility}</p>
+                            </div>
+                        </div>
+
+
+
+                        <p className='description'>{student.description}</p>
+                        <div className="ens space">
+                            <div>
+                                <img src="/email.svg"></img>
+                                <p>{student.email}</p>
+                            </div>
+                            <div>
+                                <a href='{student.linkedin}'>
+                                <img src="/linkedin-brands.svg"></img>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>}
             <button onClick={logout}>Logout</button>
         </div>
     );
