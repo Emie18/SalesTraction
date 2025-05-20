@@ -14,17 +14,20 @@ GET /account/delete?id=0 => delete the account with id 0
 POST /startup/create => create a new start up account
 GET /startup/all => get all startup
 GET /startup/get?id=0 => get the startup with the given id, return an error if the account is not a startup
-GET /startup/offer?id=0,state="" => get all offer from the give, startup #TODO
+GET /startup/offer/:id => get all offer from the give, startup
 
 POST /students/create => create a new students up account
 GET /students/all => get all students
 GET /students/get?id=0 => get the student with the given id, return an error if the account is not a student
-GET /students/offer?id=0,state="" => get all register offer from the give, student #TODO
+GET /students/offer/:id => get all register offer from the give, student #TODO
 
 GET /offer/all?name=""&sector=""&region=""&commission=""&mode="" => get all offer with a filter
 POST /offer/create => create an offer
 POST /offer/update => update offer  
 GET /offer/delete?id="" => delete offer 
+
+POST /match/like => like an account
+GET /match/suggestion/:id => get all suggestions for the account with the given id
 
 ## JSON
 
