@@ -61,8 +61,11 @@ exports.delete = async (req, res) => {
 
 exports.apply = async (req, res) => {
     try {
+        const student = Student.findOne({where : {id_account : req.body.student}})
+        if(!student) return res.status(500).json({ error: 'Account is not a Student' });
+        
         OfferStudent.create({
-            id: req.body.student,
+            id: student.id,
             id_offer: req.body.offer,
             state: "Waiting",
             motivation: req.body.motivation,

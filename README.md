@@ -85,4 +85,11 @@ GET /match/suggestion/:id => get all suggestions for the account with the given 
 }
 ```
 
-### Like an account
+### Apply to an Offer
+```json
+{
+    "student": 0, //ID Account
+    "offer": 0, //ID Offer
+    "motivation": "<motivation>" // Motivation entered by the Student
+}
+```
