@@ -11,16 +11,15 @@ exports.update = async (req, res) => {
         });
         if(!offer) return res.status(500).json({ error: 'Failed to update the offer' });
         
-        console.log(req.body.name)
-        if (req.body.name) offer.nom = req.body.name
+        if (req.body.name) offer.name = req.body.name
         if (req.body.product) offer.product = req.body.product
         if (req.body.pitch) offer.pitch = req.body.pitch
-        if (req.body.commission) offer.commision = req.body.commission
+        if (req.body.range) offer.range = req.body.range
+        if (req.body.commission) offer.commission = req.body.commission
         if (req.body.client) offer.client = req.body.client
-        if (req.body.id_startup) offer.id_startup = req.body.id_startup
-        if (req.body.nom_work_mode) offer.nom_work_mode = req.body.nom_work_mode
+        if (req.body.startup) offer.id_startup = req.body.startup
+        if (req.body.work_mode) offer.work_mode = req.body.work_mode
         await offer.save()
-        console.log(offer.nom)
 
         res.status(201).json(offer);
     } catch (err) {
