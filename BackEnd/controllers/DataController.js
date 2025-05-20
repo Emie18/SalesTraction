@@ -27,7 +27,7 @@ exports.work_mode = async (req, res) => {
     try{
         const modes = await WorkMode.findAll();
 
-        const simpleModeList = modes.map(mode => mode.mode);
+        const simpleModeList = modes.map(mode => mode.work_mode);
         res.status(200).json(simpleModeList);
     }catch(error){
         res.status(500).json({error : error.message});
