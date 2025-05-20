@@ -1,7 +1,7 @@
 const { Model} = require('../models/Model.js');
 const startup = require('../models/startup.js');
 const { commission } = require('./DataController.js');
-const { Offer, OfferDoc, OfferState, StartUp, Account, AccountSector } = Model
+const { Offer, OfferDoc, OfferState, OfferStudent, StartUp, Account, AccountSector, Student } = Model
 const { Op } = require("sequelize");
 
 exports.update = async (req, res) => {
@@ -46,7 +46,6 @@ exports.create = async (req, res) => {
         });
         res.status(201).json(offer);
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Failed to create the offer' });
     }
 };
@@ -56,10 +55,40 @@ exports.delete = async (req, res) => {
         await Offer.destroy({ where : {id : req.query.id} });
         res.status(200).json({deleted : req.query.id});
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Failed to delete the offer' });
     }
 };
+
+exports.apply = async (req, res) => {
+    try {
+        const student = Student.findOne({where : {id_account : req.body.student}})
+        if(!student) return res.status(500).json({ error: 'Account is not a Student' });
+        
+        OfferStudent.create({
+            id: student.id,
+            id_offer: req.body.offer,
+            state: "Waiting",
+            motivation: req.body.motivation,
+        })
+        return res.status(200);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to delete the offer' });
+    }
+}
+
+exports.getApplication = async (req, res) => {
+    try {
+        const offer_id = parseInt(req.params.id);
+
+        const applications = await OfferStudent.findAll({ where: { id_offer: offer_id } });
+        const student_ids = applications.map(app => app.id);
+        const offers = await Student.findAll({where: { id: { [Op.in]: student_ids }}});
+
+        return res.status(200).json(offer_list_to_json(offers));
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to delete the offer' });
+    }
+}
 
 exports.getAll = async (req, res) => {
     try{
@@ -90,18 +119,21 @@ exports.getAll = async (req, res) => {
             }
             
         });
-        
-        var offer_list = []
-        for(const offer of offers){
-            if(offer.id_startup_startup)
-                offer_list.push(form_json(offer))
-        }
 
-        res.status(200).json(offer_list);
+        res.status(200).json(offer_list_to_json(offers));
     }catch(error){
         res.status(500).json({error : error.message});
     }
 };
+
+function offer_list_to_json(offers){
+    var offer_list = []
+    for(const offer of offers){
+        if(offer.id_startup_startup)
+            offer_list.push(form_json(offer))
+    }
+    return offer_list
+}
 
 function form_json(offer) {
     const startup = offer.id_startup_startup

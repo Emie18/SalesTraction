@@ -7,4 +7,7 @@ router.post('/update', OfferController.update);
 router.get('/delete', OfferController.delete);
 router.get('/all', OfferController.getAll);
 
+router.post('/apply', OfferController.apply);
+router.get('/applications/:id', OfferController.getApplication);
+
 module.exports = router;
