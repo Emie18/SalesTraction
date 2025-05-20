@@ -31,6 +31,9 @@ exports.update = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
+        const startup = await StartUp.findOne({ where : { id_account : req.body.startup}})
+        if(!startup) return res.status(500).json({error: "account is not a startup"});
+
         const offer = await Offer.create({
             name: req.body.name,
             product: req.body.product,
@@ -39,7 +42,7 @@ exports.create = async (req, res) => {
             commission: "",
             commission_offer_commission : req.body.commission,
             client : req.body.client,
-            id_startup : req.body.startup,
+            id_startup : startup.id,
             work_mode : req.body.work_mode
         });
         res.status(201).json(offer);
