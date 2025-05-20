@@ -24,7 +24,9 @@ GET /students/offer/:id => get all register offer from the give, student #TODO
 GET /offer/all?name=""&sector=""&region=""&commission=""&mode="" => get all offer with a filter
 POST /offer/create => create an offer
 POST /offer/update => update offer  
-GET /offer/delete?id="" => delete offer 
+GET /offer/delete?id="" => delete offer
+POST /offer/apply => apply to an offer
+GET /offer/applications/:id => See all application of the offer with the given id
 
 POST /match/like => like an account
 GET /match/suggestion/:id => get all suggestions for the account with the given id
@@ -74,3 +76,13 @@ GET /match/suggestion/:id => get all suggestions for the account with the given 
     "sector": ["<sector 1>", "<sector 2>"] //Array of sectors
 }
 ```
+
+### Like an account
+```json
+{
+    "from" : 1,  // ID of the account that has liked an account
+    "to" : 1, //ID of the liked account
+}
+```
+
+### Like an account
