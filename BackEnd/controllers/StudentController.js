@@ -1,5 +1,5 @@
 const { Model } = require('../models/Model.js');
-const { Student, Account, LanguageStudent, AccountSector } = Model
+const { Student, Account, LanguageStudent, AccountSector, Offer } = Model
 
 exports.create = async (req, res) => {
     try {
@@ -79,6 +79,22 @@ exports.get = async (req, res) => {
         res.status(500).json({error : error.message});
     }
 }
+
+
+exports.getApplication = async (req, res) => {
+    try {
+        const student_id = parseInt(req.params.id);
+
+        const applications = await OfferStudent.findAll({ where: { id: student_id } });
+        const offer_ids = applications.map(app => app.id_offer);
+        const offers = await Offer.findAll({where: { id: { [Op.in]: offer_ids }}});
+
+        return res.status(200).json(offers);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to delete the offer' });
+    }
+}
+
 
 async function get_student_json(student){
     const account = student.id_account_account
