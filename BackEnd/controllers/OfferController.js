@@ -1,5 +1,6 @@
 const { Model} = require('../models/Model.js');
 const startup = require('../models/startup.js');
+const { commission } = require('./DataController.js');
 const { get_startup_data } = require('./StartUpController');
 const { Offer, OfferDoc, OfferState, StartUp, Account, AccountSector } = Model
 const { Op } = require("sequelize");
@@ -35,6 +36,7 @@ exports.create = async (req, res) => {
             product: req.body.product,
             pitch: req.body.pitch,
             range_offer: req.body.range,
+            commission: "",
             commission_offer_commission : req.body.commission,
             client : req.body.client,
             id_startup : req.body.startup,
