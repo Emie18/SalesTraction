@@ -8,5 +8,6 @@ router.get('/modes', DataController.work_mode);
 router.get('/schools', DataController.school);
 router.get('/states', DataController.offer_state);
 router.get('/sectors', DataController.sector);
+router.get('/commissions', DataController.commission);
 
 module.exports = router;
