@@ -1,7 +1,8 @@
 const { Model} = require('../models/Model.js');
+const startup = require('../models/startup.js');
 const { get_startup_data } = require('./StartUpController');
-const { Offer, OfferDoc, OfferState } = Model
-
+const { Offer, OfferDoc, OfferState, StartUp, Account, AccountSector } = Model
+const { Op } = require("sequelize");
 
 exports.update = async (req, res) => {
     try {
@@ -59,12 +60,39 @@ exports.delete = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try{
+        //filter : Region, Sector, Commission, WorkMode, Name
         var offer_list = []
-        const offers = await Offer.findAll({});
-
+        const offers = await Offer.findAll({
+            include: [{
+                as: "id_startup_startup",
+                model: StartUp,
+                required: true,
+                include: [{
+                    as: "id_account_account",
+                    model: Account,
+                    required: !!req.query.region || !!req.query.sector,
+                    ...(req.query.region && {where : { region: req.query.region }}),
+                    include: [{
+                        as: "account_sectors",
+                        model: AccountSector,
+                        required: !!req.query.sector,
+                        ...(req.query.sector && {where : {sector: req.query.sector}})
+                    }]
+                }]
+            }],
+            where : {
+                ...(req.query.mode && {work_mode: req.query.mode}),
+                ...(req.query.commission && {commission_offer_commission: req.query.commission}),
+                ...(req.query.name && {name: {[Op.like]: `%${req.query.name}%`}})
+            }
+            
+        });
+        
         for(const offer of offers){
-            offer_list.push(await get_offer_json(offer))
+            if(offer.id_startup_startup)
+                offer_list.push(await get_offer_json(offer))
         }
+
         res.status(200).json(offer_list);
     }catch(error){
         res.status(500).json({error : error.message});
@@ -74,13 +102,13 @@ exports.getAll = async (req, res) => {
 async function get_offer_json(offer){
     return {
         id : offer.id,
-        name: offer.nom,
-        product: offer.produit,
+        name: offer.name,
+        product: offer.product,
         pitch: offer.pitch,
-        range: offer.gamme,
-        commission: offer.commision,
+        range: offer.range_offer,
+        commission: offer.commission_offer_commission,
         client:	offer.client,
-        work_mode: offer.nom_work_mode,
+        work_mode: offer.work_mode,
         startup: await get_startup_data(offer.id_startup)
     }
 }

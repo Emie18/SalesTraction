@@ -21,7 +21,7 @@ GET /students/all => get all students
 GET /students/get?id=0 => get the student with the given id, return an error if the account is not a student
 GET /students/offer?id=0,state="" => get all register offer from the give, student #TODO
 
-GET /offer/all?name="",sector="",region="",taux="",mode="" => get all offer with a filter #TODO
+GET /offer/all?name=""&sector=""&region=""&commission=""&mode="" => get all offer with a filter
 POST /offer/create => create an offer
 POST /offer/update => update offer  
 GET /offer/delete?id="" => delete offer 
