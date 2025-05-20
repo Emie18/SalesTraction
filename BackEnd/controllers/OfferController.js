@@ -14,8 +14,8 @@ exports.update = async (req, res) => {
         if (req.body.name) offer.name = req.body.name
         if (req.body.product) offer.product = req.body.product
         if (req.body.pitch) offer.pitch = req.body.pitch
-        if (req.body.range) offer.range = req.body.range
-        if (req.body.commission) offer.commission = req.body.commission
+        if (req.body.range) offer.range_offer = req.body.range
+        if (req.body.commission) offer.commission_offer_commission = req.body.commission
         if (req.body.client) offer.client = req.body.client
         if (req.body.startup) offer.id_startup = req.body.startup
         if (req.body.work_mode) offer.work_mode = req.body.work_mode
@@ -34,8 +34,8 @@ exports.create = async (req, res) => {
             name: req.body.name,
             product: req.body.product,
             pitch: req.body.pitch,
-            range: req.body.range,
-            commission : req.body.commission,
+            range_offer: req.body.range,
+            commission_offer_commission : req.body.commission,
             client : req.body.client,
             id_startup : req.body.startup,
             work_mode : req.body.work_mode
