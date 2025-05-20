@@ -1,0 +1,102 @@
+const { Model} = require('../models/Model.js');
+const { StartUp, Student, Account, AccountMatch, LanguageStudent, AccountSector, Offer } = Model
+const { Op } = require('sequelize');
+
+exports.like = async (req, res) => {
+    try{
+        const { from, to } = req.body;
+        if (from === to) return res.status(400).send("Can't like yourself");
+        
+        // Found who is a student
+        const students = await Student.findAll({
+            attributes: ['id_account'],
+            where: { id_account: { [Op.in]: [from, to] } }
+        });
+      
+        const from_is_student = students.some(s => s.id_account === from);
+        const to_is_student   = students.some(s => s.id_account === to);
+
+        // Found illegal combinations
+        if(from_is_student === to_is_student){
+            return res.status(400).send(`Can't like another ${from_is_student ? 'student' : 'startup'}`);
+        }
+
+        //Normalise data for AccountMatch
+        const id_student        = from_is_student ? from : to;
+        const id_startup        = from_is_student ? to : from;
+        const liked_by_startup  = !from_is_student; // true if startup is the liker
+
+        // Insert (or get) the like + test for match
+        const [account_match, created] = await AccountMatch.findOrCreate({
+            where: { id_student, id_startup, liked_by_startup }
+        });
+    
+        const match = await AccountMatch.findOne({
+            where: { id_student, id_startup, liked_by_startup: !liked_by_startup }
+        });
+
+        return res.status(200).json({ liked: created, isMatch: !!match });
+
+    }catch(error){
+        res.status(500).json({error : error.message});
+    }
+};
+
+
+// TODO: lazyloading
+exports.suggestion = async (req, res) => {
+    try{
+        const user_id = parseInt(req.params.id);
+        
+        const likes = await AccountMatch.findAll({
+            where: { [Op.or]: [{ id_student: user_id }, { id_startup: user_id }] },
+        });
+    
+        const liked_ids = likes.map(like => (
+            like.id_student === user_id ? like.id_startup : like.id_student
+        ));
+
+        const students = await Student.findOne({where: { id_account: user_id }});
+        if(students){
+            const suggestions = await Offer.findAll({
+                include: [{
+                    as: "id_startup_startup", model: StartUp,
+                    include: [{
+                        as: "id_account_account", model: Account,
+                        include: [{
+                            as: "account_sectors", model: AccountSector
+                        }]
+                    }],
+                    where: { 
+                        id_account: { [Op.notIn]: [...liked_ids, user_id] },
+                        is_valid: true
+                    }
+                }]
+            });
+
+            return res.status(200).json(suggestions);
+        }
+
+        const startup = await StartUp.findOne({where: { id_account: user_id }});
+        if(startup){
+            const suggestions = await Student.findAll({
+                include: [{
+                    as: "id_account_account", model: Account,
+                    include: [{ 
+                        as: "account_sectors", model: AccountSector 
+                    }],
+                },{ as: "language_students", model: LanguageStudent }],
+                where: { id_account: { [Op.notIn]: [...liked_ids, user_id] } }
+            });
+
+            return res.status(200).json(suggestions);
+        }
+
+
+        res.status(500).json({error : "user is not a student nor a startup"});
+        
+    }catch(error){
+        res.status(500).json({error : error.message});
+    }
+}
+

@@ -7,6 +7,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
+    liked_by_startup: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
+    },
     id_startup: {
       type: DataTypes.INTEGER,
       allowNull: false,
