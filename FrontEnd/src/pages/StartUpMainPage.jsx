@@ -4,6 +4,7 @@ import Header from "../components/header"
 import ProfilS from "../components/ProfilS"
 import Navigation2 from "../components/Navigation2"
 import StartupOffer from "../components/StartupOffer"
+import Tinder from "../components/Tinder"
 function StartUpMainPage() {
 const [page, setPage] = useState(1)
     const renderContent = () => {
@@ -15,7 +16,9 @@ const [page, setPage] = useState(1)
       case 2:
         return <div>Page 2: Messages</div>
       case 3:
-        return <div>Page 3: Match</div>
+        return <div>
+          <Tinder />
+        </div>
       case 4:
         return <div>
           <Header />
