@@ -73,7 +73,7 @@ exports.apply = async (req, res) => {
             state: "Waiting",
             motivation: req.body.motivation,
         });
-        return res.status(200);
+        return res.sendStatus(200);
     } catch (err) {
         res.status(500).json({ error: 'Failed to delete the offer' });
     }
