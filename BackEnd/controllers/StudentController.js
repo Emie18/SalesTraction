@@ -4,6 +4,8 @@ const JsonHelper = require("./JsonHelper.js");
 
 exports.create = async (req, res) => {
     try {
+        const image_path = req.file ? `/uploads/${req.file.filename}` : "/uploads/no_image_profil.png";
+
         const account = await Account.create({
             type: "student",
             name: req.body.name,
@@ -11,7 +13,8 @@ exports.create = async (req, res) => {
             password: req.body.pass,
             description : req.body.description ?? "",
             linkedin: req.body.linkedin,
-            region : req.body.region ?? "Bretagne"
+            region : req.body.region ?? "Bretagne",
+            image: image_path
         });
         const student = await Student.create({
             id_account: account.id,
