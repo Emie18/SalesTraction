@@ -56,16 +56,24 @@ exports.suggestion = async (req, res) => {
     try{
         const user_id = parseInt(req.params.id);
         
+        const user_startup = await StartUp.findOne({ where : { id_account : user_id }});
+        const user_student = await Student.findOne({ where : { id_account : user_id }});
+
+        if(!user_student && !user_startup) return res.status(500).json({error : "The user is not a startup nor a student"});
+        if(user_student && user_startup) return res.status(500).json({error : "The user is a startup and a student"});
+
         const likes = await AccountMatch.findAll({
-            where: { [Op.or]: [{ id_student: user_id }, { id_startup: user_id }] },
+            where: { 
+                ...(user_student && {id_student: user_student?.id}),
+                ...(user_startup && {id_startup: user_startup?.id})
+            }
         });
-    
+        
         const liked_ids = likes.map(like => (
-            like.id_student === user_id ? like.id_startup : like.id_student
+            like.id_student === user_student?.id ? like.id_startup : like.id_student
         ));
 
-        const students = await Student.findOne({where: { id_account: user_id }});
-        if(students){
+        if(user_student){
             const suggestions = await Offer.findAll({
                 include: [{
                     as: "id_startup_startup", model: StartUp,
@@ -76,7 +84,7 @@ exports.suggestion = async (req, res) => {
                         }]
                     }],
                     where: { 
-                        id_account: { [Op.notIn]: [...liked_ids, user_id] },
+                        id: { [Op.notIn]: [...liked_ids, user_id] },
                         is_valid: true
                     }
                 }]
@@ -85,8 +93,8 @@ exports.suggestion = async (req, res) => {
             return res.status(200).json(JsonHelper.offers(suggestions));
         }
 
-        const startup = await StartUp.findOne({where: { id_account: user_id }});
-        if(startup){
+        if(user_startup){
+            console.log("liked:" + liked_ids)
             const suggestions = await Student.findAll({
                 include: [{
                     as: "id_account_account", model: Account,
@@ -94,7 +102,7 @@ exports.suggestion = async (req, res) => {
                         as: "account_sectors", model: AccountSector 
                     }],
                 },{ as: "language_students", model: LanguageStudent }],
-                where: { id_account: { [Op.notIn]: [...liked_ids, user_id] } }
+                where: { id: { [Op.notIn]: [...liked_ids, user_id] } }
             });
 
             return res.status(200).json(JsonHelper.students(suggestions));
