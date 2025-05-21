@@ -43,7 +43,7 @@ exports.like = async (req, res) => {
             where: { id_student: student.id, id_startup: startup.id, liked_by_startup: !liked_by_startup }
         });
 
-        return res.status(200).json({ liked: created, isMatch: !!match });
+        return res.status(200).json({ liked: created, is_match: !!match });
 
     }catch(error){
         res.status(500).json({error : error.message});
