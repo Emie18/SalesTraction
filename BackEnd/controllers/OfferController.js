@@ -52,8 +52,11 @@ exports.create = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        await Offer.destroy({ where : {id : req.query.id} });
-        res.status(200).json({deleted : req.query.id});
+        await OfferDoc.destroy({ where : {id_offer : req.body.id}});
+        await OfferStudent.destroy({ where : {id_offer : req.body.id}});
+        await Offer.destroy({ where : {id : req.body.id} });
+
+        res.status(200).json({deleted : req.body.id});
     } catch (err) {
         res.status(500).json({ error: 'Failed to delete the offer' });
     }
