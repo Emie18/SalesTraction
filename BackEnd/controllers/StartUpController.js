@@ -1,6 +1,6 @@
 const { Model } = require('../models/Model.js');
 const { Account, StartUp, AccountSector, Offer } = Model
-const { get_json_offer } = require('./OfferController.js');
+const JsonHelper = require("./JsonHelper.js");
 
 exports.create = async (req, res) => {
     try {
@@ -27,18 +27,16 @@ exports.create = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try{
-        var startup_list = []
         const startups = await StartUp.findAll({
             include: [{
                 as: "id_account_account",
-                model: Account
+                model: Account,
+                include: [{ as: "account_sectors", model: AccountSector }]
             }]
         });
 
-        for(const startup of startups){
-            startup_list.push(await get_startup_json(startup))
-        }
-        res.status(200).json(startup_list);
+
+        res.status(200).json(JsonHelper.startups(startups));
     }catch(error){
         res.status(500).json({error : error.message});
     }
@@ -63,13 +61,7 @@ exports.getOffers = async (req, res) => {
             }]
         })
 
-        var offer_list = []
-        for(const offer of offers){
-            console.log(get_json_offer(offer))
-            offer_list.push(get_json_offer(offer))
-        }
-
-        res.status(200).json(offer_list);
+        res.status(200).json(JsonHelper.offers(offers));
 
     }catch(error){
         res.status(500).json({error : error.message});
@@ -82,7 +74,8 @@ exports.get = async (req, res) => {
         const startup = await StartUp.findOne({
             include: [{
                 as: "id_account_account",
-                model: Account
+                model: Account,
+                include: [{ as: "account_sectors", model: AccountSector }]
             }],
             where: { id_account: req.query.id }
         });
@@ -91,66 +84,10 @@ exports.get = async (req, res) => {
             res.status(500).json({error: "Account is not a startup"});
         }
 
-        res.status(200).json(await get_startup_json(startup));
+        res.status(200).json(JsonHelper.startup(startup));
     }catch(error){
         res.status(500).json({error : error.message});
     }
 }
 
-async function get_startup_json(startup) {
-    if(!startup.id_account) return {}
-    
-    const account = startup.id_account_account
-    const sector = await AccountSector.findAll({ where : { id : startup.id_account }})
-
-    return {
-        account_id: startup.id_account,
-        name: account.name,
-        email: account.email,
-        siret: startup.siret,
-        image: account.image,
-        description: account.description,
-        linkedin: account.linkedin,
-        region: account.region,
-        sector: sector.map(sector => sector.sector),
-        valid: startup.is_valid
-    }
-}
-
-exports.get_startup_list_json = (startups) => {
-    var list = []
-    for(const startup of startups){
-        if(!startup.id_account) continue
-    
-        const account = startup.id_account_account
-
-        list.push({
-            account_id: startup.id_account,
-            name: account.name,
-            email: account.email,
-            siret: startup.siret,
-            image: account.image,
-            description: account.description,
-            linkedin: account.linkedin,
-            region: account.region,
-            sector: account.account_sectors.map(sector => sector.sector),
-            valid: startup.is_valid
-        })
-    }
-
-    return list
-}
-
-exports.get_startup_data = async (id) => {
-    const startup = await StartUp.findOne({
-        include: [{
-            as: "id_account_account",
-            model: Account
-        }],
-        where: { id: id }
-    });
-
-    if(!startup) return null
-    return get_startup_json(startup)
-}
 

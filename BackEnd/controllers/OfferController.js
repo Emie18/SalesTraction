@@ -1,8 +1,8 @@
 const { Model} = require('../models/Model.js');
-const startup = require('../models/startup.js');
-const { commission } = require('./DataController.js');
 const { Offer, OfferDoc, OfferState, OfferStudent, StartUp, Account, AccountSector, Student } = Model
 const { Op } = require("sequelize");
+
+const JsonHelper = require("./JsonHelper.js");
 
 exports.update = async (req, res) => {
     try {
@@ -82,9 +82,9 @@ exports.getApplication = async (req, res) => {
 
         const applications = await OfferStudent.findAll({ where: { id_offer: offer_id } });
         const student_ids = applications.map(app => app.id);
-        const offers = await Student.findAll({where: { id: { [Op.in]: student_ids }}});
+        const students = await Student.findAll({where: { id: { [Op.in]: student_ids }}});
 
-        return res.status(200).json(offer_list_to_json(offers));
+        return res.status(200).json(JsonHelper.students(students));
     } catch (err) {
         res.status(500).json({ error: 'Failed to delete the offer' });
     }
@@ -120,49 +120,8 @@ exports.getAll = async (req, res) => {
             
         });
 
-        res.status(200).json(offer_list_to_json(offers));
+        res.status(200).json(JsonHelper.offers(offers));
     }catch(error){
         res.status(500).json({error : error.message});
     }
 };
-
-function offer_list_to_json(offers){
-    var offer_list = []
-    for(const offer of offers){
-        if(offer.id_startup_startup)
-            offer_list.push(form_json(offer))
-    }
-    return offer_list
-}
-
-function form_json(offer) {
-    const startup = offer.id_startup_startup
-    const account = startup.id_account_account
-    const sector = account.account_sectors
-
-    if(!offer || !startup || !account || !sector) return null
-
-    return {
-        id : offer.id,
-        name: offer.name,
-        product: offer.product,
-        pitch: offer.pitch,
-        range: offer.range_offer,
-        commission: offer.commission_offer_commission,
-        client:	offer.client,
-        work_mode: offer.work_mode,
-        startup: {
-            account_id: startup.id_account,
-            name: account.name,
-            email: account.email,
-            siret: startup.siret,
-            image: account.image,
-            description: account.description,
-            linkedin: account.linkedin,
-            region: account.region,
-            sector: sector.map(sector => sector.sector),
-            valid: startup.is_valid
-        }
-    }
-}
-exports.get_json_offer = (offer) => form_json(offer)

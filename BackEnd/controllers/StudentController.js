@@ -1,5 +1,6 @@
 const { Model } = require('../models/Model.js');
 const { Student, Account, LanguageStudent, AccountSector, Offer } = Model
+const JsonHelper = require("./JsonHelper.js");
 
 exports.create = async (req, res) => {
     try {
@@ -42,19 +43,15 @@ exports.create = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try{
-        var student_list = [] 
         const students = await Student.findAll({
             include: [{
                 as: "id_account_account",
-                model: Account
-            }]
+                model: Account,
+                include: [{as: "account_sectors", model: AccountSector }]
+            },{as: "language_students", model: LanguageStudent }]
         });
 
-        for(const student of students){
-            student_list.push(await get_student_json(student))
-        }
-
-        res.status(200).json(student_list);
+        res.status(200).json(JsonHelper.students(students));
     }catch(error){
         res.status(500).json({error : error.message});
     }
@@ -65,8 +62,9 @@ exports.get = async (req, res) => {
         const student = await Student.findOne({
             include: [{
                 as: "id_account_account",
-                model: Account
-            }],
+                model: Account,
+                include: [{as: "account_sectors", model: AccountSector }]
+            },{as: "language_students", model: LanguageStudent }],
             where: { id_account: req.query.id }
         });
 
@@ -74,7 +72,7 @@ exports.get = async (req, res) => {
             res.status(500).json({error: "Account is not a student"});
         }
 
-        res.status(200).json(await get_student_json(student));
+        res.status(200).json(JsonHelper.json_student(student));
     }catch(error){
         res.status(500).json({error : error.message});
     }
@@ -87,32 +85,13 @@ exports.getApplication = async (req, res) => {
 
         const applications = await OfferStudent.findAll({ where: { id: student_id } });
         const offer_ids = applications.map(app => app.id_offer);
-        const offers = await Offer.findAll({where: { id: { [Op.in]: offer_ids }}});
+        const offers = await Offer.findAll(
+
+            {where: { id: { [Op.in]: offer_ids }}}
+        );
 
         return res.status(200).json(offers);
     } catch (err) {
         res.status(500).json({ error: 'Failed to delete the offer' });
-    }
-}
-
-
-async function get_student_json(student){
-    const account = student.id_account_account
-    const languages = await LanguageStudent.findAll({ where : { id : student.id }})
-    const sector = await AccountSector.findAll({ where : { id : account.id }})
-
-    return {
-        account_id: student.id_account,
-        name: account.name,
-        surname: student.surname,
-        email: account.email,
-        image: account.image,
-        disponibility: student.disponibility,
-        description: account.description,
-        linkedin: account.linkedin,
-        school: student.school,
-        region: account.region,
-        languages: languages.map(language => language.lang),
-        sector: sector.map(sector => sector.sector)
     }
 }

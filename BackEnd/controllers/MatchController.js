@@ -1,6 +1,7 @@
 const { Model} = require('../models/Model.js');
 const { StartUp, Student, Account, AccountMatch, LanguageStudent, AccountSector, Offer } = Model
 const { Op } = require('sequelize');
+const JsonHelper = require("./JsonHelper.js");
 
 exports.like = async (req, res) => {
     try{
@@ -74,7 +75,7 @@ exports.suggestion = async (req, res) => {
                 }]
             });
 
-            return res.status(200).json(suggestions);
+            return res.status(200).json(JsonHelper.offers(suggestions));
         }
 
         const startup = await StartUp.findOne({where: { id_account: user_id }});
@@ -89,7 +90,7 @@ exports.suggestion = async (req, res) => {
                 where: { id_account: { [Op.notIn]: [...liked_ids, user_id] } }
             });
 
-            return res.status(200).json(suggestions);
+            return res.status(200).json(JsonHelper.students(suggestions));
         }
 
 

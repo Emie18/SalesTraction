@@ -1,8 +1,11 @@
 function json_student(student){
-    const account = startup.id_account_account
-    const languages = account.language_students
+    const account = student.id_account_account
+    const languages = student.language_students
     const sector = account.account_sectors
 
+    console.log(JSON.stringify(account))
+    console.log(JSON.stringify(languages))
+    console.log(JSON.stringify(sector))
 
     if(!account || !languages || !sector) return null
 
@@ -55,7 +58,7 @@ function json_offer(offer){
         commission: offer.commission_offer_commission,
         client:	offer.client,
         work_mode: offer.work_mode,
-        startup: json_startups(startup)
+        startup: json_startup(startup)
     }
 }
 
