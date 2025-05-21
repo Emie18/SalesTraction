@@ -64,15 +64,15 @@ exports.delete = async (req, res) => {
 
 exports.apply = async (req, res) => {
     try {
-        const student = Student.findOne({where : {id_account : req.body.student}})
+        const student = await Student.findOne({where : {id_account : req.body.student}})
         if(!student) return res.status(500).json({ error: 'Account is not a Student' });
-        
+
         OfferStudent.create({
             id: student.id,
             id_offer: req.body.offer,
             state: "Waiting",
             motivation: req.body.motivation,
-        })
+        });
         return res.status(200);
     } catch (err) {
         res.status(500).json({ error: 'Failed to delete the offer' });
