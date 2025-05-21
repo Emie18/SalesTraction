@@ -168,3 +168,25 @@ export const getOffers = async ({ name, sector, region, commission, mode } = {})
     return [];
   }
 };
+
+18
+
+export const getOffers_for_Startup = async ({ id } = {}) => {
+  try {
+
+    const url =`http://localhost:3000/startup/offer/${id}`
+
+    const response = await fetch(url);
+    console.log(url);
+
+    if (!response.ok) {
+      throw new Error("Error when we get the response");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error in getOffers_for_Startup :", error);
+    return [];
+  }
+};
