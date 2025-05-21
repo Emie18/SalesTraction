@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { applyToOffer } from "../scripts/apply";
 
-function ContainerOffer({ offers, userId }) {
+function ContainerOffer({ offers }) {
    const [showModal, setShowModal] = useState(false);
    const [motivation, setMotivation] = useState("");
    const [currentOffer, setCurrentOffer] = useState(null);
    const [isSubmitting, setIsSubmitting] = useState(false);
    const [message, setMessage] = useState({ text: "", type: "" });
-
+const session = JSON.parse(localStorage.getItem('session'));
+   const id = session?.id;
    // Fonction pour ouvrir la modale
    const openModal = (offer) => {
       setCurrentOffer(offer);
@@ -36,7 +37,7 @@ function ContainerOffer({ offers, userId }) {
       setIsSubmitting(true);
       
       try {
-         await applyToOffer(userId, currentOffer.id, motivation);
+         await applyToOffer(id, currentOffer.id, motivation);
          setMessage({ text: "Application submitted successfully!", type: "success" });
          
          // Fermer la modale après un court délai pour permettre à l'utilisateur de voir le message de succès

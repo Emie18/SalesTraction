@@ -1,11 +1,13 @@
-/* Tinder Cards Styling */
-.tin_centre{
-width: 100vw;
-height: 100vh;
-display: flex;
-align-items: center;
-justify-content: center;
+/* Centrage global */
+.tin_centre {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* Conteneur des cartes */
 .Tinder_container {
   width: 100%;
   max-width: 350px;
@@ -18,6 +20,7 @@ justify-content: center;
   align-items: center;
 }
 
+/* Carte principale */
 .profil_tinder {
   position: absolute;
   width: 100%;
@@ -35,33 +38,145 @@ justify-content: center;
   will-change: transform;
 }
 
-/* Stacking cards with offset - Last card on top, first on bottom */
-.profil_tinder:nth-child(1) {
-  z-index: 1;
-  transform: translateY(-40px) ;
+/* Pile animée : effet "stack" automatique */
+.Tinder_container .profil_tinder {
+  transform: translateY(calc(var(--index, 0) * -10px)) scale(calc(1 - var(--index, 0) * 0.02));
+  z-index: calc(100 - var(--index, 0));
 }
 
-.profil_tinder:nth-child(2) {
-  z-index: 2;
-  transform: translateY(-30px) ;
+/* Ajout automatique de la variable CSS --index en JS */
+.profil_tinder.shift-up {
+  animation: shiftUp 0.3s forwards;
 }
 
-.profil_tinder:nth-child(3) {
-  z-index: 3;
-  transform: translateY(-20px) ;
+/* Swipes gauche/droite */
+.profil_tinder.swipe-left {
+  animation: swipeLeft 0.5s forwards;
 }
 
-.profil_tinder:nth-child(4) {
-  z-index: 4;
-  transform: translateY(-10px) ;
+.profil_tinder.swipe-right {
+  animation: swipeRight 0.5s forwards;
 }
 
-.profil_tinder:nth-last-child(1) {
-  z-index: 5;
-  transform: translateY(0) ;
+@keyframes swipeLeft {
+  to {
+    transform: translateX(-200%) rotate(-20deg);
+    opacity: 0;
+  }
 }
 
-/* Card content styling */
+@keyframes swipeRight {
+  to {
+    transform: translateX(200%) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+/* Remontée des cartes */
+@keyframes shiftUp {
+  from {
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    transform: translateY(0px) scale(1);
+  }
+}
+
+/* Effet glisser */
+.profil_tinder.dragging {
+  cursor: grabbing;
+}
+
+/* Like/Nope - bulles */
+.action-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.like-indicator {
+  background-color: rgba(76, 175, 80, 0.6);
+}
+
+.nope-indicator {
+  background-color: rgba(244, 67, 54, 0.6);
+}
+
+.profil_tinder.swiping-left .nope-indicator {
+  opacity: 1;
+}
+
+.profil_tinder.swiping-right .like-indicator {
+  opacity: 1;
+}
+
+/* Icône cœur */
+.like-icon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.like-icon::before, 
+.like-icon::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  width: 25px;
+  height: 40px;
+  border-radius: 50px 50px 0 0;
+  background: white;
+}
+
+.like-icon::before {
+  left: 25px;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+
+.like-icon::after {
+  left: 0;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
+
+/* Icône croix */
+.nope-icon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.nope-icon::before,
+.nope-icon::after {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: 0;
+  width: 50px;
+  height: 4px;
+  background: white;
+}
+
+.nope-icon::before {
+  transform: rotate(45deg);
+}
+
+.nope-icon::after {
+  transform: rotate(-45deg);
+}
+
+/* Contenu interne */
 .img_title {
   display: flex;
   align-items: center;
@@ -99,127 +214,9 @@ justify-content: center;
   margin-right: 10px;
 }
 
-/* Like and Nope indicators - Replaced with circular icons */
-.action-indicator {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 10;
-}
-
-.like-indicator {
-  background-color: rgba(76, 175, 80, 0.6);
-}
-
-.nope-indicator {
-  background-color: rgba(244, 67, 54, 0.6);
-}
-
-/* Heart icon for Like */
-.like-icon {
-  position: relative;
-  width: 50px;
-  height: 50px;
-}
-
-.like-icon::before, 
-.like-icon::after {
-  content: '';
-  position: absolute;
-  top: 10px;
-  width: 25px;
-  height: 40px;
-  border-radius: 50px 50px 0 0;
-  background: white;
-}
-
-.like-icon::before {
-  left: 25px;
-  transform: rotate(-45deg);
-  transform-origin: 0 100%;
-}
-
-.like-icon::after {
-  left: 0;
-  transform: rotate(45deg);
-  transform-origin: 100% 100%;
-}
-
-/* X icon for Nope */
-.nope-icon {
-  position: relative;
-  width: 50px;
-  height: 50px;
-}
-
-.nope-icon::before,
-.nope-icon::after {
-  content: '';
-  position: absolute;
-  top: 24px;
-  left: 0;
-  width: 50px;
-  height: 4px;
-  background: white;
-}
-
-.nope-icon::before {
-  transform: rotate(45deg);
-}
-
-.nope-icon::after {
-  transform: rotate(-45deg);
-}
-
-/* Show indicators when swiping */
-.profil_tinder.swiping-left .nope-indicator {
-  opacity: 1;
-}
-
-.profil_tinder.swiping-right .like-indicator {
-  opacity: 1;
-}
-
-/* Animation classes for swipe actions */
-.profil_tinder.swipe-left {
-  animation: swipeLeft 0.5s forwards;
-}
-
-.profil_tinder.swipe-right {
-  animation: swipeRight 0.5s forwards;
-}
-
-@keyframes swipeLeft {
-  to {
-    transform: translateX(-200%) rotate(-20deg);
-    opacity: 0;
-  }
-}
-
-@keyframes swipeRight {
-  to {
-    transform: translateX(200%) rotate(20deg);
-    opacity: 0;
-  }
-}
-
-/* When grabbing/dragging */
-.profil_tinder.dragging {
-  cursor: grabbing;
-}
-
-/* No students message */
+/* Message de fin */
 .no-students-message {
-    z-index: -1;
+  z-index: -1;
   text-align: center;
   width: 80%;
 }
@@ -234,6 +231,7 @@ justify-content: center;
   font-size: 16px;
   color: var(--text);
 }
+
 
 /* Add these styles to your tinder.css file */
 

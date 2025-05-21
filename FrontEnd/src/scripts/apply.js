@@ -11,11 +11,11 @@ export async function applyToOffer(studentId, offerId, motivation) {
   
   // Préparation des données pour le body de la requête
   const bodyData = {
-    student: studentId,
-    offer: offerId,
+    student: parseInt(studentId),
+    offer: parseInt(offerId),
     motivation: motivation
   };
-  
+  console.log(bodyData);
   try {
     // Envoi de la requête POST
     const response = await fetch(url, {
