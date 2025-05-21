@@ -27,13 +27,20 @@ exports.like = async (req, res) => {
         const id_startup        = from_is_student ? to : from;
         const liked_by_startup  = !from_is_student; // true if startup is the liker
 
+        //get true ids
+        const startup = await StartUp.findOne({ where : { id_account : id_startup }});
+        const student = await Student.findOne({ where : { id_account : id_student }});
+
+        if(!startup) return res.status(500).json({error: "could not fetch startup"});
+        if(!student) return res.status(500).json({error: "could not fetch student"});
+
         // Insert (or get) the like + test for match
         const [account_match, created] = await AccountMatch.findOrCreate({
-            where: { id_student, id_startup, liked_by_startup }
+            where: { id_student: student.id, id_startup: startup.id, liked_by_startup: liked_by_startup }
         });
     
         const match = await AccountMatch.findOne({
-            where: { id_student, id_startup, liked_by_startup: !liked_by_startup }
+            where: { id_student: student.id, id_startup: startup.id, liked_by_startup: !liked_by_startup }
         });
 
         return res.status(200).json({ liked: created, isMatch: !!match });
