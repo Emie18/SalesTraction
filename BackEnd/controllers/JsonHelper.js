@@ -3,10 +3,6 @@ function json_student(student){
     const languages = student.language_students
     const sector = account.account_sectors
 
-    console.log(JSON.stringify(account))
-    console.log(JSON.stringify(languages))
-    console.log(JSON.stringify(sector))
-
     if(!account || !languages || !sector) return null
 
     return {
