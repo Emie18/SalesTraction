@@ -34,8 +34,14 @@ function StartupOffer() {
    const handleDeleteOffer = async (offerId) => {
 if (window.confirm("Êtes-vous sûr de vouloir supprimer cette offre ?")) {
       try {
-         const response = await fetch(`http://localhost:3000/offer/delete?id=${offerId}`, {
-            method: 'DELETE',
+         const offerData = {
+                offerId
+            };
+
+         const response = await fetch(`http://localhost:3000/offer/delete`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(offerData)
          });
 
          if (!response.ok) {

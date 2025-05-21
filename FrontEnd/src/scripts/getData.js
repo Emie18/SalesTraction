@@ -190,3 +190,23 @@ export const getOffers_for_Startup = async ({ id } = {}) => {
     return [];
   }
 };
+
+export const getTinder = async ({ id } = {}) => {
+  try {
+
+    const url =`http://localhost:3000/match/suggestion/${id}`
+
+    const response = await fetch(url);
+    console.log(url);
+
+    if (!response.ok) {
+      throw new Error("Error when we get the response");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error in getTinder :", error);
+    return [];
+  }
+};
