@@ -1,12 +1,21 @@
 /* Tinder Cards Styling */
+.tin_centre{
+width: 100vw;
+height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+}
 .Tinder_container {
   width: 100%;
   max-width: 350px;
   height: 500px;
   position: relative;
-  margin: 3em auto;
   padding: 20px;
   perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .profil_tinder {
@@ -26,34 +35,30 @@
   will-change: transform;
 }
 
-/* Stacking cards with offset */
+/* Stacking cards with offset - Last card on top, first on bottom */
 .profil_tinder:nth-child(1) {
-  z-index: 5;
+  z-index: 1;
+  transform: translateY(-40px) ;
 }
 
 .profil_tinder:nth-child(2) {
-  z-index: 4;
-  transform: translateY(-10px) scale(0.98);
-  
+  z-index: 2;
+  transform: translateY(-30px) ;
 }
 
 .profil_tinder:nth-child(3) {
   z-index: 3;
-  transform: translateY(-20px) scale(0.96);
-  
+  transform: translateY(-20px) ;
 }
 
 .profil_tinder:nth-child(4) {
-  z-index: 2;
-  transform: translateY(-30px) scale(0.94);
-  
+  z-index: 4;
+  transform: translateY(-10px) ;
 }
 
-.profil_tinder:nth-child(n+5) {
-  z-index: 1;
-  transform: translateY(-40px) scale(0.92);
-
-  pointer-events: none;
+.profil_tinder:nth-last-child(1) {
+  z-index: 5;
+  transform: translateY(0) ;
 }
 
 /* Card content styling */
@@ -94,44 +99,93 @@
   margin-right: 10px;
 }
 
-/* Like and Nope indicators */
-.profil_tinder::before,
-.profil_tinder::after {
-  content: '';
+/* Like and Nope indicators - Replaced with circular icons */
+.action-indicator {
   position: absolute;
-  top: 50px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 32px;
-  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
-  transform: rotate(-30deg);
-  border: 4px solid;
   z-index: 10;
 }
 
-.profil_tinder::before {
-  content: 'LIKE';
-  left: 20px;
-  top: 50%;
-  color: #4CAF50;
-  border-color: #4CAF50;
+.like-indicator {
+  background-color: rgba(76, 175, 80, 0.6);
 }
 
-.profil_tinder::after {
-  content: 'NOPE';
-  right: 20px;
-  color: #F44336;
-  border-color: #F44336;
+.nope-indicator {
+  background-color: rgba(244, 67, 54, 0.6);
+}
+
+/* Heart icon for Like */
+.like-icon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.like-icon::before, 
+.like-icon::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  width: 25px;
+  height: 40px;
+  border-radius: 50px 50px 0 0;
+  background: white;
+}
+
+.like-icon::before {
+  left: 25px;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+
+.like-icon::after {
+  left: 0;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
+
+/* X icon for Nope */
+.nope-icon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.nope-icon::before,
+.nope-icon::after {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: 0;
+  width: 50px;
+  height: 4px;
+  background: white;
+}
+
+.nope-icon::before {
+  transform: rotate(45deg);
+}
+
+.nope-icon::after {
+  transform: rotate(-45deg);
 }
 
 /* Show indicators when swiping */
-.profil_tinder.swiping-left::after {
+.profil_tinder.swiping-left .nope-indicator {
   opacity: 1;
 }
 
-.profil_tinder.swiping-right::before {
+.profil_tinder.swiping-right .like-indicator {
   opacity: 1;
 }
 
@@ -161,4 +215,128 @@
 /* When grabbing/dragging */
 .profil_tinder.dragging {
   cursor: grabbing;
+}
+
+/* No students message */
+.no-students-message {
+    z-index: -1;
+  text-align: center;
+  width: 80%;
+}
+
+.no-students-message h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.no-students-message p {
+  font-size: 16px;
+  color: var(--text);
+}
+
+/* Add these styles to your tinder.css file */
+
+/* Modal overlay - covers the entire screen */
+.motivation-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal container */
+.motivation-modal {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Modal header */
+.motivation-modal h3 {
+  font-size: 20px;
+  margin-top: 0;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.motivation-modal p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Textarea styles */
+.motivation-modal textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 16px;
+  margin-bottom: 20px;
+  min-height: 120px;
+}
+
+.motivation-modal textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+/* Button container */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Button styles */
+.motivation-modal button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #e5e5e5;
+}
+
+.submit-btn {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #3a7bc8;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { getRegions, getModes, getOffers, getCommissions, getSectors } from "../scripts/getData"
 import ContainerOffer from "../components/ContainerOffer"
 import Profil from "../components/Profil"
+import TinderS from "../components/TinderS"
 function StudentUpMainPage() {
   const [page, setPage] = useState(1)
   const [regions, setRegions] = useState([]);
@@ -45,7 +46,9 @@ function StudentUpMainPage() {
       case 2:
         return <div>Page 2: Messages</div>
       case 3:
-        return <div>Page 3: Match</div>
+        return <div>
+          <TinderS />
+        </div>
       case 4:
         return (
     <div>

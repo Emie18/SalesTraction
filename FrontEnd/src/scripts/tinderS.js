@@ -1,10 +1,11 @@
 /**
- * Tinder Card Interaction Script
+ * Tinder Card Interaction Script with Motivation Modal
  * This script adds dragging/swiping functionality to the tinder cards
+ * with added support for a motivation form modal
  */
 
 // Add this script at the end of your component or in a separate file to import
-export function initTinderCards() {
+export function initTinderCardsWithModal(showLikeModalCallback) {
   const cards = document.querySelectorAll('.profil_tinder');
   const container = document.querySelector('.Tinder_container');
   let activeCard = null;
@@ -43,40 +44,20 @@ export function initTinderCards() {
   }
 
   // Function to handle the Like action
-function handleLike(card) {
-  const likedId = parseInt(card.getAttribute('data-id'));
-  console.log(likedId);
-  const session = JSON.parse(localStorage.getItem('session'));
-   const id = session?.id;
-   console.log(id);
-  // Appel POST vers l'API locale
-  fetch('http://localhost:3000/match/like', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ from:id, to:likedId }),
-  })
-  .then((res) => {
-    if (!res.ok) {
-      throw new Error(`Erreur lors du like: ${res.status}`);
-    }
-    return res.json();
-  })
-  .then((data) => {
-    console.log('Like enregistré:', data);
-  })
-  .catch((err) => {
-    console.error('Erreur API like:', err);
-  });
-}
-
+  function handleLike(card) {
+    const likedId = card.getAttribute('data-id');
+    // Show motivation modal instead of immediately liking
+    showLikeModalCallback(likedId);
+    
+    // The actual like submission will be handled by the modal's submit button
+    // This prevents the card from being removed immediately
+    return false; // Return false to indicate we're handling this differently
+  }
 
   // Function to handle the Nope action
   function handleNope(card) {
     console.log('Noped:', card.getAttribute('data-id'));
-    // Here you would add API call to save the "nope" action
-    // For example: saveNopeAction(card.getAttribute('key'));
+    return true; // Return true to allow normal processing (card removal)
   }
 
   cards.forEach(card => {
@@ -89,7 +70,6 @@ function handleLike(card) {
     function startDrag(e) {
       activeCard = card;
       card.classList.add('dragging');
-
       
       // Get initial position
       initialX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
@@ -137,23 +117,35 @@ function handleLike(card) {
       // Determine if swipe distance is enough to register as action
       if (deltaX > 100) {
         // Swipe Right - Like
-        activeCard.classList.add('swipe-right');
-        handleLike(activeCard);
-        setTimeout(() => {
-          if (activeCard && activeCard.parentNode) {
-          activeCard.remove();
-          updateCardsPosition();
-          }
-        }, 500);
+        activeCard.classList.add('swiping-right');
+        const shouldRemove = handleLike(activeCard);
+        
+        // Only remove the card if handleLike returns true
+        // In our case, handleLike returns false to delay removal until after modal
+        if (shouldRemove) {
+          setTimeout(() => {
+            if (activeCard && activeCard.parentNode) {
+              activeCard.remove();
+              updateCardsPosition();
+            }
+          }, 500);
+        } else {
+          // Reset the card position since we're showing a modal instead
+          setTimeout(() => {
+            activeCard.classList.remove('swiping-right');
+            activeCard.style.transform = 'translateY(0)';
+          }, 300);
+        }
+        
       } else if (deltaX < -100) {
         // Swipe Left - Nope
         activeCard.classList.add('swipe-left');
         handleNope(activeCard);
         setTimeout(() => {
-           if (activeCard && activeCard.parentNode) {
-          activeCard.remove();
-          updateCardsPosition();
-           }
+          if (activeCard && activeCard.parentNode) {
+            activeCard.remove();
+            updateCardsPosition();
+          }
         }, 500);
       } else {
         // Return card to original position

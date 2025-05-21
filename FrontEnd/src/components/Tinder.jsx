@@ -31,9 +31,20 @@ function Tinder() {
    }, [student]);
 
    return (
+      <div className="tin_centre">
       <div className="Tinder_container">
          {student.map((s) => (
-            <div key={s.id} className="profil_tinder">
+            <div key={s.account_id} className="profil_tinder" data-id={s.account_id}>
+               {/* Like indicator - Green circle with heart */}
+               <div className="action-indicator like-indicator">
+                  <div className="like-icon"></div>
+               </div>
+               
+               {/* Nope indicator - Red circle with X */}
+               <div className="action-indicator nope-indicator">
+                  <div className="nope-icon"></div>
+               </div>
+               
                <div className="img_title">
                   <img src={s.image ? s.image : "/no_image.jpg"} alt={s.name} />
                   <div>
@@ -52,7 +63,13 @@ function Tinder() {
                   <div> <img src="/dispo.svg" alt="Availability" /><p>{s.disponibility}</p></div>
                </div>
             </div>
+
          ))}
+         <div className="no-students-message">
+               <h3>No more students</h3>
+               <p>There are no more students available at the moment. Check back later!</p>
+         </div>
+      </div>
       </div>
    )
 }
