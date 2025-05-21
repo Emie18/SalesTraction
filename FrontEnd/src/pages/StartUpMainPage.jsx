@@ -1,6 +1,6 @@
 
 import { useState } from "react"
-import Header from "../components/header"
+import Header from "../components/Header"
 import ProfilS from "../components/ProfilS"
 import Navigation2 from "../components/Navigation2"
 import StartupOffer from "../components/StartupOffer"

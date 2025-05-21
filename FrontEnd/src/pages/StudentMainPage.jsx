@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import Navigation from "../components/Navigation"
-import Header from "../components/header"
+import Header from "../components/Header"
 import "../styles/maketplace.css"
 import Filter from "../components/Filter"
 import { useNavigate } from "react-router-dom"
