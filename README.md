@@ -9,7 +9,7 @@ GET /data/schools => school list
 GET /data/states => states list
 
 POST /account/login => check login with a pass and an email : return account data
-GET /account/delete?id=0 => delete the account with id 0
+POST /account/delete => delete an account
 
 POST /startup/create => create a new start up account
 GET /startup/all => get all startup
