@@ -72,7 +72,7 @@ exports.get = async (req, res) => {
             res.status(500).json({error: "Account is not a student"});
         }
 
-        res.status(200).json(JsonHelper.json_student(student));
+        res.status(200).json(JsonHelper.student(student));
     }catch(error){
         res.status(500).json({error : error.message});
     }
