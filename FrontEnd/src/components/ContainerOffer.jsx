@@ -7,7 +7,7 @@ function ContainerOffer({ offers }) {
    const [currentOffer, setCurrentOffer] = useState(null);
    const [isSubmitting, setIsSubmitting] = useState(false);
    const [message, setMessage] = useState({ text: "", type: "" });
-const session = JSON.parse(localStorage.getItem('session'));
+   const session = JSON.parse(localStorage.getItem('session'));
    const id = session?.id;
    // Fonction pour ouvrir la modale
    const openModal = (offer) => {
@@ -28,23 +28,26 @@ const session = JSON.parse(localStorage.getItem('session'));
    // Fonction pour gérer la soumission
    const handleSubmit = async (e) => {
       e.preventDefault();
-      
+
       if (!motivation.trim()) {
          setMessage({ text: "Please enter your motivation", type: "error" });
          return;
       }
-
       setIsSubmitting(true);
-      
+
       try {
-         await applyToOffer(id, currentOffer.id, motivation);
-         setMessage({ text: "Application submitted successfully!", type: "success" });
-         
+  
+         const result = await applyToOffer(id, currentOffer.id, motivation);
+         console.log(result); // Affichera { success: true }
+
+         setMessage({ text: "Application submitted successfully! \n This window will close in 2 seconds", type: "success" });
+
          // Fermer la modale après un court délai pour permettre à l'utilisateur de voir le message de succès
          setTimeout(() => {
             closeModal();
          }, 2000);
       } catch (error) {
+         console.log("errer");
          setMessage({ text: "Failed to submit application. Please try again.", type: "error" });
       } finally {
          setIsSubmitting(false);
@@ -85,7 +88,7 @@ const session = JSON.parse(localStorage.getItem('session'));
                <div className="modal-content">
                   <h2>Apply to {currentOffer.name}</h2>
                   <p>Position at {currentOffer.startup.name}</p>
-                  
+
                   <form onSubmit={handleSubmit}>
                      <div className="form-group">
                         <label htmlFor="motivation">Your Motivation:</label>
@@ -98,24 +101,24 @@ const session = JSON.parse(localStorage.getItem('session'));
                            disabled={isSubmitting}
                         />
                      </div>
-                     
+
                      {message.text && (
                         <div className={`message ${message.type}`}>
                            {message.text}
                         </div>
                      )}
-                     
+
                      <div className="modal-buttons">
-                        <button 
-                           type="button" 
-                           onClick={closeModal} 
+                        <button
+                           type="button"
+                           onClick={closeModal}
                            disabled={isSubmitting}
                            className="cancel-button"
                         >
                            Cancel
                         </button>
-                        <button 
-                           type="submit" 
+                        <button
+                           type="submit"
                            disabled={isSubmitting}
                            className="submit-button"
                         >

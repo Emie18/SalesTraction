@@ -1,23 +1,15 @@
-/**
- * Fonction pour postuler à une offre
- * @param {number} studentId - ID du compte étudiant
- * @param {number} offerId - ID de l'offre
- * @param {string} motivation - Motivation saisie par l'étudiant
- * @returns {Promise<Object>} - La réponse de l'API
- */
 export async function applyToOffer(studentId, offerId, motivation) {
-  // URL de l'endpoint pour postuler
   const url = 'http://localhost:3000/offer/apply';
-  
-  // Préparation des données pour le body de la requête
+
   const bodyData = {
     student: parseInt(studentId),
     offer: parseInt(offerId),
     motivation: motivation
   };
-  console.log(bodyData);
+
+  console.log("Données envoyées:", bodyData);
+
   try {
-    // Envoi de la requête POST
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -25,17 +17,17 @@ export async function applyToOffer(studentId, offerId, motivation) {
       },
       body: JSON.stringify(bodyData)
     });
-    
-    // Vérification si la requête a réussi
+console.log("Réponse OK, prêt à retourner");
+    console.log("Status réponse:", response.status);
+
     if (!response.ok) {
       throw new Error(`Erreur HTTP: ${response.status}`);
     }
-    
-    // Conversion de la réponse en JSON
-    const data = await response.json();
-    return data;
+
+    // ✅ Ne pas parser le JSON si on sait que l'API ne renvoie rien
+    return;
   } catch (error) {
-    console.error('Erreur lors de la postulation:', error);
+    console.error('Erreur dans applyToOffer:', error);
     throw error;
   }
 }
