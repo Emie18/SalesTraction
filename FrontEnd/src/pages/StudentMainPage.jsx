@@ -8,6 +8,7 @@ import { getRegions, getModes, getOffers, getCommissions, getSectors } from "../
 import ContainerOffer from "../components/ContainerOffer"
 import Profil from "../components/Profil"
 import TinderS from "../components/TinderS"
+import ItsAmatch from "../components/ItsAmatch"
 function StudentUpMainPage() {
   const [page, setPage] = useState(1)
   const [regions, setRegions] = useState([]);
@@ -44,7 +45,9 @@ function StudentUpMainPage() {
           <Header />
         </div>
       case 2:
-        return <div>Page 2: Messages</div>
+        return <div>
+          <ItsAmatch match={"ee"}/>
+          </div>
       case 3:
         return <div>
           <TinderS />

@@ -5,6 +5,7 @@ function Tinder() {
   const [students, setStudents] = useState([]);
   const session = JSON.parse(localStorage.getItem("session"));
   const id = session?.id;
+  const[ismatch,setIsmatch]=useState(false);
 
   const hasRun = useRef(false);
 
@@ -51,14 +52,13 @@ function Tinder() {
     // Envoie un like à l'API
     function handleLike(card) {
       const likedId = parseInt(card.getAttribute("data-id"));
-      
       fetch("http://localhost:3000/match/like", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ from: id, to: likedId }),
       })
         .then(res => res.json())
-        .then(data => console.log("Liked:", data))
+        .then(data => setIsmatch(data.ismatch))
         .catch(err => console.error("Like error:", err));
     }
 
@@ -171,12 +171,14 @@ function Tinder() {
           </div>
         ))}
 
-        
+
           <div className="no-students-message">
             <h3>No more students</h3>
             <p>There are no more students available at the moment. Check back later!</p>
           </div>
-        
+          {ismatch && 
+          <p>match</p>}
+
       </div>
     </div>
   );

@@ -1,45 +1,139 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "../styles/tinder.css";
-import { getTinder } from "../scripts/getData";
-import { initTinderCardsWithModal } from "../scripts/tinderS";
 
 function TinderS() {
   const [startup, setStartup] = useState([]);
+  const [ismatch, setIsmatch] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [motivationText, setMotivationText] = useState("");
   const [currentCardId, setCurrentCardId] = useState(null);
   
-  const session = JSON.parse(localStorage.getItem('session'));
+  const session = JSON.parse(localStorage.getItem("session"));
   const id = session?.id;
-  
-  useEffect(() => {
-    const fetchStudent = async () => {
-      const data = await getTinder({ id });
-      if (data) setStartup(data);
-      console.log(data);
-    };
-    
-    if (id) {
-      fetchStudent();
-    }
-  }, []);
+  const hasRun = useRef(false);
 
-  // Initialize the tinder card interactions after the component has rendered
+  // Récupère les suggestions à afficher
   useEffect(() => {
-    if (startup.length > 0) {
-      // Small timeout to ensure DOM is fully rendered
-      setTimeout(() => {
-        initTinderCardsWithModal(showLikeModal);
-      }, 100);
-    }
+    if (!id || hasRun.current) return;
+    hasRun.current = true;
+    
+    fetch(`http://localhost:3000/match/suggestion/${id}`)
+      .then(res => res.json())
+      .then(data => { setStartup(data); })
+  }, [id]);
+
+  useEffect(() => {
+    if (startup.length > 0) setTimeout(() => initTinderCards(), 100);
   }, [startup]);
 
-  // Function to show the motivation modal
-  const showLikeModal = (cardId) => {
-    setCurrentCardId(cardId);
-    setMotivationText("");
-    setShowModal(true);
-  };
+  function initTinderCards() {
+    const cards = document.querySelectorAll(".profil_tinder");
+
+    let activeCard = null;
+    let initialX = 0;
+    let currentX = 0;
+    let moved = false;
+
+    updateCardsPosition(); // Position initiale des cartes
+
+    // Met à jour la position des cartes restantes avec effet visuel
+    function updateCardsPosition() {
+      const remaining = document.querySelectorAll(".profil_tinder");
+      if(remaining.length > 0){
+        cards.forEach(card => { card.removeEventListener("mousedown", startDrag) })
+        remaining[0].addEventListener("mousedown", startDrag);
+      }
+
+      remaining.forEach((card, index) => {
+        const z = remaining.length - index;
+        card.style.zIndex = z;
+        card.style.transform = `translateY(${-10 * index}px)`; // effet d'empilement en Y
+      });
+    }
+
+    // Envoie un like à l'API
+    function handleLike(card) {
+      const likedId = parseInt(card.getAttribute("data-id"));
+      setCurrentCardId(likedId);
+      setShowModal(true);
+    }
+
+    // Gestion du "nope" (non intéressé)
+    function handleNope(card) {
+      console.log("Noped:", card.getAttribute("data-id"));
+    }
+
+    // Début du drag : prépare les valeurs de base
+    function startDrag(e) {
+      activeCard = e.currentTarget;
+      activeCard.classList.add("dragging");
+      initialX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+      currentX = initialX;
+      moved = false;
+
+      document.addEventListener("mousemove", drag);
+      document.addEventListener("mouseup", endDrag);
+    }
+
+    // Pendant le drag : calcule la translation
+    function drag(e) {
+      if (!activeCard) return;
+      currentX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
+      const deltaX = currentX - initialX;
+
+      if (Math.abs(deltaX) > 50) moved = true;
+
+      activeCard.style.transform = `translateX(${deltaX}px) rotate(${deltaX * 0.05}deg)`;
+      activeCard.classList.toggle("swiping-right", deltaX > 50);
+      activeCard.classList.toggle("swiping-left", deltaX < -50);
+    }
+
+    // Fin du drag : décide si la carte est swipée ou revient à sa place
+    function endDrag() {
+      if (!activeCard) return;
+      const deltaX = currentX - initialX;
+
+      // Si l'utilisateur a cliqué sans bouger la souris, on ne fait rien
+      if (!moved) {
+        activeCard.style.transform = `translateY(0px)`; // revient exactement à sa place
+        activeCard.classList.remove("dragging", "swiping-left", "swiping-right");
+        activeCard = null;
+        cleanup();
+        return
+      }
+
+      // Swipe à droite
+      if (deltaX > 100) {
+        activeCard.classList.add("swipe-right");
+        handleLike(activeCard);
+        activeCard.style.transform = `translateX(0) translateY(0) rotate(0)`;
+        
+      } else if (deltaX < -100) { // Swipe à gauche
+        activeCard.classList.add("swipe-left");
+        handleNope(activeCard);
+
+        setTimeout(() => { 
+          if(activeCard){
+            activeCard.remove()
+            activeCard = null;
+          }
+          updateCardsPosition()
+        }, 300);
+        
+      } else { // Pas assez de mouvement : retour à la position initiale
+        activeCard.style.transform = `translateX(0) translateY(0) rotate(0)`;
+      }
+
+      activeCard.classList.remove("dragging", "swiping-left", "swiping-right");
+      cleanup();
+    }
+
+    // Supprime les listeners pour éviter les fuites mémoire
+    function cleanup() {
+      document.removeEventListener("mousemove", drag);
+      document.removeEventListener("mouseup", endDrag);
+    }
+  }
 
   // Function to handle form submission
   const handleSubmitMotivation = () => {
@@ -49,128 +143,73 @@ function TinderS() {
     }
     
     // Process the like with motivation text
-    submitLike(currentCardId, motivationText);
-    setShowModal(false);
-    
-    // Find and remove the card from DOM
-    const card = document.querySelector(`.profil_tinder[data-id="${currentCardId}"]`);
-    if (card) {
-      card.classList.add('swipe-right');
-      setTimeout(() => {
-        if (card && card.parentNode) {
-          card.remove();
-          updateCardsPosition();
-        }
-      }, 500);
-    }
-  };
-
-  // Function to submit the like and apply with motivation
-  const submitLike = (likedId, motivation) => {
-    console.log('Liked:', likedId, 'Motivation:', motivation);
-    const session = JSON.parse(localStorage.getItem('session'));
-    const id = session?.id;
-    
+    const likedId = currentCardId;
+    console.log(JSON.stringify({ from: id, to: likedId }));
     // First API call: Like the account
-    fetch('http://localhost:3000/match/like', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        from: id, 
-        to: parseInt(likedId) 
-      }),
+    fetch("http://localhost:3000/match/like", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ from: id, to: likedId }),
     })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Erreur lors du like: ${res.status}`);
-      }
-      return res.json();
-    })
-    .then((data) => {
-      console.log('Like enregistré:', data);
+    .then(res => res.json())
+    .then(data => {
+      setIsmatch(data.ismatch);
       
       // Second API call: Apply to the offer with motivation
-      return fetch('http://localhost:3000/offer/apply', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      return fetch("http://localhost:3000/offer/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           student: id, 
-          offer: parseInt(likedId), 
-          motivation: motivation 
+          offer: likedId, 
+          motivation: motivationText 
         }),
       });
     })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Erreur lors de l'application: ${res.status}`);
-      }
-      return res.json();
+    .then(res => res.json())
+    .then(data => {
+      console.log("Application avec motivation enregistrée:", data);
     })
-    .then((data) => {
-      console.log('Application avec motivation enregistrée:', data);
-    })
-    .catch((err) => {
-      console.error('Erreur API:', err);
-    });
-  };
-
-  // Helper to update cards position
-  const updateCardsPosition = () => {
-    const remainingCardElements = document.querySelectorAll('.profil_tinder');
-    const remainingCards = remainingCardElements.length;
+    .catch(err => console.error("Erreur API:", err));
     
-    // Update the position for the remaining cards
-    remainingCardElements.forEach((card, index) => {
-      // Calculate the inverse index to ensure last card is on top
-      const inverseIndex = remainingCards - index - 1;
-      
-      // Set z-index and transform for proper stacking
-      if (inverseIndex === 0) { // Bottom card
-        card.style.zIndex = 1;
-        card.style.transform = `translateY(-40px) `;
-      } else if (inverseIndex === 1) {
-        card.style.zIndex = 2;
-        card.style.transform = `translateY(-30px) `;
-      } else if (inverseIndex === 2) {
-        card.style.zIndex = 3;
-        card.style.transform = `translateY(-20px) `;
-      } else if (inverseIndex === 3) {
-        card.style.zIndex = 4;
-        card.style.transform = `translateY(-10px) `;
-      } else { // Top card
-        card.style.zIndex = 5;
-        card.style.transform = 'translateY(0) ';
-      }
-    });
+    setShowModal(false);
+    
+    // Find and remove the card from DOM
+    const card = document.querySelector(`.profil_tinder[data-id="${likedId}"]`);
+    if (card) {
+      setTimeout(() => { 
+        if(card){
+          card.remove();
+        }
+        const remaining = document.querySelectorAll(".profil_tinder");
+        remaining.forEach((card, index) => {
+          const z = remaining.length - index;
+          card.style.zIndex = z;
+          card.style.transform = `translateY(${-10 * index}px)`;
+        });
+        if(remaining.length > 0){
+          remaining[0].addEventListener("mousedown", function(e) {
+            // Réinitialiser les événements sur la nouvelle carte du dessus
+          });
+        }
+      }, 300);
+    }
   };
 
   return (
     <div className="tin_centre">
       <div className="Tinder_container">
-        {startup.map((s) => (
-          <div key={s.account_id} className="profil_tinder" data-id={s.account_id}>
-            {/* Like indicator - Green circle with heart */}
-            <div className="action-indicator like-indicator">
-              <div className="like-icon"></div>
-            </div>
-            
-            {/* Nope indicator - Red circle with X */}
-            <div className="action-indicator nope-indicator">
-              <div className="nope-icon"></div>
-            </div>
-            
+        {startup.map((s, i) => (
+          <div key={s.id} className="profil_tinder" data-id={s.id} style={{ '--index': i }}>
+            <div className="action-indicator like-indicator"><div className="like-icon"></div></div>
+            <div className="action-indicator nope-indicator"><div className="nope-icon"></div></div>
             <div className="img_title">
-              <img src={s.image ? s.image : "/no_image.jpg"} alt={s.name} />
+              <img src={s.image || "/no_image.jpg"} alt={s.name} />
               <div>
                 <h3 className="name">{s.name}</h3>
                 <p>{s.product}</p>
               </div>
             </div>
-            
             <div className="line"></div>
             <div className="info">
               <div>
@@ -179,17 +218,20 @@ function TinderS() {
               <div><img src="/product.svg" alt="product" /><p>{s.product}</p></div>
               <div><img src="/range.svg" alt="range" /><p>{s.range}</p></div>
               <div><img src="/person.svg" alt="person" /><p>{s.client}</p></div>
-              <div><img src="/sector.svg" alt="sector" /><p>{s.startup.sector.join(", ")}</p></div>
-              <div><img src="/location.svg" alt="location" /><p>{s.startup.region}</p></div>
+              <div><img src="/sector.svg" alt="sector" /><p>{s.startup?.sector?.join(", ")}</p></div>
+              <div><img src="/location.svg" alt="location" /><p>{s.startup?.region}</p></div>
               <div><img src="/home_work.svg" alt="work mode" /><p>{s.work_mode}</p></div>
               <div><img src="/commission.svg" alt="commission" /><p>{s.commission}</p></div>
             </div>
           </div>
         ))}
+
         <div className="no-students-message">
           <h3>No more Offers</h3>
           <p>There are no more Offers available at the moment. Check back later!</p>
         </div>
+        
+        {ismatch && <p>match</p>}
       </div>
       
       {/* Motivation Modal */}
@@ -208,10 +250,18 @@ function TinderS() {
               />
               
               <div className="modal-buttons">
-                <button type="button" className="cancel-btn" onClick={() => setShowModal(false)}>
+                <button 
+                  type="button" 
+                  className="cancel-btn" 
+                  onClick={() => setShowModal(false)}
+                >
                   Cancel
                 </button>
-                <button type="button" className="submit-btn" onClick={handleSubmitMotivation}>
+                <button 
+                  type="button" 
+                  className="submit-btn" 
+                  onClick={handleSubmitMotivation}
+                >
                   Submit
                 </button>
               </div>
