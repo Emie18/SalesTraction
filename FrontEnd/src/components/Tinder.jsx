@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "../styles/tinder.css";
 
 function Tinder() {
@@ -6,16 +6,21 @@ function Tinder() {
   const session = JSON.parse(localStorage.getItem("session"));
   const id = session?.id;
 
+  const hasRun = useRef(false);
+
   // Récupère les suggestions à afficher
   useEffect(() => {
-    if (!id) return;
+    if (!id || hasRun.current) return;
+    hasRun.current = true
+    
     fetch(`http://localhost:3000/match/suggestion/${id}`)
       .then(res => res.json())
-      .then(data => {
-        setStudents(data);
-        setTimeout(() => initTinderCards(), 100);
-      });
+      .then(data => { setStudents(data) })
   }, [id]);
+
+  useEffect(() => {
+    if (students.length > 0) setTimeout(() => initTinderCards(), 100);
+  }, [students]);
 
   function initTinderCards() {
     const cards = document.querySelectorAll(".profil_tinder");
@@ -25,9 +30,17 @@ function Tinder() {
     let currentX = 0;
     let moved = false;
 
+    updateCardsPosition(); // Position initiale des cartes
+
+
     // Met à jour la position des cartes restantes avec effet visuel
     function updateCardsPosition() {
       const remaining = document.querySelectorAll(".profil_tinder");
+      if(remaining.length > 0){
+        cards.forEach(card => { card.removeEventListener("mousedown", startDrag) })
+        remaining[0].addEventListener("mousedown", startDrag);
+      }
+
       remaining.forEach((card, index) => {
         const z = remaining.length - index;
         card.style.zIndex = z;
@@ -38,6 +51,7 @@ function Tinder() {
     // Envoie un like à l'API
     function handleLike(card) {
       const likedId = parseInt(card.getAttribute("data-id"));
+      
       fetch("http://localhost:3000/match/like", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -63,8 +77,6 @@ function Tinder() {
 
       document.addEventListener("mousemove", drag);
       document.addEventListener("mouseup", endDrag);
-      document.addEventListener("touchmove", drag);
-      document.addEventListener("touchend", endDrag);
     }
 
     // Pendant le drag : calcule la translation
@@ -73,7 +85,7 @@ function Tinder() {
       currentX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
       const deltaX = currentX - initialX;
 
-      if (Math.abs(deltaX) > 5) moved = true;
+      if (Math.abs(deltaX) > 50) moved = true;
 
       activeCard.style.transform = `translateX(${deltaX}px) rotate(${deltaX * 0.05}deg)`;
       activeCard.classList.toggle("swiping-right", deltaX > 50);
@@ -91,34 +103,39 @@ function Tinder() {
         activeCard.classList.remove("dragging", "swiping-left", "swiping-right");
         activeCard = null;
         cleanup();
-        return;
+        return
       }
 
       // Swipe à droite
       if (deltaX > 100) {
         activeCard.classList.add("swipe-right");
         handleLike(activeCard);
-        setTimeout(() => {
-          activeCard.remove();
-          updateCardsPosition();
+
+        setTimeout(() => { 
+          if(activeCard){
+            activeCard.remove()
+            activeCard = null;
+          }
+          updateCardsPosition()
         }, 300);
-      }
-      // Swipe à gauche
-      else if (deltaX < -100) {
+
+      } else if (deltaX < -100) { // Swipe à gauche
         activeCard.classList.add("swipe-left");
         handleNope(activeCard);
-        setTimeout(() => {
-          activeCard.remove();
-          updateCardsPosition();
+
+        setTimeout(() => { 
+          if(activeCard){
+            activeCard.remove()
+            activeCard = null;
+          }
+          updateCardsPosition()
         }, 300);
-      }
-      // Pas assez de mouvement : retour à la position initiale
-      else {
+        
+      } else { // Pas assez de mouvement : retour à la position initiale
         activeCard.style.transform = `translateX(0) translateY(0) rotate(0)`;
       }
 
       activeCard.classList.remove("dragging", "swiping-left", "swiping-right");
-      activeCard = null;
       cleanup();
     }
 
@@ -126,17 +143,9 @@ function Tinder() {
     function cleanup() {
       document.removeEventListener("mousemove", drag);
       document.removeEventListener("mouseup", endDrag);
-      document.removeEventListener("touchmove", drag);
-      document.removeEventListener("touchend", endDrag);
     }
 
-    // Active le drag pour chaque carte
-    cards.forEach(card => {
-      card.addEventListener("mousedown", startDrag);
-      card.addEventListener("touchstart", startDrag);
-    });
-
-    updateCardsPosition(); // Position initiale des cartes
+    
   }
 
   return (
