@@ -5,7 +5,7 @@
  * @param {string} motivation - Motivation saisie par l'étudiant
  * @returns {Promise<Object>} - La réponse de l'API
  */
-async function applyToOffer(studentId, offerId, motivation) {
+export async function applyToOffer(studentId, offerId, motivation) {
   // URL de l'endpoint pour postuler
   const url = 'http://localhost:3000/offer/apply';
   
