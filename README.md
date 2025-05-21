@@ -22,11 +22,11 @@ GET /students/get?id=0 => get the student with the given id, return an error if 
 GET /students/offer/:id => get all register offer from the give, student #TODO
 
 GET /offer/all?name=""&sector=""&region=""&commission=""&mode="" => get all offer with a filter
+GET /offer/applications/:id => See all application of the offer with the given id
 POST /offer/create => create an offer
 POST /offer/update => update offer  
-GET /offer/delete?id="" => delete offer
+POST /offer/delete => delete an offer
 POST /offer/apply => apply to an offer
-GET /offer/applications/:id => See all application of the offer with the given id
 
 POST /match/like => like an account
 GET /match/suggestion/:id => get all suggestions for the account with the given id
@@ -105,5 +105,12 @@ GET /match/suggestion/:id => get all suggestions for the account with the given 
     "student": 0, //ID Account
     "offer": 0, //ID Offer
     "motivation": "<motivation>" // Motivation entered by the Student
+}
+```
+
+### Delete Offer/Acccount
+```json
+{
+    "id": 0, //ID Offer/Acccount
 }
 ```
