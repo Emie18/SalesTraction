@@ -96,28 +96,31 @@ function RegisterPage() {
     }
 
     if (isStudent) {
-      const studentPayload = {
-        name: formData.name,
-        surname: formData.surname,
-        email: formData.email,
-        disponibility: formData.disponibility,
-        description: formData.description,
-        linkedin: formData.linkedin,
-        pass: formData.password,
-        languages: selectedLanguages,
-        school: formData.school,
-        region: formData.region,
-        sector: selectedSectors // Ajout des secteurs sélectionnés
-      };
+      const studentPayload = new FormData();
+
+      // Append all fields
+      studentPayload.append('name', formData.name);
+      studentPayload.append('surname', formData.surname);
+      studentPayload.append('email', formData.email);
+      studentPayload.append('disponibility', formData.disponibility);
+      studentPayload.append('description', formData.description);
+      studentPayload.append('linkedin', formData.linkedin);
+      studentPayload.append('pass', formData.password);
+      studentPayload.append('school', formData.school);
+      studentPayload.append('region', formData.region);
+      studentPayload.append('image', formData.image);
+
+      // Append arrays
+      selectedLanguages.forEach(lang => { studentPayload.append('languages[]', lang); });
+      selectedSectors.forEach(sector => { studentPayload.append('sector[]', sector); });
+
       // Add a new student
       try {
-        console.log(JSON.stringify(studentPayload))
         const res = await fetch('http://localhost:3000/students/create', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(studentPayload),
+          body: studentPayload, // no headers here, fetch handles it
         });
-
+      
         const data = await res.json();
         console.log("Student registered:", data);
         setRegistrationSuccess(true);
@@ -125,24 +128,30 @@ function RegisterPage() {
         console.error("Error:", err);
       }
     } else {
-      const startupPayload = {
-        name: formData.name,
-        email: formData.email,
-        siret: formData.siret,
-        linkedin: formData.linkedin,
-        region: formData.region,
-        description: formData.description,
-        pass: formData.password,
-        sector: selectedSectors // Ajout des secteurs sélectionnés
-      };
-      //add a new startup
+      const startupPayload = new FormData();
+
+      // Append all fields
+      startupPayload.append('name', formData.name);
+      startupPayload.append('email', formData.email);
+      startupPayload.append('siret', formData.siret);
+      startupPayload.append('linkedin', formData.linkedin);
+      startupPayload.append('region', formData.region);
+      startupPayload.append('description', formData.description);
+      startupPayload.append('pass', formData.password);
+      startupPayload.append('image', formData.image);
+
+      // Append array values (e.g. selectedSectors)
+      selectedSectors.forEach(sector => {
+        startupPayload.append('sector[]', sector);
+      });
+
+      // Submit the form
       try {
-        console.log(JSON.stringify(startupPayload))
         const res = await fetch('http://localhost:3000/startup/create', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(startupPayload),
+          body: startupPayload, // no headers, fetch will set content-type for FormData
         });
+
         const data = await res.json();
         console.log("Startup registered:", data);
         setRegistrationSuccess(true);
