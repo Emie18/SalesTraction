@@ -16,7 +16,7 @@ function Tinder() {
     if (!id || hasRun.current) return;
     hasRun.current = true
     
-    fetch(`http://localhost:3000/match/suggestion/${id}`)
+    API.get(`/match/suggestion/${id}`)
       .then(res => res.json())
       .then(data => { setStudents(data) })
   }, [id]);
@@ -54,11 +54,7 @@ function Tinder() {
     // Envoie un like à l'API
     function handleLike(card) {
       const likedId = parseInt(card.getAttribute("data-id"));
-      fetch("http://localhost:3000/match/like", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ from: id, to: likedId }),
-      })
+      API.post("/match/like", JSON.stringify({ from: id, to: likedId }), {headers: { "Content-Type": "application/json" }})
         .then(res => res.json())
         .then(data => {
           console.log(data)

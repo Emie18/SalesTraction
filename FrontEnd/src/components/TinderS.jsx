@@ -19,7 +19,7 @@ function TinderS() {
     if (!id || hasRun.current) return;
     hasRun.current = true;
     
-    fetch(`http://localhost:3000/match/suggestion/${id}`)
+    API.get(`/match/suggestion/${id}`)
       .then(res => res.json())
       .then(data => { setStartup(data); })
   }, [id]);
@@ -157,18 +157,15 @@ function TinderS() {
 
     console.log(JSON.stringify({ from: id, to: startup_id }));
     // First API call: Like the account
-    fetch("http://localhost:3000/match/like", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ from: id, to: startup_id }),
+    API.post("/match/like", JSON.stringify({ from: id, to: startup_id }), {
+      headers: { "Content-Type": "application/json" }
     })
     .then(res => res.json())
     .then(data => {
       setIsmatch(data.is_match);
-      fetch("http://localhost:3000/offer/apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ student: id, offer: offer_id, motivation: motivationText }),
+      console.log(data);
+      API.post("/offer/apply", JSON.stringify({ student: id, offer: offer_id, motivation: motivationText }), {
+        headers: { "Content-Type": "application/json" }  
       });
     }).catch(error => console.log(error))
     

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../styles/registerpage.css";
 
+import { API } from '../scripts/api';
+
 function LoginPage() {
   const navigate = useNavigate();
 
@@ -27,12 +29,8 @@ function LoginPage() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/account/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email, pass: password }),
+      const response = await API.post('/account/login', JSON.stringify({ email: email, pass: password }), {
+        headers: {'Content-Type': 'application/json'}
       });
 
       if (!response.ok) {
@@ -40,6 +38,7 @@ function LoginPage() {
       }
       const data = await response.json();
       localStorage.setItem('session', JSON.stringify(data));
+      localStorage.setItem('access_token', data.token);
 
       switch (data.type) {
         case 'student':
