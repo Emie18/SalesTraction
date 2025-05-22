@@ -18,11 +18,11 @@ function ItsAmatch({ match, id, setIsmatch, startup }) {
       {!showProfile && <ConfettiCanvas />}
       <div className="profile_match">
         <div>
-          <img src={match.startup.image ? API.make_url(s.image) : "/no_image.jpg"} alt="Startup" />
+          <img src={match.startup.image ? API.make_url(match.startup.image) : "/no_image.jpg"} alt="Startup" />
           <p>{match.startup.name}</p>
         </div>
         <div>
-          <img src={match.student.image ? API.make_url(s.image) : "/no_image.jpg"} alt="User" />
+          <img src={match.student.image ? API.make_url(match.student.image) : "/no_image.jpg"} alt="User" />
           <p>{match.student.name}</p>
           <p>{match.student.surname}</p>
         </div>

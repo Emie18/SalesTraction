@@ -295,3 +295,13 @@ body,
     font-size: 1.2em;
 }
 }
+
+.homepage .hometext{
+    text-align: left;
+}
+.homepage .hometext p{
+    margin-bottom: 0.8em;
+}
+.homepage h2{
+    margin: 1em 0;
+}

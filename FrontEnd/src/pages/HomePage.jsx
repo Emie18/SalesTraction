@@ -98,12 +98,21 @@ export default function HomePage() {
         </div>
       </div>
       <div className="description">
-        <p>
-          Logoden biniou degemer mat an penn, ar bed danvez Skrigneg.
-          Atlantel c'horn chase tagañ, ifern he bloavezh huanadiñ, ouzhit kav.
-          Neuze amanenn moereb evañ, gwech rimiañ paner niz, levrioù kibellañ.
-          Aod yaouank lavarout glav.
-        </p>
+        <h2>
+          What is Salestraction?
+</h2>
+<div className="hometext">
+ <p>
+Salestraction is a unique web platform designed to connect startups with business school and university students. Our goal is to help students gain real-world sales experience by assisting startups in promoting and selling their products or services.
+
+</p><p>This social network is built specifically to create meaningful connections between students eager to learn and grow, and startups looking for motivated, commission-based sales support.
+
+</p><p>The matching process is fun and engaging — inspired by the Tinder-style swipe system — where students and startups can interact through a dynamic interface to find the perfect collaboration opportunity.
+
+</p><p>Whether you're a student ready to build your career or a startup searching for fresh sales talent, Salestraction is the place where real-world experience meets entrepreneurial energy.
+        </p> 
+</div>
+
       </div>
       <div className="chiffre">
         <div><p>99.9 %</p></div>
