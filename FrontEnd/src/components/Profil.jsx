@@ -108,7 +108,7 @@ function Profil() {
                     </div>
 
                 </div>}
-            <button onClick={logout}>Logout</button>
+            <button className="logout_btn_profil" onClick={logout}>Logout</button>
         </div>
     );
 }

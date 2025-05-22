@@ -69,35 +69,186 @@
 .match_f h1 {
     font-size: 4em;
 }
-.abspp #top{
-    margin-top: 1em;
-}
-.abspp{
-    position: absolute;
-    top:50%;
-    transform: translateY(-50%);
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(8px); /* effet de flou */
-  -webkit-backdrop-filter: blur(8px); /* compatibilité Safari */
 
+.abspp {
+    position: fixed; /* Fixed au lieu d'absolute pour couvrir tout l'écran */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    overflow-y: auto; /* Permettre le scroll vertical */
+    overflow-x: hidden;
+    padding: 2em 0; /* Ajouter du padding pour éviter que le contenu touche les bords */
 }
-.abspp .close{
-   height: 30px;
-   width: 30px;
+
+.abspp #top {
+    margin-top: 2em; /* Réduire la marge top */
+}
+
+.abspp .close {
+    height: 30px;
+    width: 30px;
     color: var(--text);
     text-shadow: 1px 1px 10px black;
     border-radius: 25px;
     border: none;
     cursor: pointer;
     font-weight: 700;
-    position: absolute;
+    position: fixed; /* Fixed pour rester visible même en scrollant */
     box-shadow: var(--shadow);
     background: var(--pink-gradient);
-    right: 3em;
-    top:3em;
+    right: 1em;
+    top: 1em;
+    z-index: 1001;
 }
+.abspp .profil_view {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* flex-start au lieu de center */
+    min-height: 100%;
+    margin-bottom: 100px;
+    padding: 1em;
+}
+
+.abspp .detail_profil {
+    background: var(--double-gradient);
+    width: 80vw;
+    max-width: 600px;
+    margin-top: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 80px 2em 2em 2em;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    position: relative;
+    margin-bottom: 0em; /* Ajouter une marge bottom */
+}
+
+.abspp .profil_view .detail_profil .photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    position: absolute;
+    top: -75px;
+    box-shadow: var(--shadow);
+}
+
+.abspp .profil_view .detail_profil .ens div {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.abspp .profil_view .detail_profil .ens {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    margin-bottom: 1em;
+}
+
+.abspp .profil_view .detail_profil .ens img {
+    width: 24px;
+    filter: var(--icon_white);
+}
+
+.abspp .profil_view .logout_btn_profil {
+    background: var(--pink-gradient);
+    border: none;
+    box-shadow: var(--shadow);
+    padding: 1em 2em;
+    border-radius: 15px;
+    color: var(--text);
+    font-size: 1em;
+    font-weight: 700;
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+
+.abspp .detail2 {
+    max-width: 100%;
+    margin-top: 1em;
+    width: 100%;
+}
+
+.abspp .namesurname {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 1em;
+}
+
+.abspp .profil_view .description {
+    margin: 2em 0;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.abspp .space {
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.abspp .last_offer {
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+/* Media queries pour mobile */
+@media (max-width: 768px) {
+    .abspp {
+        padding-top: 2em ;
+
+    }
+    
+    .abspp .close {
+        right: 0.5em;
+        top: 0.5em;
+        width: 35px;
+        height: 35px;
+    }
+
+    .abspp .detail_profil {
+        width: 95vw;
+        margin-top: 2em;
+        padding: 60px 1em 1.5em 1em;
+    }
+    
+    .abspp .profil_view .detail_profil .photo {
+        width: 120px;
+        height: 120px;
+        top: -60px;
+    }
+    
+    .abspp .profil_view .detail_profil .ens {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5em;
+    }
+    
+    .abspp .space {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1em;
+    }
+    
+    .abspp .profil_view .description {
+        margin: 1em 0;
+        font-size: 0.9em;
+    }
+    
+    .abspp #top {
+        margin-top: 1em;
+    }
+}
+
 
 /*********************Confetti***********************/
 

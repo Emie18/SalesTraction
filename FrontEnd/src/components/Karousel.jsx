@@ -13,7 +13,7 @@ const Karousel = ({ offers }) => {
       setCurrentIndex((prevIndex) => 
         prevIndex === lastFiveOffers.length - 1 ? 0 : prevIndex + 1
       );
-    }, 700000); // Change slide every 4 seconds
+    }, 7000); // Change slide every 4 seconds
 
     return () => clearInterval(timer);
   }, [lastFiveOffers.length]);

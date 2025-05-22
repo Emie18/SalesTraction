@@ -75,6 +75,7 @@ function ViewStartup({ id }) {
                         </div>
 
                     </div>
+                    <h3 className='last_offer'> Latest offers: </h3>
                     <Karousel offers={offers} />
 
                 </div>}
