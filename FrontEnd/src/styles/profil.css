@@ -47,7 +47,7 @@
     width: 24px;
     filter: var(--icon_white);
 }
-.profil_view button {
+.profil_view .logout_btn_profil {
     background: var(--pink-gradient);
     border: none;
     box-shadow: var(--shadow);

@@ -1,31 +1,38 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../styles/registerpage.css";
-import { getStartUpDetails } from '../scripts/getData';
+import { getStartUpDetails, getOffers_for_Startup } from '../scripts/getData';
 import '../styles/profil.css'
-
+import Karousel from './Karousel';
 import { API } from '../scripts/api';
 
-function ViewStartup({id}) {
+function ViewStartup({ id }) {
 
     const [startup, setStartup] = useState(null);
+    const [offers, setOffers] = useState([]);
 
     useEffect(() => {
         API.get(`/startup/get?id=${id}`)
-      .then(res => res.json())
-      .then(data => { setStartup(data) })
+            .then(res => res.json())
+            .then(data => { setStartup(data) })
+        const fetchstartup = async () => {
+            const dataoffer = await getOffers_for_Startup({ id });
+            if (dataoffer) setOffers(dataoffer);
+            console.log(dataoffer);
+        };
+        fetchstartup();
     }, [id]);
 
     return (
         <div className='profil_view'>
             {startup &&
                 <div className='detail_profil' id='top'>
-                    <img className="photo" src={startup.image? API.make_url(startup.image) : '/no_image.jpg'}></img>
+                    <img className="photo" src={startup.image ? API.make_url(startup.image) : '/no_image.jpg'}></img>
                     <div className="namesurname">
                         <h1>{startup.name}</h1>
 
                     </div>
-                     <div className="line"></div>
+                    <div className="line"></div>
                     <div className="detail2">
                         <div className="ens">
                             <div>
@@ -68,6 +75,7 @@ function ViewStartup({id}) {
                         </div>
 
                     </div>
+                    <Karousel offers={offers} />
 
                 </div>}
         </div>
