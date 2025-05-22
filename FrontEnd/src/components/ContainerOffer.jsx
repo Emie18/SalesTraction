@@ -79,7 +79,7 @@ function ContainerOffer({ offers }) {
                   <div> <img src="/commission.svg" alt="commission" /><p>{offer.commission}</p></div>
                </div>
                <div className="postule">
-                  <button onClick={() => openModal(offer)}>Apply</button>
+                  <button disabled={offer.applied} onClick={() => openModal(offer)}>Apply</button>
                </div>
             </div>
          ))}

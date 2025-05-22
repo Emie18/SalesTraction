@@ -1,6 +1,7 @@
-export async function applyToOffer(studentId, offerId, motivation) {
-  const url = 'http://localhost:3000/offer/apply';
 
+import { API } from './api';
+
+export async function applyToOffer(studentId, offerId, motivation) {
   const bodyData = {
     student: parseInt(studentId),
     offer: parseInt(offerId),
@@ -10,14 +11,11 @@ export async function applyToOffer(studentId, offerId, motivation) {
   console.log("Données envoyées:", bodyData);
 
   try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(bodyData)
+    const response = await API.post("/offer/apply", JSON.stringify(bodyData), {
+      headers: { 'Content-Type': 'application/json' }
     });
-console.log("Réponse OK, prêt à retourner");
+
+    console.log("Réponse OK, prêt à retourner");
     console.log("Status réponse:", response.status);
 
     if (!response.ok) {
