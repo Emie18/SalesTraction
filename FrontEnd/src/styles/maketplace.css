@@ -225,16 +225,17 @@ right: 1em;
 }
 
 .modal-buttons button {
-  padding: 0.2em 1em;
-  border-radius: 4px;
-  font-weight: 500;
+    padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-radius: 10px;
+
   border: none;
   box-shadow: var(--shadow);
   font-weight: 700;
-  text-shadow: 1px 1px 10px black;
+  text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.495);
     color: var(--text);
 }
 
