@@ -45,7 +45,35 @@ exports.like = async (req, res) => {
             where: { id_student: student.id, id_startup: startup.id, liked_by_startup: !liked_by_startup }
         });
 
-        return res.status(200).json({ liked: created, is_match: !!match });
+        if(!!match){
+            const student = await Student.findOne({
+                include: [{
+                    as: "id_account_account",
+                    model: Account,
+                    include: [{as: "account_sectors", model: AccountSector }]
+                },{as: "language_students", model: LanguageStudent }],
+                where: { id: student.id }
+            });
+
+            const startup = await StartUp.findOne({
+                include: [{
+                    as: "id_account_account",
+                    model: Account,
+                    include: [{ as: "account_sectors", model: AccountSector }]
+                }],
+                where: { id: startup.id }
+            });
+
+            return res.status(200).json({ 
+                liked: created, is_match: !!match,
+                student: JsonHelper.student(student),
+                startup: JsonHelper.startup(startup)
+            });
+
+        }else{
+            return res.status(200).json({ liked: created, is_match: !!match });
+        }
+        
 
     }catch(error){
         res.status(500).json({error : error.message});
