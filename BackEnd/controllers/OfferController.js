@@ -135,6 +135,19 @@ exports.getAll = async (req, res) => {
             
         });
 
+        const student = await Student.findOne({where : { id_account: req.query.id }})
+        if(student){
+            const applications = await OfferStudent.findAll({where: {id : student.id}});
+            const application_ids = applications.map(app => app.id_offer);
+
+            const offers_json = JsonHelper.offers(offers).map(offer => ({
+                ...offer,
+                applied: application_ids.includes(offer.id)
+            }));
+
+            return res.status(200).json(offers_json);
+        }
+
         res.status(200).json(JsonHelper.offers(offers));
     }catch(error){
         res.status(500).json({error : error.message});
