@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const OfferController = require('../controllers/OfferController');
+const auth = require('../middlewares/token');
 
-router.post('/create', OfferController.create);
-router.post('/update', OfferController.update);
-router.post('/delete', OfferController.delete);
+router.post('/create', auth, OfferController.create);
+router.post('/update', auth, OfferController.update);
+router.post('/delete', auth, OfferController.delete);
 router.get('/all', OfferController.getAll);
 
-router.post('/apply', OfferController.apply);
-router.get('/applications/:id', OfferController.getApplication);
+router.post('/apply', auth, OfferController.apply);
+router.get('/applications/:id', auth, OfferController.getApplication);
 
 module.exports = router;

@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const MatchController = require('../controllers/MatchController');
+const auth = require('../middlewares/token');
 
-router.post('/like', MatchController.like);
-router.get('/suggestion/:id', MatchController.suggestion);
+router.post('/like', auth, MatchController.like);
+router.get('/suggestion/:id', auth, MatchController.suggestion);
 
 module.exports = router;

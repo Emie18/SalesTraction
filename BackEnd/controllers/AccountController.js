@@ -5,6 +5,9 @@ const { LanguageStudent, OfferStudent, AccountMatch} = Model
 const { Offer, OfferDoc } = Model
 const { Op } = require('sequelize');
 
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = process.env.JWT_SECRET
+
 exports.login = async (req, res) => {
     try {
         const { pass, email } = req.body;
@@ -16,25 +19,34 @@ exports.login = async (req, res) => {
         console.log(account)
         if (!account) return res.status(401).json({ error: 'Invalid credentials' });
         
-        const startup = await StartUp.findOne({where: { id_account: account.id }})
-        if(startup){
-            return res.status(201).json({ type : "startup", id : account.id });
-        }
-        
-        const student = await Student.findOne({where: { id_account: account.id }})
-        if(student){
-            return res.status(201).json({type : "student", id : account.id });
-        }
+        // Identify user type
+        let userType = null;
+        const startup = await StartUp.findOne({ where: { id_account: account.id } });
+        if (startup) userType = "startup";
 
-        res.status(401).json({ error: 'Invalid credentials' });
+        const student = await Student.findOne({ where: { id_account: account.id } });
+        if (student) userType = "student";
+
+        if (!userType) return res.status(401).json({ error: 'Invalid credentials' });
+
+        // Create Token
+        const token = jwt.sign(
+            { id: account.id, type: userType }, SECRET_KEY, { expiresIn: '1d' }
+        );
+
+        return res.status(200).json({ token: token, type: userType, id: account.id });
+
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to login' });
+        console.log(err)
+        res.status(500).json({ error: 'Failed to login', message: err });
     }
 };
 
 exports.delete = async (req, res) => {
     try{
+        const auth_id = req.user.id;
+        if(auth_id !== req.body.id) return res.status(403).json({ error: 'You can only delete your own account.' });
+
         const students = await Student.findAll({ where: { id_account: req.body.id } });
         const startups = await StartUp.findAll({ where: { id_account: req.body.id } });
         const chats = await Chat.findAll({where : {[Op.or]: [{ id_account_1: req.body.id }, { id_account_2: req.body.id }]}});

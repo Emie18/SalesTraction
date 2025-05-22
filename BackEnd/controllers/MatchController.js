@@ -6,8 +6,8 @@ const JsonHelper = require("./JsonHelper.js");
 exports.like = async (req, res) => {
     try{
         const { from, to } = req.body;
-        //const auth_id = req.user.id;
-        //if (auth_id !== from) return res.status(403).json({ error: 'You can only like with your account.' });
+        const auth_id = req.user.id;
+        if (auth_id !== from) return res.status(403).json({ error: 'You can only like with your account.' });
         if (from === to) return res.status(400).send("Can't like yourself");
         
         // Found who is a student
@@ -57,8 +57,8 @@ exports.like = async (req, res) => {
 exports.suggestion = async (req, res) => {
     try{
         const user_id = parseInt(req.params.id);
-        //const auth_id = req.user.id;
-        //if (auth_id !== user_id) return res.status(403).json({ error: 'You can only get the suggestion of your account.' });
+        const auth_id = req.user.id;
+        if (auth_id !== user_id) return res.status(403).json({ error: 'You can only get the suggestion of your account.' });
         
         const user_startup = await StartUp.findOne({ where : { id_account : user_id }});
         const user_student = await Student.findOne({ where : { id_account : user_id }});

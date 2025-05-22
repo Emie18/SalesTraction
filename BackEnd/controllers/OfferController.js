@@ -8,10 +8,10 @@ exports.update = async (req, res) => {
     try {
         const offer = await Offer.findOne({ where : {id : req.body.id} });
 
-        //const auth_id = req.user.id;
-        //if (auth_id !== offer.id_startup) {
-        //    return res.status(403).json({ error: 'You can only update your offers.' });
-        //}
+        const auth_id = req.user.id;
+        if (auth_id !== offer.id_startup) {
+            return res.status(403).json({ error: 'You can only update your offers.' });
+        }
         
         if(!offer) return res.status(500).json({ error: 'Failed to update the offer' });
         
@@ -33,8 +33,8 @@ exports.update = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        //const auth_id = req.user.id;
-        //if (auth_id !== req.body.startup) return res.status(403).json({ error: 'You can only create offers with your account.' });
+        const auth_id = req.user.id;
+        if (auth_id !== req.body.startup) return res.status(403).json({ error: 'You can only create offers with your account.' });
 
         const startup = await StartUp.findOne({ where : { id_account : req.body.startup}})
         if(!startup) return res.status(500).json({error: "account is not a startup"});
@@ -60,9 +60,9 @@ exports.delete = async (req, res) => {
     try {
         //const auth_id = req.user.id;
         const offer = await Offer.findOne({ where : {id : req.body.id} });
-        //if (auth_id !== offer.id_startup) {
-        //    return res.status(403).json({ error: 'You can only create offers with your account.' });
-        //}
+        if (auth_id !== offer.id_startup) {
+            return res.status(403).json({ error: 'You can only create offers with your account.' });
+        }
 
         await OfferDoc.destroy({ where : {id_offer : req.body.id}});
         await OfferStudent.destroy({ where : {id_offer : req.body.id}});
