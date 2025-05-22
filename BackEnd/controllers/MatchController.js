@@ -46,7 +46,7 @@ exports.like = async (req, res) => {
         });
 
         if(!!match){
-            const student = await Student.findOne({
+            const data_student = await Student.findOne({
                 include: [{
                     as: "id_account_account",
                     model: Account,
@@ -55,7 +55,7 @@ exports.like = async (req, res) => {
                 where: { id: student.id }
             });
 
-            const startup = await StartUp.findOne({
+            const data_startup = await StartUp.findOne({
                 include: [{
                     as: "id_account_account",
                     model: Account,
@@ -66,8 +66,8 @@ exports.like = async (req, res) => {
 
             return res.status(200).json({ 
                 liked: created, is_match: !!match,
-                student: JsonHelper.student(student),
-                startup: JsonHelper.startup(startup)
+                student: JsonHelper.student(data_student),
+                startup: JsonHelper.startup(data_startup)
             });
 
         }else{
