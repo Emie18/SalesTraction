@@ -16,6 +16,7 @@ function StudentUpMainPage() {
   const [commissions, setCommissions] = useState([]);
   const [workMode, setWorkMode] = useState([]);
   const [offers, setOffers] = useState([]);
+  const[refesh,setRefresh]= useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +35,16 @@ function StudentUpMainPage() {
     fetchData();
 
   }, []);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const ee = await getOffers();
+      setOffers(ee);
+      setRefresh(false);
+    };
+    fetchData();
+
+  }, [refesh]);
 
   const navigate = useNavigate();
 
@@ -64,7 +75,7 @@ function StudentUpMainPage() {
         onSearch={getOffers}
         setOffers={setOffers}
       />
-      <ContainerOffer offers={offers} />
+      <ContainerOffer offers={offers} setRefresh={setRefresh}/>
     </div>
   );
       case 5:

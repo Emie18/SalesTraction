@@ -13,9 +13,9 @@ function Navigation2({ page, currentPage }) {
           <img className={currentPage === 1 ? "open" : ""} src="/home.svg" alt="home_logo"></img>
           <p className={currentPage === 1 ? "open" : ""} >Home</p>
         </div>
-        <div className="icon messages" onClick={() => handlePageChange(2)}>
-          <img  className={currentPage === 2 ? "open" : ""} src="/message.svg" alt="message_logo"/>
-          <p className={currentPage === 2 ? "open" : ""}>Messages</p>
+        <div className="icon messages">
+          <img  className={currentPage === 2 ? "" : ""} src="/message.svg" alt="message_logo"/>
+          <p className={currentPage === 2 ? "" : ""}>Messages</p>
         </div>
         <div className="match" onClick={() => handlePageChange(3)}>
           <img src="/match_button_bar.svg" alt="match logo bar"/>

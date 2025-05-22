@@ -242,7 +242,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px); /* effet de flou */
+  -webkit-backdrop-filter: blur(8px); /* compatibilité Safari */
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -251,7 +254,7 @@
 
 /* Modal container */
 .motivation-modal {
-  background-color: white;
+  background: var(--double-gradient);
   border-radius: 12px;
   padding: 24px;
   width: 90%;
@@ -264,12 +267,12 @@
 .motivation-modal h3 {
   font-size: 20px;
   margin-top: 0;
-  color: #333;
+  color:var(--text);
   margin-bottom: 8px;
 }
 
 .motivation-modal p {
-  color: #666;
+  color: var(--text);
   margin-bottom: 20px;
 }
 
@@ -279,6 +282,7 @@
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 6px;
+  box-shadow: var(--shadow);
   resize: vertical;
   font-family: inherit;
   font-size: 16px;
@@ -288,8 +292,8 @@
 
 .motivation-modal textarea:focus {
   outline: none;
-  border-color: #4a90e2;
-  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+  border-color: #dc44be;
+  box-shadow: var(--shadow);
 }
 
 /* Button container */
@@ -303,29 +307,22 @@
 .motivation-modal button {
   padding: 10px 20px;
   border: none;
-  border-radius: 6px;
+  border-radius: 20px;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .cancel-btn {
-  background-color: #f5f5f5;
-  color: #333;
-}
+  background: var(--pink-gradient);
 
-.cancel-btn:hover {
-  background-color: #e5e5e5;
 }
 
 .submit-btn {
-  background-color: #4a90e2;
+  background: var(--green-gradient);
   color: white;
 }
 
-.submit-btn:hover {
-  background-color: #3a7bc8;
-}
 
 /* Animation */
 @keyframes fadeIn {
