@@ -19,6 +19,12 @@
     min-height: 45px ;
     filter: var(--icon_white);
 }
+.nav .icon.messages img{
+    filter: brightness(0) saturate(100%) invert(26%) sepia(4%) saturate(3834%) hue-rotate(194deg) brightness(89%) contrast(84%);
+}
+.nav .icon.messages p{
+    color: rgba(255, 255, 255, 0);
+}
 .nav .open{
     color:var(--pink);
 }

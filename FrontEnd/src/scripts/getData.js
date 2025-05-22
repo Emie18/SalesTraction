@@ -145,10 +145,11 @@ export const getOffers = async ({ name, sector, region, commission, mode } = {})
     const session = JSON.parse(localStorage.getItem('session'));
 
     // Vérifie que la session existe et que le type est bien 'student'
-    if (!session || session.type !== 'startup') {
-      throw new Error('No valid startup session found.');
+    if (!session || session.type !== 'student') {
+      throw new Error('No valid student session found.');
     }
-    
+    console.log(session.id)
+
     if(session.id) params.append("id",session.id)
     if (name) params.append("name", name);
     if (sector) params.append("sector", sector);
@@ -164,11 +165,13 @@ export const getOffers = async ({ name, sector, region, commission, mode } = {})
     const response = await fetch(url);
     console.log(url);
 
+
     if (!response.ok) {
       throw new Error("Error when we get the response");
     }
 
     const data = await response.json();
+    console.log(data)
     return data;
   } catch (error) {
     console.error("Error in getOffers:", error);
