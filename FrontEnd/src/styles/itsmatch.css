@@ -1,6 +1,8 @@
 .match_f {
     position: relative;
+    position: absolute;
     width: 100%;
+    top: 0;
     height: calc(100vh - 65px);
     padding: 1em;
     background: var(--double-gradient);
@@ -12,20 +14,92 @@
     overflow: visible;
 }
 
+.button {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-top: 3em;
+}
+
+.button button {
+    padding: 0.5em 2em;
+    font-size: 1.5em;
+    color: var(--text);
+    text-shadow: 1px 1px 10px black;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+}
+
+.button .keep {
+    background: var(--pink-gradient);
+}
+
+.button .see {
+    background: var(--green-gradient);
+}
+
 .profile_match {
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
-    gap: 1em;
+    width: 80%;
+}
+
+.profile_match div p {
+    font-size: 2em;
+    text-align: center;
+}
+
+.profile_match div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .profile_match img {
-    width: 80px;
-    height: 80px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 6px;
 }
+
+.match_f h1 {
+    font-size: 4em;
+}
+.abspp #top{
+    margin-top: 1em;
+}
+.abspp{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px); /* effet de flou */
+  -webkit-backdrop-filter: blur(8px); /* compatibilité Safari */
+
+}
+.abspp .close{
+   height: 30px;
+   width: 30px;
+    color: var(--text);
+    text-shadow: 1px 1px 10px black;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    position: absolute;
+    box-shadow: var(--shadow);
+    background: var(--pink-gradient);
+    right: 3em;
+    top:3em;
+}
+
+/*********************Confetti***********************/
 
 .confetti-container {
     position: absolute;

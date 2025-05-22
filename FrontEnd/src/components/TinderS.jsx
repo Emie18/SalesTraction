@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import "../styles/tinder.css";
-
+import ItsAmatch from "./ItsAmatch"
 import { API } from '../scripts/api';
 
 function TinderS() {
@@ -9,7 +9,7 @@ function TinderS() {
   const [showModal, setShowModal] = useState(false);
   const [motivationText, setMotivationText] = useState("");
   const [currentCardId, setCurrentCardId] = useState({});
-  
+  const [datamatch, setDatamatch] =useState(null);
   const session = JSON.parse(localStorage.getItem("session"));
   const id = session?.id;
   const hasRun = useRef(false);
@@ -163,6 +163,7 @@ function TinderS() {
     .then(res => res.json())
     .then(data => {
       setIsmatch(data.is_match);
+      setDatamatch(data);
       console.log(data);
       API.post("/offer/apply", JSON.stringify({ student: id, offer: offer_id, motivation: motivationText }), {
         headers: { "Content-Type": "application/json" }  
@@ -215,7 +216,7 @@ function TinderS() {
         <div className="motivation-modal-overlay">
           <div className="motivation-modal">
             <h3>Why are you interested?</h3>
-            <p>Please write a short motivation text in English</p>
+            <p>Please write a short motivation</p>
             
             <div className="motivation-form">
               <textarea 
@@ -245,6 +246,7 @@ function TinderS() {
           </div>
         </div>
       )}
+      {ismatch && <ItsAmatch match={datamatch} id={datamatch.startup.account_id} setIsmatch={setIsmatch} startup={true}/>}
     </div>
   );
 }

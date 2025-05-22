@@ -1,7 +1,7 @@
 /* Centrage global */
 .tin_centre {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 65px);;
   display: flex;
   align-items: center;
   justify-content: center;

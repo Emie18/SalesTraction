@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import "../styles/tinder.css";
-
+import ItsAmatch from "./ItsAmatch"
 import { API } from '../scripts/api';
 
 function Tinder() {
@@ -8,6 +8,7 @@ function Tinder() {
   const session = JSON.parse(localStorage.getItem("session"));
   const id = session?.id;
   const[ismatch,setIsmatch]=useState(false);
+  const [datamatch, setDatamatch] =useState(null);
 
   const hasRun = useRef(false);
 
@@ -59,6 +60,7 @@ function Tinder() {
         .then(data => {
           console.log(data)
           setIsmatch(data.is_match)
+          setDatamatch(data);
         })
         .catch(err => console.error("Like error:", err));
     }
@@ -181,6 +183,7 @@ function Tinder() {
           <p>match</p>}
 
       </div>
+        {ismatch && <ItsAmatch match={datamatch} id={datamatch.student.account_id} setIsmatch={setIsmatch} startup={false}/>}
     </div>
   );
 }
