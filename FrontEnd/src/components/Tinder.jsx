@@ -58,7 +58,10 @@ function Tinder() {
         body: JSON.stringify({ from: id, to: likedId }),
       })
         .then(res => res.json())
-        .then(data => setIsmatch(data.ismatch))
+        .then(data => {
+          console.log(data)
+          setIsmatch(data.is_match)
+        })
         .catch(err => console.error("Like error:", err));
     }
 
