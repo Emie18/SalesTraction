@@ -1,7 +1,9 @@
 // api/regionService.js
+import { API } from './api';
+
 export const getRegions = async () => {
   try {
-    const response = await fetch('http://localhost:3000/data/regions');
+    const response = await API.get('/data/regions', {}, false);
     if (!response.ok) {
       throw new Error('Error when we get the response');
     }
@@ -14,7 +16,7 @@ export const getRegions = async () => {
 };
 export const getCommissions = async () => {
   try {
-    const response = await fetch('http://localhost:3000/data/commissions');
+    const response = await API.get('/data/commissions', {}, false);
     if (!response.ok) {
       throw new Error('Error when we get the response');
     }
@@ -28,7 +30,7 @@ export const getCommissions = async () => {
 
 export const getModes = async () => {
   try {
-    const response = await fetch('http://localhost:3000/data/modes');
+    const response = await API.get('/data/modes', {}, false);
     if (!response.ok) {
       throw new Error('Error when we get the response');
     }
@@ -41,7 +43,7 @@ export const getModes = async () => {
 };
 export const getSchools = async () => {
   try {
-    const response = await fetch('http://localhost:3000/data/schools');
+    const response = await API.get('/data/schools', {}, false);
     if (!response.ok) {
       throw new Error('Error when we get the response');
     }
@@ -54,7 +56,7 @@ export const getSchools = async () => {
 };
 export const getLanguages = async () => {
   try {
-    const response = await fetch('http://localhost:3000/data/languages');
+    const response = await API.get('/data/languages', {}, false); 
     if (!response.ok) {
       throw new Error('Error when we get the response');
     }
@@ -67,7 +69,7 @@ export const getLanguages = async () => {
 };
 export const getStates = async () => {
   try {
-    const response = await fetch('http://localhost:3000/data/states');
+    const response = await API.get('/data/states', {}, false); 
     if (!response.ok) {
       throw new Error('Error when we get the response');
     }
@@ -80,7 +82,7 @@ export const getStates = async () => {
 };
 export const getSectors = async () => {
   try {
-    const response = await fetch('http://localhost:3000/data/sectors');
+    const response = await API.get('/data/sectors', {}, false);
     if (!response.ok) {
       throw new Error('Error when we get the response');
     }
@@ -101,7 +103,7 @@ export const getStudentDetails = async () => {
       throw new Error('No valid student session found.');
     }
 
-    const response = await fetch(`http://localhost:3000/students/get?id=${session.id}`);
+    const response = await API.get(`/students/get?id=${session.id}`, {}, false);
 
     if (!response.ok) {
       throw new Error('Failed to fetch student details');
@@ -125,7 +127,7 @@ export const getStartUpDetails = async () => {
       throw new Error('No valid startup session found.');
     }
 
-    const response = await fetch(`http://localhost:3000/startup/get?id=${session.id}`);
+    const response = await API.get(`/startup/get?id=${session.id}`, {}, false);
 
     if (!response.ok) {
       throw new Error('Failed to fetch startup details');
@@ -159,10 +161,10 @@ export const getOffers = async ({ name, sector, region, commission, mode } = {})
 
     const url =
       params.toString().length > 0
-        ? `http://localhost:3000/offer/all?${params.toString()}`
-        : "http://localhost:3000/offer/all";
+        ? `/offer/all?${params.toString()}`
+        : "/offer/all";
 
-    const response = await fetch(url);
+    const response = await API.get(url, {}, false);
     console.log(url);
 
 
@@ -179,14 +181,12 @@ export const getOffers = async ({ name, sector, region, commission, mode } = {})
   }
 };
 
-18
-
 export const getOffers_for_Startup = async ({ id } = {}) => {
   try {
 
-    const url =`http://localhost:3000/startup/offer/${id}`
+    const url =`/startup/offer/${id}`
 
-    const response = await fetch(url);
+    const response = await API.get(url, {}, false);
     console.log(url);
 
     if (!response.ok) {
@@ -204,9 +204,9 @@ export const getOffers_for_Startup = async ({ id } = {}) => {
 export const getTinder = async ({ id } = {}) => {
   try {
 
-    const url =`http://localhost:3000/match/suggestion/${id}`
+    const url =`/match/suggestion/${id}`
 
-    const response = await fetch(url);
+    const response = await API.get(url, {}, false);
     console.log(url);
 
     if (!response.ok) {
