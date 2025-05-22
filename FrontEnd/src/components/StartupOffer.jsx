@@ -37,6 +37,7 @@ function StartupOffer() {
    const handleDeleteOffer = async (offerId) => {
 if (window.confirm("Êtes-vous sûr de vouloir supprimer cette offre ?")) {
       try {
+         console.log(JSON.stringify({id : offerId}))
          const response = await API.post('/offer/delete', JSON.stringify({id : offerId}), {
              headers: { 'Content-Type': 'application/json' }
          });
@@ -92,9 +93,9 @@ if (window.confirm("Êtes-vous sûr de vouloir supprimer cette offre ?")) {
                      <div> <img src="/home_work.svg"></img><p>{offer.work_mode}</p></div>
                      <div><img src="/commission.svg" alt="commision" /><p>{offer.commission}</p></div>
                   </div>
-                  {/* <div className="postule">
-                     <button onClick={() => handleDeleteOffer(offer.id)}>Delete</button>
-                  </div> */}
+                  <div className="postule">
+                     <button className='btn' onClick={() => handleDeleteOffer(offer.id)}>Delete</button>
+                  </div>
                </div>
             ))}
          </div>
