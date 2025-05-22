@@ -142,7 +142,14 @@ export const getStartUpDetails = async () => {
 export const getOffers = async ({ name, sector, region, commission, mode } = {}) => {
   try {
     const params = new URLSearchParams();
+    const session = JSON.parse(localStorage.getItem('session'));
 
+    // Vérifie que la session existe et que le type est bien 'student'
+    if (!session || session.type !== 'startup') {
+      throw new Error('No valid startup session found.');
+    }
+    
+    if(session.id) params.append("id",session.id)
     if (name) params.append("name", name);
     if (sector) params.append("sector", sector);
     if (region) params.append("region", region);
