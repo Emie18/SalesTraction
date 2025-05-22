@@ -137,9 +137,7 @@ function Tinder() {
         handleLike(activeCard);
 
         setTimeout(() => { 
-          if(activeCard){
-            activeCard = null;
-          }
+          activeCard = null;
           shiftCard()
         }, 300);
 
@@ -148,9 +146,7 @@ function Tinder() {
         handleNope(activeCard);
 
         setTimeout(() => { 
-          if(activeCard){
-            activeCard = null;
-          }
+          activeCard = null;
           shiftCard()
         }, 300);
         
@@ -164,6 +160,8 @@ function Tinder() {
 
     // Supprime les listeners pour éviter les fuites mémoire
     function cleanup() {
+      document.removeEventListener("touchmove", drag);
+      document.removeEventListener("touchend", endDrag);
       document.removeEventListener("mousemove", drag);
       document.removeEventListener("mouseup", endDrag);
     }

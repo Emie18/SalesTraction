@@ -52,7 +52,10 @@ function TinderS() {
     function updateCardsPosition() {
       const remaining = document.querySelectorAll(".profil_tinder");
       if(remaining.length > 0){
-        cards.forEach(card => { card.removeEventListener("mousedown", startDrag) })
+        cards.forEach(card => { 
+          card.removeEventListener("mousedown", startDrag) 
+          card.removeEventListener("touchstart", startDrag) 
+        })
         remaining[0].addEventListener("mousedown", startDrag);
         remaining[0].addEventListener("touchstart", startDrag);
       }
@@ -133,10 +136,7 @@ function TinderS() {
         activeCard.style.transform = `translateX(0) translateY(0) rotate(0)`;
 
         setTimeout(() => { 
-          if(activeCard){
-            //activeCard.remove()
-            activeCard = null;
-          }
+          activeCard = null;
           shiftCard()
         }, 300);
         
@@ -145,11 +145,7 @@ function TinderS() {
         handleNope(activeCard);
 
         setTimeout(() => { 
-          if(activeCard){
-            //activeCard.remove()
-            activeCard = null;
-          }
-          
+          activeCard = null;
           shiftCard()
         }, 300);
         
@@ -163,6 +159,8 @@ function TinderS() {
 
     // Supprime les listeners pour éviter les fuites mémoire
     function cleanup() {
+      document.removeEventListener("touchmove", drag);
+      document.removeEventListener("touchend", endDrag);
       document.removeEventListener("mousemove", drag);
       document.removeEventListener("mouseup", endDrag);
     }
