@@ -3,7 +3,7 @@ import { applyToOffer } from "../scripts/apply";
 
 import { API } from '../scripts/api';
 
-function ContainerOffer({ offers }) {
+function ContainerOffer({ offers,setRefresh}) {
    const [showModal, setShowModal] = useState(false);
    const [motivation, setMotivation] = useState("");
    const [currentOffer, setCurrentOffer] = useState(null);
@@ -48,6 +48,7 @@ function ContainerOffer({ offers }) {
          setTimeout(() => {
             closeModal();
          }, 2000);
+         setRefresh(true);
       } catch (error) {
          console.log("errer");
          setMessage({ text: "Failed to submit application. Please try again.", type: "error" });
@@ -55,6 +56,7 @@ function ContainerOffer({ offers }) {
          setIsSubmitting(false);
       }
    };
+   console.log(offers);
 
    return (
       <div className="container_offer">
@@ -79,7 +81,13 @@ function ContainerOffer({ offers }) {
                   <div> <img src="/commission.svg" alt="commission" /><p>{offer.commission}</p></div>
                </div>
                <div className="postule">
-                  <button disabled={offer.applied} onClick={() => openModal(offer)}>Apply</button>
+                  <button
+    disabled={offer.applied}
+    onClick={() => openModal(offer)}
+    className={offer.applied ? "btn disabled" : "btn"}
+  >
+    {offer.applied ? "Already Applied" : "Apply"}
+  </button>
                </div>
             </div>
          ))}

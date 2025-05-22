@@ -148,9 +148,10 @@ position: absolute;
 bottom: 0.8em;
 right: 1em;
 }
-.postule button{
+.postule .btn{
        padding: 0.3em 1em;
        border: none;
+       cursor: pointer;
        box-shadow: var(--shadow);
        background: var(--pink-gradient);
        color: var(--text);
@@ -279,4 +280,11 @@ right: 1em;
   background-color: #e8f5e9;
   color: #2e7d32;
   border: 1px solid #c8e6c9;
+}
+
+.postule .btn.disabled{
+  background: rgba(200, 190, 190, 0.458);
+  font-size: 1em;
+  box-shadow: none;
+  cursor: default;
 }
