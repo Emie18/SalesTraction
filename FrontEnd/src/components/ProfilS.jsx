@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../styles/registerpage.css";
-import { getStartUpDetails } from '../scripts/getData';
+import { getStartUpDetails, getOffers_for_Startup } from '../scripts/getData';
 import '../styles/profil.css'
-
+import Karousel from './Karousel';
 import { API } from '../scripts/api';
 
 function ProfilS() {
     const navigate = useNavigate();
     const [startup, setStartup] = useState(null);
-
+    const [offers,setOffers] = useState([]);
+    const session = JSON.parse(localStorage.getItem('session'));
+   const id = session?.id;
     const logout = () => {
         if (window.confirm("Voulez-vous vous déconnecter ?")) {
             localStorage.removeItem('session');
@@ -21,11 +23,13 @@ function ProfilS() {
         const fetchstartup = async () => {
             const data = await getStartUpDetails();
             if (data) setStartup(data);
-            console.log(data);
+            const dataoffer = await getOffers_for_Startup({id});
+           if (dataoffer) setOffers(dataoffer);
+            console.log(dataoffer);
 
         };
         fetchstartup();
-    }, []);
+    }, [id]);
 
     return (
         <div className='profil_view'>
@@ -79,9 +83,11 @@ function ProfilS() {
                         </div>
 
                     </div>
-
+                    <h3 className='last_offer'> Latest offers: </h3>
+<Karousel offers={offers} />
                 </div>}
-            <button onClick={logout}>Logout</button>
+                
+            <button  className="logout_btn_profil" onClick={logout}>Logout</button>
         </div>
     );
 }

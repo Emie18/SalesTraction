@@ -1,0 +1,175 @@
+.carousel-container {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  padding: 0.5em;
+  border: 2px solid rgba(255, 192, 203, 0.145);
+}
+
+.carousel-wrapper {
+  height: 150px;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  width: calc(100% * var(--slide-count));
+}
+
+.carousel-slide {
+  flex: 0 0 20%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em;
+  box-sizing: border-box;
+}
+
+.carousel-slide .offer-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.carousel-slide .offer-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+
+  line-height: 1.2;
+}
+
+.carousel-slide .offer-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.carousel-slide .detail-item {
+  display: flex;
+  gap: 4px;
+}
+
+.carousel-slide .detail-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.carousel-slide .detail-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.carousel-slide .offer-pitch {
+  flex: 1;
+  display: flex;
+  margin-bottom: 0.5em;
+  align-items: center;
+}
+
+.carousel-slide .offer-pitch p {
+  font-size: 0.8em;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0;
+
+  font-style: italic;
+
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 1px;
+}
+
+.dot {
+  width: 20px;
+  height: 4px;
+  border: none;
+  border-radius: 2px;
+  background: var(--text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dot:hover {
+  background: #94a3b8;
+  transform: scale(1.1);
+}
+
+.dot.active {
+  background: var(--pink-gradient);
+  transform: scale(1.2);
+}
+
+.dot.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 4s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+.no-offers {
+  padding: 60px 20px;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .carousel-wrapper {
+    height: auto;
+  }
+
+  .offer-details {
+    display: flex !important;
+    flex-wrap: wrap;
+  }
+
+  .offer-title {
+    font-size: 20px;
+  }
+
+  .detail-value {
+    font-size: 14px;
+  }
+
+  .offer-pitch p {
+    font-size: 13px;
+  }
+}
+
+.last_offer{
+  margin-bottom: 0.5em;
+}

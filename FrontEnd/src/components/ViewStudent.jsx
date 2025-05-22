@@ -11,7 +11,7 @@ function ViewStudent({id}) {
     const [student, setStudent] = useState(null);
 
     useEffect(() => {
-        API.get(`/startup/get?id=${id}`)
+        API.get(`/students/get?id=${id}`)
       .then(res => res.json())
       .then(data => { setStudent(data) })
     }, [id]);
