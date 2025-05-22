@@ -58,18 +58,19 @@ exports.create = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        //const auth_id = req.user.id;
-        console.log("iiiii");
-        const offer = await Offer.findOne({ where : {id : req.body.id} });
-        console.log(offer);
-        // if (auth_id !== offer.id_startup) {
-        //     return res.status(403).json({ error: 'You can only delete offers with your account.' });
-        // }
+        const auth_id = req.user.id;
+        const offer = await Offer.findOne({ 
+            where : {id : req.body.id},
+            include: [{ as: "id_startup_startup", model: StartUp}] 
+        });
+        if (auth_id !== offer.id_startup_startup.id_account) {
+            return res.status(403).json({ error: 'You can only delete offers with your account.' });
+        }
 
         await OfferDoc.destroy({ where : {id_offer : req.body.id}});
         await OfferStudent.destroy({ where : {id_offer : req.body.id}});
         await Offer.destroy({ where : {id : req.body.id} });
-        console.log("supression");
+        
         res.status(200).json({deleted : req.body.id});
     } catch (err) {
         console.log(err);

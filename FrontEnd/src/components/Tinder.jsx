@@ -12,6 +12,9 @@ function Tinder() {
 
   const hasRun = useRef(false);
 
+  const [cardsRender, setCardsRender] = useState([]);
+  const currentIndex = useRef(0);
+
   // Récupère les suggestions à afficher
   useEffect(() => {
     if (!id || hasRun.current) return;
@@ -19,12 +22,19 @@ function Tinder() {
     
     API.get(`/match/suggestion/${id}`)
       .then(res => res.json())
-      .then(data => { setStudents(data) })
+      .then(data => {
+        setStudents(data)
+        setCardsRender(data.slice(0, 5));
+        currentIndex.current = 5;
+       })
   }, [id]);
 
   useEffect(() => {
-    if (students.length > 0) setTimeout(() => initTinderCards(), 100);
-  }, [students]);
+    if (cardsRender.length > 0) {
+      setTimeout(() => initTinderCards(), 50); // slight delay to let React render DOM
+    }
+  }, [cardsRender]);
+  
 
   function initTinderCards() {
     const cards = document.querySelectorAll(".profil_tinder");
@@ -36,6 +46,14 @@ function Tinder() {
 
     updateCardsPosition(); // Position initiale des cartes
 
+    function shiftCard() {
+      setCardsRender(prev => {
+        const next = students[currentIndex.current];
+        currentIndex.current += 1;
+        return [...prev.slice(1), next].filter(Boolean);
+      });
+      updateCardsPosition();
+    }
 
     // Met à jour la position des cartes restantes avec effet visuel
     function updateCardsPosition() {
@@ -50,6 +68,7 @@ function Tinder() {
         const z = remaining.length - index;
         card.style.zIndex = z;
         card.style.transform = `translateY(${-10 * index}px)`; // effet d'empilement en Y
+        card.style.visibility = "visible"
       });
     }
 
@@ -118,11 +137,8 @@ function Tinder() {
         handleLike(activeCard);
 
         setTimeout(() => { 
-          if(activeCard){
-            activeCard.remove()
-            activeCard = null;
-          }
-          updateCardsPosition()
+          activeCard = null;
+          shiftCard()
         }, 300);
 
       } else if (deltaX < -100) { // Swipe à gauche
@@ -130,11 +146,8 @@ function Tinder() {
         handleNope(activeCard);
 
         setTimeout(() => { 
-          if(activeCard){
-            activeCard.remove()
-            activeCard = null;
-          }
-          updateCardsPosition()
+          activeCard = null;
+          shiftCard()
         }, 300);
         
       } else { // Pas assez de mouvement : retour à la position initiale
@@ -147,6 +160,8 @@ function Tinder() {
 
     // Supprime les listeners pour éviter les fuites mémoire
     function cleanup() {
+      document.removeEventListener("touchmove", drag);
+      document.removeEventListener("touchend", endDrag);
       document.removeEventListener("mousemove", drag);
       document.removeEventListener("mouseup", endDrag);
     }
@@ -157,8 +172,8 @@ function Tinder() {
   return (
     <div className="tin_centre">
       <div className="Tinder_container">
-        {students.map((s,i) => (
-          <div key={s.account_id} className="profil_tinder" data-id={s.account_id} style={{ '--index': i }}>
+        {cardsRender.map((s,i) => (
+          <div key={s.account_id} className="profil_tinder" data-id={s.account_id} style={{ '--index': i, "visibility": "hidden"  }}>
             <div className="action-indicator like-indicator"><div className="like-icon"></div></div>
             <div className="action-indicator nope-indicator"><div className="nope-icon"></div></div>
             <div className="img_title">
