@@ -184,7 +184,7 @@ function TinderS() {
             <div className="action-indicator like-indicator"><div className="like-icon"></div></div>
             <div className="action-indicator nope-indicator"><div className="nope-icon"></div></div>
             <div className="img_title">
-              <img src={s.image ? API.make_url(s.image) : "/no_image.jpg"} alt={s.name} />
+              <img src={s.startup.image ? API.make_url(s.startup.image) : "/no_image.jpg"} alt={s.name} />
               <div>
                 <h3 className="name">{s.name}</h3>
                 <p>{s.product}</p>
