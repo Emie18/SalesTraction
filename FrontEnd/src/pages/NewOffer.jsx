@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getRegions, getCommissions, getModes } from '../scripts/getData';
 
+import { API } from '../scripts/api';
+
 function NewOffer({ onSubmitSuccess }) {
     const navigate = useNavigate();
     const [me, setMe] = useState(localStorage.getItem('session'));
@@ -77,10 +79,8 @@ function NewOffer({ onSubmitSuccess }) {
 
             console.log("Données à envoyer:", offerData);
 
-            const response = await fetch('http://localhost:3000/offer/create', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(offerData)
+            const response = await API.post('/offer/create', JSON.stringify(offerData), {
+                headers: { 'Content-Type': 'application/json' }
             });
 
             if (!response.ok) {
