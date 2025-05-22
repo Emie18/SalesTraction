@@ -4,6 +4,8 @@ import "../styles/registerpage.css";
 import { getStudentDetails } from '../scripts/getData';
 import '../styles/profil.css'
 
+import { API } from '../scripts/api';
+
 function Profil() {
     const navigate = useNavigate();
     const [student, setStudent] = useState(null);
@@ -29,7 +31,7 @@ function Profil() {
         <div className='profil_view'>
             {student &&
                 <div className='detail_profil'>
-                    <img className="photo" src={student.image? student.image : '/no_image2.png'}></img>
+                    <img className="photo" src={student.image? API.make_url(student.image) : '/no_image2.png'}></img>
                     <div className="namesurname">
                         <h1>{student.name} {student.surname}</h1>
                         

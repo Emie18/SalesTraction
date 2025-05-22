@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { applyToOffer } from "../scripts/apply";
 
+import { API } from '../scripts/api';
+
 function ContainerOffer({ offers }) {
    const [showModal, setShowModal] = useState(false);
    const [motivation, setMotivation] = useState("");
@@ -59,7 +61,7 @@ function ContainerOffer({ offers }) {
          {offers.map((offer) => (
             <div key={offer.id} className="offer">
                <div className="img_title">
-                  <img src={offer.startup.image ? offer.startup.image : "/no_image.jpg"} alt={offer.startup.name}></img>
+                  <img src={offer.startup.image ? API.make_url(offer.startup.image) : "/no_image.jpg"} alt={offer.startup.name}></img>
                   <div>
                      <h3 className="product">{offer.startup.name}</h3>
                      <p>{offer.name}</p>

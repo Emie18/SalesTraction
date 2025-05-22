@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import "../styles/tinder.css";
 
+import { API } from '../scripts/api';
+
 function Tinder() {
   const [students, setStudents] = useState([]);
   const session = JSON.parse(localStorage.getItem("session"));
@@ -159,7 +161,7 @@ function Tinder() {
             <div className="action-indicator like-indicator"><div className="like-icon"></div></div>
             <div className="action-indicator nope-indicator"><div className="nope-icon"></div></div>
             <div className="img_title">
-              <img src={s.image || "/no_image.jpg"} alt={s.name} />
+              <img src={s.image ? API.make_url(s.image) : "/no_image.jpg"} alt={s.name} />
               <div><h3 className="name">{s.name}</h3><p>{s.surname}</p></div>
             </div>
             <div className="line"></div>

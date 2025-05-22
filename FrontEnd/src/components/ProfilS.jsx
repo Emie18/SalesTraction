@@ -4,6 +4,8 @@ import "../styles/registerpage.css";
 import { getStartUpDetails } from '../scripts/getData';
 import '../styles/profil.css'
 
+import { API } from '../scripts/api';
+
 function ProfilS() {
     const navigate = useNavigate();
     const [startup, setStartup] = useState(null);
@@ -29,7 +31,7 @@ function ProfilS() {
         <div className='profil_view'>
             {startup &&
                 <div className='detail_profil'>
-                    <img className="photo" src={startup.image? startup.image : '/no_image.jpg'}></img>
+                    <img className="photo" src={startup.image? API.make_url(startup.image) : '/no_image.jpg'}></img>
                     <div className="namesurname">
                         <h1>{startup.name}</h1>
 

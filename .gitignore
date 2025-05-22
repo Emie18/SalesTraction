@@ -26,3 +26,7 @@ FrontEnd/dist-ssr
 #Backend
 BackEnd/node_modules
 BackEnd/.env
+BackEnd/uploads
+
+!BackEnd/uploads/no_image_profil.png
+!BackEnd/uploads/no_image.jpg

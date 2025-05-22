@@ -1,6 +1,9 @@
 import { getStartUpDetails } from "../scripts/getData";
 import { getStudentDetails } from "../scripts/getData";
 import { useEffect, useState } from "react";
+
+import { API } from '../scripts/api';
+
 function Header() {
     const [user, setUser] = useState(null);
 
@@ -26,7 +29,7 @@ function Header() {
         <div className="header">
             <div className="img">
                 {user &&
-                <img src={user.image ? user.image : '/no_image.jpg'}></img>
+                <img src={user.image ? API.make_url(user.image) : '/no_image.jpg'}></img>
                 }
                 
             </div>

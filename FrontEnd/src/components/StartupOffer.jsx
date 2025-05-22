@@ -2,6 +2,9 @@ import NewOffer from "../pages/NewOffer"
 import { useEffect, useState } from "react"
 import '../styles/offer.css'
 import { getOffers_for_Startup } from "../scripts/getData";
+
+import { API } from '../scripts/api';
+
 function StartupOffer() {
    const [open, setOpen] = useState(false);
 
@@ -80,7 +83,7 @@ if (window.confirm("Êtes-vous sûr de vouloir supprimer cette offre ?")) {
             {soffer.map((offer) => (
                <div key={offer.id} className="offer">
                   <div className="img_title">
-                     <img src={offer.startup.image ? offer.startup.image : "/no_image.jpg"}></img>
+                     <img src={offer.startup.image ? API.make_url(offer.startup.image) : "/no_image.jpg"}></img>
                      <div><h3 className="product">{offer.startup.name}</h3>
                         <p>{offer.name}</p></div>
                   </div>
