@@ -32,10 +32,6 @@ function TinderS() {
   }, [id]);
 
   useEffect(() => {
-    if (startup.length > 0) setTimeout(() => initTinderCards(), 100);
-  }, [startup]);
-
-  useEffect(() => {
     if (cardsRender.length > 0) {
       setTimeout(() => initTinderCards(), 50); // slight delay to let React render DOM
     }
