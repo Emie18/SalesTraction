@@ -43,6 +43,7 @@ function Tinder() {
       if(remaining.length > 0){
         cards.forEach(card => { card.removeEventListener("mousedown", startDrag) })
         remaining[0].addEventListener("mousedown", startDrag);
+        remaining[0].addEventListener("touchstart", startDrag);
       }
 
       remaining.forEach((card, index) => {
@@ -80,6 +81,8 @@ function Tinder() {
 
       document.addEventListener("mousemove", drag);
       document.addEventListener("mouseup", endDrag);
+      document.addEventListener("touchmove", drag);
+      document.addEventListener("touchend", endDrag);
     }
 
     // Pendant le drag : calcule la translation
