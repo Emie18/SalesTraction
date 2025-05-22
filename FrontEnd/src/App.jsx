@@ -9,7 +9,11 @@ import StudentMainPage from './pages/StudentMainPage';
 import StartUpMainPage from './pages/StartUpMainPage';
 import ProtectedRedirect from './components/ProtectedRedirect';
 
+import { useAuthToken } from './components/AuthProvider';
+
 function App() {
+  useAuthToken();
+
   return (
     <Routes>
       <Route path="/" element={
