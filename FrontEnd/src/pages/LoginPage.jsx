@@ -31,7 +31,7 @@ function LoginPage() {
     try {
       const response = await API.post('/account/login', JSON.stringify({ email: email, pass: password }), {
         headers: {'Content-Type': 'application/json'}
-      });
+      }, false);
 
       if (!response.ok) {
         throw new Error('Invalid credentials');

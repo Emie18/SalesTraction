@@ -15,19 +15,15 @@ const is_token_expired = (token) => {
     }
 };
 
-const request = async (end_point, options = {}) => {
+const request = async (end_point, options = {}, require_token = true) => {
     const token = localStorage.getItem('access_token');
     const headers = {
         ...(options.headers || {}),
-        ...(token && {'Authorization': `Bearer ${token}`})
+        ...((token && require_token) && {'Authorization': `Bearer ${token}`})
     };
 
-    console.log("test")
-
     // Check token expiration
-    if (!token || is_token_expired(token)) {
-        console.log("test")
-
+    if (require_token && (!token || is_token_expired(token))) {
         localStorage.removeItem('session');
         localStorage.removeItem('access_token');
         window.location.href = '/';
@@ -42,12 +38,12 @@ const request = async (end_point, options = {}) => {
     });
 };
 
-const get = (end_point, options = {}) => {
-    return request(end_point, { ...options, method: 'GET' });
+const get = (end_point, options = {}, require_token = true) => {
+    return request(end_point, { ...options, method: 'GET' }, require_token);
 };
 
-const post = (end_point, body = {}, options = {}) => {
-    return request(end_point, { ...options, method: 'POST', body: body, });
+const post = (end_point, body = {}, options = {}, require_token = true) => {
+    return request(end_point, { ...options, method: 'POST', body: body, }, require_token);
 };
 
 export const API = {
