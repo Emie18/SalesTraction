@@ -6,9 +6,13 @@ const JsonHelper = require("./JsonHelper.js");
 
 exports.update = async (req, res) => {
     try {
-        const offer = await Offer.findOne({
-            where : {id : req.body.id}
-        });
+        const offer = await Offer.findOne({ where : {id : req.body.id} });
+
+        //const auth_id = req.user.id;
+        //if (auth_id !== offer.id_startup) {
+        //    return res.status(403).json({ error: 'You can only update your offers.' });
+        //}
+        
         if(!offer) return res.status(500).json({ error: 'Failed to update the offer' });
         
         if (req.body.name) offer.name = req.body.name
@@ -17,7 +21,6 @@ exports.update = async (req, res) => {
         if (req.body.range) offer.range_offer = req.body.range
         if (req.body.commission) offer.commission_offer_commission = req.body.commission
         if (req.body.client) offer.client = req.body.client
-        if (req.body.startup) offer.id_startup = req.body.startup
         if (req.body.work_mode) offer.work_mode = req.body.work_mode
         await offer.save()
 
@@ -30,6 +33,9 @@ exports.update = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
+        //const auth_id = req.user.id;
+        //if (auth_id !== req.body.startup) return res.status(403).json({ error: 'You can only create offers with your account.' });
+
         const startup = await StartUp.findOne({ where : { id_account : req.body.startup}})
         if(!startup) return res.status(500).json({error: "account is not a startup"});
 
@@ -52,6 +58,12 @@ exports.create = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
+        //const auth_id = req.user.id;
+        const offer = await Offer.findOne({ where : {id : req.body.id} });
+        //if (auth_id !== offer.id_startup) {
+        //    return res.status(403).json({ error: 'You can only create offers with your account.' });
+        //}
+
         await OfferDoc.destroy({ where : {id_offer : req.body.id}});
         await OfferStudent.destroy({ where : {id_offer : req.body.id}});
         await Offer.destroy({ where : {id : req.body.id} });
@@ -67,7 +79,7 @@ exports.apply = async (req, res) => {
         const student = await Student.findOne({where : {id_account : req.body.student}})
         if(!student) return res.status(500).json({ error: 'Account is not a Student' });
 
-        OfferStudent.create({
+        await OfferStudent.create({
             id: student.id,
             id_offer: req.body.offer,
             state: "Waiting",
@@ -75,7 +87,7 @@ exports.apply = async (req, res) => {
         });
         return res.sendStatus(200);
     } catch (err) {
-        res.status(500).json({ error: 'Failed to delete the offer' });
+        res.status(500).json({ error: 'Failed to apply to the offer' });
     }
 }
 
