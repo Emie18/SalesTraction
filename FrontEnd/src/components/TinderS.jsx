@@ -14,6 +14,9 @@ function TinderS() {
   const id = session?.id;
   const hasRun = useRef(false);
 
+  const [cardsRender, setCardsRender] = useState([]);
+  const currentIndex = useRef(0);
+
   // Récupère les suggestions à afficher
   useEffect(() => {
     if (!id || hasRun.current) return;
@@ -21,12 +24,23 @@ function TinderS() {
     
     API.get(`/match/suggestion/${id}`)
       .then(res => res.json())
-      .then(data => { setStartup(data); })
+      .then(data => {
+        setStartup(data);
+        setCardsRender(data.slice(0, 5));
+        currentIndex.current = 5;
+      });
   }, [id]);
 
   useEffect(() => {
     if (startup.length > 0) setTimeout(() => initTinderCards(), 100);
   }, [startup]);
+
+  useEffect(() => {
+    if (cardsRender.length > 0) {
+      setTimeout(() => initTinderCards(), 50); // slight delay to let React render DOM
+    }
+  }, [cardsRender]);
+  
 
   function initTinderCards() {
     const cards = document.querySelectorAll(".profil_tinder");
@@ -44,13 +58,24 @@ function TinderS() {
       if(remaining.length > 0){
         cards.forEach(card => { card.removeEventListener("mousedown", startDrag) })
         remaining[0].addEventListener("mousedown", startDrag);
+        remaining[0].addEventListener("touchstart", startDrag);
       }
 
       remaining.forEach((card, index) => {
         const z = remaining.length - index;
         card.style.zIndex = z;
         card.style.transform = `translateY(${-10 * index}px)`; // effet d'empilement en Y
+        card.style.visibility = "visible"
       });
+    }
+
+    function shiftCard() {
+      setCardsRender(prev => {
+        const next = startup[currentIndex.current];
+        currentIndex.current += 1;
+        return [...prev.slice(1), next].filter(Boolean);
+      });
+      updateCardsPosition();
     }
 
     // Envoie un like à l'API
@@ -74,6 +99,8 @@ function TinderS() {
 
       document.addEventListener("mousemove", drag);
       document.addEventListener("mouseup", endDrag);
+      document.addEventListener("touchmove", drag);
+      document.addEventListener("touchend", endDrag);
     }
 
     // Pendant le drag : calcule la translation
@@ -111,10 +138,10 @@ function TinderS() {
 
         setTimeout(() => { 
           if(activeCard){
-            activeCard.remove()
+            //activeCard.remove()
             activeCard = null;
           }
-          updateCardsPosition()
+          shiftCard()
         }, 300);
         
       } else if (deltaX < -100) { // Swipe à gauche
@@ -123,10 +150,11 @@ function TinderS() {
 
         setTimeout(() => { 
           if(activeCard){
-            activeCard.remove()
+            //activeCard.remove()
             activeCard = null;
           }
-          updateCardsPosition()
+          
+          shiftCard()
         }, 300);
         
       } else { // Pas assez de mouvement : retour à la position initiale
@@ -176,12 +204,12 @@ function TinderS() {
   return (
     <div className="tin_centre">
       <div className="Tinder_container">
-        {startup.map((s, i) => (
-          <div key={s.id} className="profil_tinder" data-id={s.id} startup-id={s.startup.account_id} style={{ '--index': i }}>
+        {cardsRender.map((s, i) => (
+          <div key={s.id} className="profil_tinder" data-id={s.id} startup-id={s.startup.account_id} style={{ '--index': i, "visibility": "hidden" }}>
             <div className="action-indicator like-indicator"><div className="like-icon"></div></div>
             <div className="action-indicator nope-indicator"><div className="nope-icon"></div></div>
             <div className="img_title">
-              <img src={s.image ? API.make_url(s.image) : "/no_image.jpg"} alt={s.name} />
+              <img src={s.startup.image ? API.make_url(s.startup.image) : "/no_image.jpg"} alt={s.name} />
               <div>
                 <h3 className="name">{s.name}</h3>
                 <p>{s.product}</p>
