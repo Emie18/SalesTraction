@@ -6,7 +6,7 @@ function TinderS() {
   const [ismatch, setIsmatch] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [motivationText, setMotivationText] = useState("");
-  const [currentCardId, setCurrentCardId] = useState(null);
+  const [currentCardId, setCurrentCardId] = useState({});
   
   const session = JSON.parse(localStorage.getItem("session"));
   const id = session?.id;
@@ -53,15 +53,14 @@ function TinderS() {
 
     // Envoie un like à l'API
     function handleLike(card) {
-      const likedId = parseInt(card.getAttribute("data-id"));
-      setCurrentCardId(likedId);
+      const startup_id = parseInt(card.getAttribute("startup-id"));
+      const offer_id = parseInt(card.getAttribute("data-id"));
+      setCurrentCardId({startup : startup_id, offer: offer_id});
       setShowModal(true);
     }
 
     // Gestion du "nope" (non intéressé)
-    function handleNope(card) {
-      console.log("Noped:", card.getAttribute("data-id"));
-    }
+    function handleNope(card) { console.log("Noped:", card.getAttribute("data-id")) }
 
     // Début du drag : prépare les valeurs de base
     function startDrag(e) {
@@ -107,6 +106,14 @@ function TinderS() {
         activeCard.classList.add("swipe-right");
         handleLike(activeCard);
         activeCard.style.transform = `translateX(0) translateY(0) rotate(0)`;
+
+        setTimeout(() => { 
+          if(activeCard){
+            activeCard.remove()
+            activeCard = null;
+          }
+          updateCardsPosition()
+        }, 300);
         
       } else if (deltaX < -100) { // Swipe à gauche
         activeCard.classList.add("swipe-left");
@@ -143,64 +150,34 @@ function TinderS() {
     }
     
     // Process the like with motivation text
-    const likedId = currentCardId;
-    console.log(JSON.stringify({ from: id, to: likedId }));
+    const startup_id = currentCardId.startup;
+    const offer_id = currentCardId.offer;
+
+    console.log(JSON.stringify({ from: id, to: startup_id }));
     // First API call: Like the account
     fetch("http://localhost:3000/match/like", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ from: id, to: likedId }),
+      body: JSON.stringify({ from: id, to: startup_id }),
     })
     .then(res => res.json())
     .then(data => {
-      setIsmatch(data.ismatch);
-      
-      // Second API call: Apply to the offer with motivation
-      return fetch("http://localhost:3000/offer/apply", {
+      setIsmatch(data.is_match);
+      fetch("http://localhost:3000/offer/apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          student: id, 
-          offer: likedId, 
-          motivation: motivationText 
-        }),
+        body: JSON.stringify({ student: id, offer: offer_id, motivation: motivationText }),
       });
-    })
-    .then(res => res.json())
-    .then(data => {
-      console.log("Application avec motivation enregistrée:", data);
-    })
-    .catch(err => console.error("Erreur API:", err));
+    }).catch(error => console.log(error))
     
     setShowModal(false);
-    
-    // Find and remove the card from DOM
-    const card = document.querySelector(`.profil_tinder[data-id="${likedId}"]`);
-    if (card) {
-      setTimeout(() => { 
-        if(card){
-          card.remove();
-        }
-        const remaining = document.querySelectorAll(".profil_tinder");
-        remaining.forEach((card, index) => {
-          const z = remaining.length - index;
-          card.style.zIndex = z;
-          card.style.transform = `translateY(${-10 * index}px)`;
-        });
-        if(remaining.length > 0){
-          remaining[0].addEventListener("mousedown", function(e) {
-            // Réinitialiser les événements sur la nouvelle carte du dessus
-          });
-        }
-      }, 300);
-    }
   };
 
   return (
     <div className="tin_centre">
       <div className="Tinder_container">
         {startup.map((s, i) => (
-          <div key={s.id} className="profil_tinder" data-id={s.id} style={{ '--index': i }}>
+          <div key={s.id} className="profil_tinder" data-id={s.id} startup-id={s.startup.account_id} style={{ '--index': i }}>
             <div className="action-indicator like-indicator"><div className="like-icon"></div></div>
             <div className="action-indicator nope-indicator"><div className="nope-icon"></div></div>
             <div className="img_title">
