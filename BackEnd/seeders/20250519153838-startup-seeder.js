@@ -1,5 +1,7 @@
 'use strict';
 
+const bcrypt = require('bcrypt');
+
 // Utility for random SIRET number generation (14 digits)
 function generate_siret() {
   let siret = "";
@@ -177,6 +179,7 @@ module.exports = {
     const startups_data = []
     const offers_buffer = []
     
+    const pass = await bcrypt.hash("1234", 10)
     for (let i = 0; i < nb_startup; i++) {
       const id_name = Math.floor(Math.random() * names.length);
       const id_prefix = Math.floor(Math.random() * prefix.length);
@@ -189,7 +192,7 @@ module.exports = {
         type: "startup",
         name: startup_name,
         email: emails(startup_name),
-        password: "1234",
+        password: pass,
         description: descriptions[id_descriptions],
         linkedin: linkedin(startup_name),
         region: regions[id_regions],

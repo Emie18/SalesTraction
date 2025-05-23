@@ -1,5 +1,7 @@
 'use strict';
 
+const bcrypt = require('bcrypt');
+
 const regions = [
   'Auvergne-Rhône-Alpes', 'Bourgogne-Franche-Comté', 'Bretagne', 'Centre-Val de Loire', 'Corse', 'Grand Est',
   'Guadeloupe', 'Guyane', 'Hauts-de-France', 'Île-de-France', 'La Réunion', 'Martinique', 'Mayotte',
@@ -134,7 +136,8 @@ module.exports = {
 
     const languages_data = []
     const sector_data = []
-
+    
+    const pass = await bcrypt.hash("1234", 10)
     for (let i = 0; i < nb_student; i++) {
       const id_name = Math.floor(Math.random() * names.length);
       const id_surnames = Math.floor(Math.random() * surnames.length);
@@ -147,7 +150,7 @@ module.exports = {
       const account_email = emails(names[id_name], surnames[id_surnames], i)
       accounts.push({
         type: "student", name: names[id_name], email: account_email,
-        password: "1234", region: regions[id_regions],
+        password: pass, region: regions[id_regions],
         description: descriptions[id_descriptions],
         linkedin: linkedin(names[id_name], surnames[id_surnames], i),
         image: "/uploads/student-" + (i+1) + ".jpeg"

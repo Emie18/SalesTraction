@@ -1,12 +1,16 @@
 const { Model} = require('../models/Model.js');
 const startup = require('../models/startup.js');
+const { Op } = require('sequelize');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 const { StartUp, Student, Account, AccountSector, Chat, Message} = Model
 const { LanguageStudent, OfferStudent, AccountMatch} = Model
 const { Offer, OfferDoc } = Model
-const { Op } = require('sequelize');
 
-const jwt = require('jsonwebtoken');
+
 const SECRET_KEY = process.env.JWT_SECRET
+
 
 exports.login = async (req, res) => {
     try {
@@ -15,9 +19,12 @@ exports.login = async (req, res) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        const account = await Account.findOne({where: { email: email, password: pass }});
-        console.log(account)
+        const account = await Account.findOne({where: { email: email }});
         if (!account) return res.status(401).json({ error: 'Invalid credentials' });
+
+        const match = await bcrypt.compare(pass, account.password);
+        if (!match) return res.status(401).json({ error: 'Invalid credentials' });
+
         
         // Identify user type
         let userType = null;

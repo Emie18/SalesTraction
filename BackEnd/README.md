@@ -31,7 +31,7 @@ POST /offer/apply => apply to an offer
 POST /match/like => like an account
 GET /match/suggestion/:id => get all suggestions for the account with the given id
 
-## JSON
+## JSON
 
 ### Offer
 ```json
