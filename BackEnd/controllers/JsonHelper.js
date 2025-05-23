@@ -77,6 +77,19 @@ function json_offers(offers){
     return list
 }
 
+function shuffle(array) {
+    let currentIndex = array.length;
+
+    while (currentIndex != 0) {
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+}
+
+
+exports.shuffle = shuffle
 exports.student = json_student
 exports.startup = json_startup
 exports.offer = json_offer

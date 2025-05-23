@@ -123,7 +123,10 @@ exports.suggestion = async (req, res) => {
                 }]
             });
 
-            return res.status(200).json(JsonHelper.offers(suggestions));
+            const match_list = JsonHelper.offers(suggestions)
+            JsonHelper.shuffle(match_list)
+
+            return res.status(200).json(match_list);
         }
 
         if(user_startup){

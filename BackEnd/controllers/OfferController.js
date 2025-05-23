@@ -151,7 +151,7 @@ exports.getAll = async (req, res) => {
 
             return res.status(200).json(offers_json);
         }
-
+        
         res.status(200).json(JsonHelper.offers(offers));
     }catch(error){
         res.status(500).json({error : error.message});
