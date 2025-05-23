@@ -1,6 +1,9 @@
 const { Model } = require('../models/Model.js');
 const { Student, Account, LanguageStudent, AccountSector, Offer } = Model
 const JsonHelper = require("./JsonHelper.js");
+const bcrypt = require('bcrypt');
+
+const SALT_ROUNDS = 10;
 
 exports.create = async (req, res) => {
     try {
@@ -10,7 +13,7 @@ exports.create = async (req, res) => {
             type: "student",
             name: req.body.name,
             email: req.body.email,
-            password: req.body.pass,
+            password: await bcrypt.hash(req.body.pass, SALT_ROUNDS),
             description : req.body.description ?? "",
             linkedin: req.body.linkedin,
             region : req.body.region ?? "Bretagne",
