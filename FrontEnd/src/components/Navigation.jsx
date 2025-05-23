@@ -4,6 +4,7 @@ function Navigation({ page, currentPage }) {
   // Fonction pour changer la page lorsqu'un élément est cliqué
   const handlePageChange = (pageNumber) => {
     page(pageNumber);
+     localStorage.setItem("page",pageNumber);
   };
 
   return (

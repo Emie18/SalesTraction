@@ -10,13 +10,13 @@ import Profil from "../components/Profil"
 import TinderS from "../components/TinderS"
 import ItsAmatch from "../components/ItsAmatch"
 function StudentUpMainPage() {
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(localStorage.getItem('page')?parseInt(localStorage.getItem('page')):1)
   const [regions, setRegions] = useState([]);
   const [sectors, setSectors] = useState([]);
   const [commissions, setCommissions] = useState([]);
   const [workMode, setWorkMode] = useState([]);
   const [offers, setOffers] = useState([]);
-  const[refesh,setRefresh]= useState(false);
+  const [refesh, setRefresh] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +35,7 @@ function StudentUpMainPage() {
     fetchData();
 
   }, []);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const ee = await getOffers();
@@ -54,30 +54,43 @@ function StudentUpMainPage() {
       case 1:
         return <div>
           <Header />
+          <div className="homelogotext">
+            <img src="/logoSsans_bg.png"></img>
+            <h2>Welcome to Salestraction!</h2>
+
+            <p>You're now part of a community where ambition meets opportunity.
+              Here, you can connect with real startups looking for sales talent just like you. Whether you're looking to sharpen your sales skills, earn commission-based income, or build your professional experience, you're in the right place.
+            </p>
+            <p>
+              Swipe through startup profiles, find exciting products to sell, and start gaining hands-on experience that will boost your career.
+              Your journey into the startup world starts now!
+            </p>
+          </div>
+
         </div>
       case 2:
         return <div>
-          <ItsAmatch match={"ee"}/>
-          </div>
+          <ItsAmatch match={"ee"} />
+        </div>
       case 3:
         return <div>
           <TinderS />
         </div>
       case 4:
         return (
-    <div>
-      <Header />
-      <Filter
-        workMode={workMode}
-        regions={regions}
-        sectors={sectors}
-        commissions={commissions}
-        onSearch={getOffers}
-        setOffers={setOffers}
-      />
-      <ContainerOffer offers={offers} setRefresh={setRefresh}/>
-    </div>
-  );
+          <div>
+            <Header />
+            <Filter
+              workMode={workMode}
+              regions={regions}
+              sectors={sectors}
+              commissions={commissions}
+              onSearch={getOffers}
+              setOffers={setOffers}
+            />
+            <ContainerOffer offers={offers} setRefresh={setRefresh} />
+          </div>
+        );
       case 5:
         return <div>
           <Profil />

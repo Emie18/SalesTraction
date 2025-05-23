@@ -15,6 +15,8 @@ function ProfilS() {
     const logout = () => {
         if (window.confirm("Voulez-vous vous déconnecter ?")) {
             localStorage.removeItem('session');
+            localStorage.removeItem("page");
+            localStorage.removeItem("access_token");
             navigate('/');
         }
     };
