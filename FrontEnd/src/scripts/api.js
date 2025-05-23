@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-const API_URL = 'http://localhost:3000'
+const API_URL =`http://${import.meta.env.VITE_API_HOST}:${import.meta.env.VITE_API_PORT}`
 
 const make_url = (api) => {
     return API_URL + (api.startsWith('/') ? api : '/' + api);
